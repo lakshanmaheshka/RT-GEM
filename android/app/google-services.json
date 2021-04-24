@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "151190735985",
+    "project_id": "rt-gem",
+    "storage_bucket": "rt-gem.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:151190735985:android:6994b5404d94bd8074dfd0",
+        "android_client_info": {
+          "package_name": "com.lakshanmaheshka.rt_gem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "151190735985-igu09ghigq3t3phun7p8aqoloippio72.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyPAN45gVkDKdaJlbx-0ENnLnQggnDrQQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "151190735985-igu09ghigq3t3phun7p8aqoloippio72.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
