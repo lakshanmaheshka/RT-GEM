@@ -28,16 +28,19 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  font_awesome_flutter:
-
-  # Online Storage For Files
-  firebase_storage: ^8.0.3
-
-  # Online Database For Data
-  cloud_firestore: ^1.0.5
 
   # Add Authentication such as Google SignIn, Facebook SignIn, Apple SignIn, Phone Auth etc.
-  firebase_auth: ^1.1.0
+  firebase_core: ^1.0.1
+  firebase_auth: ^1.0.1
+
+  # google sign in
+  google_sign_in: ^5.0.2
+
+  # state management
+  provider: ^4.3.2+2
+
+  # icon of google
+  font_awesome_flutter: ^8.10.0
 
   ## And many more Firebase packages you could use
   #firebase_messaging: ^9.1.1

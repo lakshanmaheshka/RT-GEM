@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rt_gem/provider/email_sign_in.dart';
 import 'package:rt_gem/theme.dart';
 import 'package:rt_gem/utils/bubble_indicator_painter.dart';
-import 'package:rt_gem/pages/widgets/sign_up.dart';
-import 'package:rt_gem/pages/widgets/sign_in.dart';
+import 'package:rt_gem/widgets/login_widgets/sign_up.dart';
+import 'package:rt_gem/widgets/login_widgets/sign_in.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key key}) : super(key: key);
@@ -32,6 +34,7 @@ class _LoginPageState extends State<LoginPage>
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<EmailSignInProvider>(context);
     return Scaffold(
         body: SingleChildScrollView(
       physics: const ClampingScrollPhysics(),
@@ -79,11 +82,13 @@ class _LoginPageState extends State<LoginPage>
                       setState(() {
                         right = Colors.white;
                         left = Colors.black;
+                        provider.isLogin = true;
                       });
                     } else if (i == 1) {
                       setState(() {
                         right = Colors.black;
                         left = Colors.white;
+                        provider.isLogin = false;
                       });
                     }
                   },

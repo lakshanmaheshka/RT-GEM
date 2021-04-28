@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "151190735985-qpp6eldpes18tc371c8n0re6d2gs5leh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lakshanmaheshka.rt_gem",
+            "certificate_hash": "8413bef02e227e014a9eeb21ea51792c87219387"
+          }
+        },
+        {
           "client_id": "151190735985-igu09ghigq3t3phun7p8aqoloippio72.apps.googleusercontent.com",
           "client_type": 3
         }
