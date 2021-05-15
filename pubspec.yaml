@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:
@@ -32,6 +32,7 @@ dependencies:
   # Add Authentication such as Google SignIn, Facebook SignIn, Apple SignIn, Phone Auth etc.
   firebase_core: ^1.1.1
   firebase_auth: ^1.1.4
+  cloud_firestore: ^1.0.1
 
   # google sign in
   google_sign_in: ^5.0.3
