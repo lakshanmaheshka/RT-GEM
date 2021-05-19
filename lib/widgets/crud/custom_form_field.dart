@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rt_gem/sample/res/custom_colors.dart';
+import 'package:rt_gem/utils/custom_colors.dart';
 
 class CustomFormField extends StatelessWidget {
   const CustomFormField({
