@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:rt_gem/sample/res/custom_colors.dart';
-import 'package:rt_gem/sample/utils/database.dart';
-import 'package:rt_gem/sample/widgets/app_bar_title.dart';
-import 'package:rt_gem/sample/widgets/edit_item_form.dart';
+import 'package:rt_gem/utils/custom_colors.dart';
+import 'package:rt_gem/utils/database.dart';
+import 'package:rt_gem/widgets/crud/app_bar_title.dart';
+import 'package:rt_gem/widgets/crud/edit_item_form.dart';
 
 class EditScreen extends StatefulWidget {
   final String currentTitle;

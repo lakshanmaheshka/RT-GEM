@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:rt_gem/sample/res/custom_colors.dart';
-import 'package:rt_gem/sample/widgets/login_form.dart';
+import 'package:rt_gem/utils/custom_colors.dart';
+import 'package:rt_gem/widgets/crud/login_form.dart';
 
 class LoginScreen extends StatefulWidget {
   @override

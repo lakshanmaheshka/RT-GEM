@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:rt_gem/sample/res/custom_colors.dart';
-import 'package:rt_gem/sample/utils/database.dart';
-import 'package:rt_gem/sample/utils/validator.dart';
+import 'package:rt_gem/utils/custom_colors.dart';
+import 'package:rt_gem/utils/database.dart';
+import 'package:rt_gem/utils/validator.dart';
 
 
 import 'custom_form_field.dart';

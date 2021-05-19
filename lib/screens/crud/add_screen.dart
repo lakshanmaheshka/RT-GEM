@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:rt_gem/sample/res/custom_colors.dart';
-import 'package:rt_gem/sample/widgets/add_item_form.dart';
-import 'package:rt_gem/sample/widgets/app_bar_title.dart';
+import 'package:rt_gem/utils/custom_colors.dart';
+import 'package:rt_gem/widgets/crud/add_item_form.dart';
+import 'package:rt_gem/widgets/crud/app_bar_title.dart';
 
 class AddScreen extends StatelessWidget {
   final FocusNode _titleFocusNode = FocusNode();
