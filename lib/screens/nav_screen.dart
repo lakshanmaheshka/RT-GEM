@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:rt_gem/widgets/AnimatedIndexedStack.dart';
 import 'package:rt_gem/widgets/isApp/bottom_navigation_view/bottom_bar_view.dart';
 import 'package:rt_gem/widgets/isApp/models/tabIcon_data.dart';
 import 'package:rt_gem/widgets/isApp/my_diary/my_diary_screen.dart';
@@ -21,12 +22,7 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
 
   List<TabIconData> tabIconsList = TabIconData.tabIconsList;
 
-  final List<Widget> _screens = [
-    HomePage(),
-    Scaffold(),
-    MyDiaryScreen(),
-    TrainingScreen(),
-  ];
+
   final List<IconData> _icons = const [
     Icons.home,
     Icons.ondemand_video,
@@ -71,7 +67,7 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
                 ),
               )
             : null,
-        body: IndexedStack(
+        body: AnimatedIndexedStack(
           index: _selectedIndex,
           children: <Widget>[
             HomePage(),
