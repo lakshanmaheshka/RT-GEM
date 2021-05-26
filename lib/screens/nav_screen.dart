@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rt_gem/widgets/AnimatedIndexedStack.dart';
+import 'package:rt_gem/widgets/custom_dialog/CustomDialog.dart';
 import 'package:rt_gem/widgets/isApp/bottom_navigation_view/bottom_bar_view.dart';
 import 'package:rt_gem/widgets/isApp/models/tabIcon_data.dart';
 import 'package:rt_gem/widgets/isApp/my_diary/my_diary_screen.dart';
@@ -19,7 +20,8 @@ class NavScreen extends StatefulWidget {
 
 class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
   AnimationController? animationController;
-
+  final _formKey = GlobalKey<FormState>();
+  TabController? _tabController;
   List<TabIconData> tabIconsList = TabIconData.tabIconsList;
 
 
@@ -37,6 +39,8 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
       tab.isSelected = false;
     });
     tabIconsList[0].isSelected = true;
+
+    _tabController = new TabController(length: 2, vsync: this);
 
     animationController = AnimationController(
         duration: const Duration(milliseconds: 600), vsync: this);
@@ -67,6 +71,18 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
                 ),
               )
             : null,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return CustomDialog();
+                });
+          },
+          tooltip: 'Increment Counter',
+          child: const Icon(Icons.add),
+        ),
+        floatingActionButtonLocation: Responsive.isDesktop(context) ? FloatingActionButtonLocation.centerTop : FloatingActionButtonLocation.endFloat,
         body: AnimatedIndexedStack(
           index: _selectedIndex,
           children: <Widget>[
