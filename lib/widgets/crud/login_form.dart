@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rt_gem/screens/crud/dashboard_screen.dart';
 import 'package:rt_gem/utils/custom_colors.dart';
@@ -18,9 +19,25 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  final TextEditingController _uidController = TextEditingController();
+  TextEditingController _uidController = TextEditingController();
 
   final _loginInFormKey = GlobalKey<FormState>();
+
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    final User user = auth.currentUser!;
+    final uid = user.uid;
+    _uidController = new TextEditingController(text: uid);
+  }
+
+  void inputData() {
+    final User user = auth.currentUser!;
+    final uid = user.uid;
+    // here you write the codes to input the data into firestore
+  }
 
   @override
   Widget build(BuildContext context) {

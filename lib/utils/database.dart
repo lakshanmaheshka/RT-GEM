@@ -24,6 +24,29 @@ class Database {
         .catchError((e) => print(e));
   }
 
+
+  static Future<void> addGrocery({
+    required String productName,
+    //required String category,
+    //required String manufacturedDate,
+    //required String expiryDate,
+  }) async {
+    DocumentReference documentReferencer =
+    _mainCollection.doc(userUid).collection('groceries').doc();
+
+    Map<String, dynamic> data = <String, dynamic>{
+      "productName": productName,
+      //"category": category,
+      //"manufacturedDate": manufacturedDate,
+      //"expiryDate": expiryDate,
+    };
+
+    await documentReferencer
+        .set(data)
+        .whenComplete(() => print("Note item added to the database"))
+        .catchError((e) => print(e));
+  }
+
   static Future<void> updateItem({
     required String title,
     required String description,
@@ -43,9 +66,16 @@ class Database {
         .catchError((e) => print(e));
   }
 
+  static Stream<QuerySnapshot> readGroceries() {
+    CollectionReference notesGroceriesCollection =
+        _mainCollection.doc(userUid).collection('groceries');
+
+    return notesGroceriesCollection.snapshots();
+  }
+
   static Stream<QuerySnapshot> readItems() {
     CollectionReference notesItemCollection =
-        _mainCollection.doc(userUid).collection('items');
+    _mainCollection.doc(userUid).collection('items');
 
     return notesItemCollection.snapshots();
   }

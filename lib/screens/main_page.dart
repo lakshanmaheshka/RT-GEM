@@ -1,6 +1,7 @@
 import 'package:rt_gem/screens/login_page.dart';
 import 'package:rt_gem/provider/google_sign_in.dart';
 import 'package:rt_gem/screens/nav_screen.dart';
+import 'package:rt_gem/utils/database.dart';
 import 'package:rt_gem/widgets/background_painter.dart';
 import 'package:rt_gem/screens/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,6 +19,11 @@ class MainPage extends StatelessWidget {
             if (provider.isSigningIn!) {
               return buildLoading();
             } else if (snapshot.hasData) {
+              final FirebaseAuth auth = FirebaseAuth.instance;
+              final User user = auth.currentUser!;
+              final uid = user.uid;
+              Database.userUid = uid;
+
               return NavScreen();
             } else {
               return LoginPage();

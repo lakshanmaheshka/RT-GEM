@@ -31,7 +31,7 @@ class _CustomDialogState extends State<CustomDialog> with SingleTickerProviderSt
           borderRadius:
           BorderRadius.circular(10.0)), //this right here
       child: Container(
-        height: Responsive.deviceHeight(50, context),
+        height: Responsive.deviceHeight(60, context),
         width: 350,
         child: Stack(
           clipBehavior: Clip.none,

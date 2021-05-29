@@ -1,5 +1,8 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:rt_gem/utils/custom_colors.dart';
+import 'package:rt_gem/utils/database.dart';
 import 'package:rt_gem/widgets/isApp/models/meals_list_data.dart';
 import 'package:rt_gem/widgets/isApp/ui_view/glass_view.dart';
 
@@ -53,29 +56,56 @@ class _MealsListViewState extends State<MealsListView>
             child: Container(
               height: 216,
               width: double.infinity,
-              child: ListView.builder(
-                padding: const EdgeInsets.only(
-                    top: 0, bottom: 0, right: 16, left: 16),
-                itemCount: mealsListData.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (BuildContext context, int index) {
-                  final int count =
-                      mealsListData.length > 10 ? 10 : mealsListData.length;
-                  final Animation<double> animation =
-                      Tween<double>(begin: 0.0, end: 1.0).animate(
-                          CurvedAnimation(
-                              parent: animationController!,
-                              curve: Interval((1 / count) * index, 1.0,
-                                  curve: Curves.fastOutSlowIn)));
-                  animationController!.forward();
+              child: StreamBuilder<QuerySnapshot>(
+                stream: Database.readGroceries(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('Something went wrong');
+                  } else if (snapshot.hasData || snapshot.data != null) {
+                    return ListView.builder(
+                      padding: const EdgeInsets.only(
+                          top: 0, bottom: 0, right: 16, left: 16),
+                      itemCount: snapshot.data!.docs.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        final int count =
+                        mealsListData.length > 10 ? 10 : mealsListData.length;
+                        final Animation<double> animation =
+                        Tween<double>(begin: 0.0, end: 1.0).animate(
+                            CurvedAnimation(
+                                parent: animationController!,
+                                curve: Interval((1 / count) * index, 1.0,
+                                    curve: Curves.fastOutSlowIn)));
+                        animationController!.forward();
 
-                  return MealsView(
-                    mealsListData: mealsListData[index],
-                    animation: animation,
-                    animationController: animationController,
+                        var noteInfo = snapshot.data!.docs[index].data();
+                        String docID = snapshot.data!.docs[index].id;
+                        String productName = noteInfo['productName'];
+
+                        return MealsView(
+                          mealsListData: mealsListData[index],
+                          animation: animation,
+                          animationController: animationController,
+                          productName: productName,
+                        );
+                      },
+                    );
+                  }
+
+                  return Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        CustomColors.firebaseOrange,
+                      ),
+                    ),
                   );
                 },
               ),
+
+
+
+
+
             ),
           ),
         );
@@ -86,10 +116,11 @@ class _MealsListViewState extends State<MealsListView>
 
 class MealsView extends StatelessWidget {
   const MealsView(
-      {Key? key, this.mealsListData, this.animationController, this.animation})
+      {Key? key, this.mealsListData,this.productName, this.animationController, this.animation})
       : super(key: key);
 
   final MealsListData? mealsListData;
+  final String? productName;
   final AnimationController? animationController;
   final Animation<dynamic>? animation;
 
@@ -114,15 +145,15 @@ class MealsView extends StatelessWidget {
                       decoration: BoxDecoration(
                         boxShadow: <BoxShadow>[
                           BoxShadow(
-                              color: HexColor(mealsListData!.endColor)
+                              color: HexColor('#FFB295')
                                   .withOpacity(0.6),
                               offset: const Offset(1.1, 4.0),
                               blurRadius: 8.0),
                         ],
                         gradient: LinearGradient(
                           colors: <HexColor>[
-                            HexColor(mealsListData!.startColor),
-                            HexColor(mealsListData!.endColor),
+                            HexColor('#FA7D82'),
+                            HexColor('#FFB295'),
                           ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
@@ -142,7 +173,7 @@ class MealsView extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              mealsListData!.titleTxt,
+                              productName!,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontFamily: FitnessAppTheme.fontName,
@@ -161,7 +192,7 @@ class MealsView extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      mealsListData!.meals!.join('\n'),
+                                      <String>['Bread,', 'Peanut butter,', 'Apple'].join('\n'),
                                       style: TextStyle(
                                         fontFamily: FitnessAppTheme.fontName,
                                         fontWeight: FontWeight.w500,
@@ -180,7 +211,7 @@ class MealsView extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: <Widget>[
                                       Text(
-                                        mealsListData!.kacl.toString(),
+                                        "525",
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontFamily: FitnessAppTheme.fontName,
@@ -251,7 +282,7 @@ class MealsView extends StatelessWidget {
                     child: SizedBox(
                       width: 80,
                       height: 80,
-                      child: Image.asset(mealsListData!.imagePath),
+                      child: Image.asset("assets/fitness_app/breakfast.png"),
                     ),
                   )
                 ],

@@ -122,7 +122,7 @@ class _AddItemFormState extends State<AddItemForm> {
                           _isProcessing = true;
                         });
 
-                        await Database.addItem(
+                        Database.addItem(
                           title: _titleController.text,
                           description: _descriptionController.text,
                         );

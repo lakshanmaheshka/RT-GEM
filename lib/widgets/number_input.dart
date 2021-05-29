@@ -160,6 +160,8 @@ class NumberInputWithIncrementDecrement extends StatefulWidget {
   /// Defaults to false.
   final bool separateIcons;
 
+  final String suffixText;
+
   /// Background color of increment decrement buttons.
   final Color? incDecBgColor;
   NumberInputWithIncrementDecrement({
@@ -167,9 +169,9 @@ class NumberInputWithIncrementDecrement extends StatefulWidget {
     this.key,
     this.enabled = true,
     this.buttonArrangement = ButtonArrangement.rightEnd,
-    this.min = 0,
+    this.min = 1,
     this.max = double.infinity,
-    this.initialValue = 0,
+    this.initialValue = 1,
     this.incDecFactor = 1,
     this.isInt = true,
     this.autovalidate = false,
@@ -193,6 +195,7 @@ class NumberInputWithIncrementDecrement extends StatefulWidget {
     this.decIconDecoration,
     this.incIconDecoration,
     this.incDecBgColor,
+    required this.suffixText,
   });
 
   @override
@@ -300,7 +303,7 @@ class _NumberInputWithIncrementDecrementState
               borderRadius: BorderRadius.circular(5.0),
               border: Border.all(
                 color: Colors.blueGrey,
-                width: 2.0,
+                width: 0.5,
               ),
             ),
         child: Row(
@@ -325,11 +328,18 @@ class _NumberInputWithIncrementDecrementState
                     autovalidate: widget.autovalidate,
                     decoration: widget.numberFieldDecoration ??
                         InputDecoration(
-                          prefixIcon: IconButton(
+                          prefixIcon: Icon(Icons.access_time),
+                          labelText: 'Best Before',
+                          suffix: Text(widget.suffixText, overflow: TextOverflow.clip,
+                            maxLines: 1,
+                            softWrap: false,),
+                          //suffixText: widget.suffixText,
+
+                          /*IconButton(
                               icon: Icon(Icons.access_time),
                               onPressed:  () {
                                 FocusScope.of(context).requestFocus(_focusNode);
-                              }),
+                              }),*/
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
                           ),
