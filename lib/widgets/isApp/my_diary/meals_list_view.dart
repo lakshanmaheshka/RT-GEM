@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rt_gem/utils/custom_colors.dart';
 import 'package:rt_gem/utils/database.dart';
+import 'package:rt_gem/widgets/custom_dialog/CustomDialog.dart';
+import 'package:rt_gem/widgets/custom_dialog/edit_dialog/EditDialog.dart';
 import 'package:rt_gem/widgets/isApp/models/meals_list_data.dart';
 import 'package:rt_gem/widgets/isApp/ui_view/glass_view.dart';
 
@@ -87,6 +89,7 @@ class _MealsListViewState extends State<MealsListView>
                           animation: animation,
                           animationController: animationController,
                           productName: productName,
+                          docID: docID,
                         );
                       },
                     );
@@ -116,11 +119,12 @@ class _MealsListViewState extends State<MealsListView>
 
 class MealsView extends StatelessWidget {
   const MealsView(
-      {Key? key, this.mealsListData,this.productName, this.animationController, this.animation})
+      {Key? key, this.mealsListData,required this.productName,required this.docID, this.animationController, this.animation})
       : super(key: key);
 
   final MealsListData? mealsListData;
-  final String? productName;
+  final String productName;
+  final String docID;
   final AnimationController? animationController;
   final Animation<dynamic>? animation;
 
@@ -141,125 +145,144 @@ class MealsView extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(
                         top: 32, left: 8, right: 8, bottom: 16),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        boxShadow: <BoxShadow>[
-                          BoxShadow(
-                              color: HexColor('#FFB295')
-                                  .withOpacity(0.6),
-                              offset: const Offset(1.1, 4.0),
-                              blurRadius: 8.0),
-                        ],
-                        gradient: LinearGradient(
-                          colors: <HexColor>[
-                            HexColor('#FA7D82'),
-                            HexColor('#FFB295'),
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        borderRadius: const BorderRadius.only(
-                          bottomRight: Radius.circular(8.0),
-                          bottomLeft: Radius.circular(8.0),
-                          topLeft: Radius.circular(8.0),
-                          topRight: Radius.circular(54.0),
-                        ),
+                    child: InkWell(
+                      borderRadius:const BorderRadius.only(
+                        bottomRight: Radius.circular(8.0),
+                        bottomLeft: Radius.circular(8.0),
+                        topLeft: Radius.circular(8.0),
+                        topRight: Radius.circular(54.0),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 54, left: 16, right: 16, bottom: 8),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              productName!,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontFamily: FitnessAppTheme.fontName,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                letterSpacing: 0.2,
-                                color: FitnessAppTheme.white,
-                              ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 8, bottom: 8),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      <String>['Bread,', 'Peanut butter,', 'Apple'].join('\n'),
-                                      style: TextStyle(
-                                        fontFamily: FitnessAppTheme.fontName,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 10,
-                                        letterSpacing: 0.2,
-                                        color: FitnessAppTheme.white,
-                                      ),
-                                    ),
-                                  ],
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return EditDialog(
+                                  currentProductName: productName,
+                                documentId: docID,
+
+                              );
+                            });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          boxShadow: <BoxShadow>[
+                            BoxShadow(
+                                color: HexColor('#FFB295')
+                                    .withOpacity(0.6),
+                                offset: const Offset(1.1, 4.0),
+                                blurRadius: 8.0),
+                          ],
+                          gradient: LinearGradient(
+                            colors: <HexColor>[
+                              HexColor('#FA7D82'),
+                              HexColor('#FFB295'),
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          borderRadius: const BorderRadius.only(
+                            bottomRight: Radius.circular(8.0),
+                            bottomLeft: Radius.circular(8.0),
+                            topLeft: Radius.circular(8.0),
+                            topRight: Radius.circular(54.0),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 54, left: 16, right: 16, bottom: 8),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                productName!,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontFamily: FitnessAppTheme.fontName,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  letterSpacing: 0.2,
+                                  color: FitnessAppTheme.white,
                                 ),
                               ),
-                            ),
-                            mealsListData!.kacl != 0
-                                ? Row(
+                              Expanded(
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 8, bottom: 8),
+                                  child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
-                                        "525",
-                                        textAlign: TextAlign.center,
+                                        <String>['Bread,', 'Peanut butter,', 'Apple'].join('\n'),
                                         style: TextStyle(
                                           fontFamily: FitnessAppTheme.fontName,
                                           fontWeight: FontWeight.w500,
-                                          fontSize: 24,
+                                          fontSize: 10,
                                           letterSpacing: 0.2,
                                           color: FitnessAppTheme.white,
                                         ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 4, bottom: 3),
-                                        child: Text(
-                                          'kcal',
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              mealsListData!.kacl != 0
+                                  ? Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: <Widget>[
+                                        Text(
+                                          "525",
+                                          textAlign: TextAlign.center,
                                           style: TextStyle(
-                                            fontFamily:
-                                                FitnessAppTheme.fontName,
+                                            fontFamily: FitnessAppTheme.fontName,
                                             fontWeight: FontWeight.w500,
-                                            fontSize: 10,
+                                            fontSize: 24,
                                             letterSpacing: 0.2,
                                             color: FitnessAppTheme.white,
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  )
-                                : Container(
-                                    decoration: BoxDecoration(
-                                      color: FitnessAppTheme.nearlyWhite,
-                                      shape: BoxShape.circle,
-                                      boxShadow: <BoxShadow>[
-                                        BoxShadow(
-                                            color: FitnessAppTheme.nearlyBlack
-                                                .withOpacity(0.4),
-                                            offset: Offset(8.0, 8.0),
-                                            blurRadius: 8.0),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 4, bottom: 3),
+                                          child: Text(
+                                            'kcal',
+                                            style: TextStyle(
+                                              fontFamily:
+                                                  FitnessAppTheme.fontName,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 10,
+                                              letterSpacing: 0.2,
+                                              color: FitnessAppTheme.white,
+                                            ),
+                                          ),
+                                        ),
                                       ],
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(6.0),
-                                      child: Icon(
-                                        Icons.add,
-                                        color: HexColor(mealsListData!.endColor),
-                                        size: 24,
+                                    )
+                                  : Container(
+                                      decoration: BoxDecoration(
+                                        color: FitnessAppTheme.nearlyWhite,
+                                        shape: BoxShape.circle,
+                                        boxShadow: <BoxShadow>[
+                                          BoxShadow(
+                                              color: FitnessAppTheme.nearlyBlack
+                                                  .withOpacity(0.4),
+                                              offset: Offset(8.0, 8.0),
+                                              blurRadius: 8.0),
+                                        ],
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(6.0),
+                                        child: Icon(
+                                          Icons.add,
+                                          color: HexColor(mealsListData!.endColor),
+                                          size: 24,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),

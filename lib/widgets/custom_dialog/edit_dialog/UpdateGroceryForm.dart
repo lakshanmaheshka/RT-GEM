@@ -9,16 +9,21 @@ import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:rt_gem/widgets/snackbar.dart';
 
-class TabOne extends StatefulWidget {
-  const TabOne({
+class UpdateGroceryForm extends StatefulWidget {
+  final String currentProductName;
+  final String documentId;
+
+  const UpdateGroceryForm({
+    required this.currentProductName,
+    required this.documentId,
     Key? key,
   }) :  super(key: key);
 
   @override
-  _TabOneState createState() => _TabOneState();
+  _UpdateGroceryFormState createState() => _UpdateGroceryFormState();
 }
 
-class _TabOneState extends State<TabOne> with TickerProviderStateMixin {
+class _UpdateGroceryFormState extends State<UpdateGroceryForm> with TickerProviderStateMixin {
   //final _formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   var dropdownValue;
@@ -33,7 +38,7 @@ class _TabOneState extends State<TabOne> with TickerProviderStateMixin {
   final TextEditingController _controller = new TextEditingController();
   bool expirationType = false;
   TextEditingController _controllerone = TextEditingController();
-  final TextEditingController _titleController = TextEditingController();
+  late TextEditingController _titleController = TextEditingController();
 
 
 
@@ -132,6 +137,9 @@ class _TabOneState extends State<TabOne> with TickerProviderStateMixin {
     _arrowAnimation =
         Tween(begin: 0.0, end: pi).animate(_arrowAnimationController);
     _controllerone.text = "0";
+    _titleController = TextEditingController(
+      text: widget.currentProductName,
+    );
   }
 
   @override
@@ -316,236 +324,120 @@ class _TabOneState extends State<TabOne> with TickerProviderStateMixin {
                       ),
                     ),
 
-                    /*Expanded(
-                      flex: _animation.value,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0,15,15,15),
-                        child: TextFormField(
-                          enabled: expirationType,
-                          maxLines: 1,
-                          decoration:  InputDecoration(
-                            prefixIcon: Icon(Icons.access_time),
-                            suffix: expirationType == true ? Text("months", overflow: TextOverflow.clip,
-                              maxLines: 1,
-                              softWrap: false,) : Text(""),
-                            border: OutlineInputBorder(borderSide:  BorderSide(color: Colors.blue ),),
-                            //icon: const Icon(Icons.person),
-                            hintText: 'Value',
-                            labelText: 'Best Before',
-                            hintMaxLines: 1,
-                            helperMaxLines: 1,
-                          ),
-                          inputFormatters: [new LengthLimitingTextInputFormatter(30)],
-                          validator: (val) => val!.isEmpty ? 'Name is required' : null,
-                          onSaved: (val) => month.name = val,
-                        ),
-                      ),
-                    ),*/
-
-
-            /*        Expanded(
-                      flex: _animation.value,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0,15,15,15),
-                        child: Container(
-                          child: DropdownButtonFormField<String>(
-                            value: dropdownValue,
-                            decoration: InputDecoration(
-                                filled: false,
-                                labelText: 'Best Before',
-
-                                labelStyle: new TextStyle(color: Colors.green),
-                                enabledBorder: new OutlineInputBorder(
-                                  //borderRadius: new BorderRadius.circular(25.0),
-                                  borderSide:  BorderSide(color: Colors.pinkAccent ),
-
-                                ),
-                                focusedBorder: new OutlineInputBorder(
-                                  //borderRadius: new BorderRadius.circular(25.0),
-                                  borderSide:  BorderSide(color: Colors.cyan ),
-
-                                ),
-                                border: OutlineInputBorder(borderSide:  BorderSide(color: Colors.blue ),)
-                            ),
-                            items: <String>['One', 'Two', 'Free', 'Four']
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                            // items: _countries.map((country) => DropdownMenuItem<String>(value: country.countryCode, child: Text(country.name))).toList(),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                dropdownValue = newValue;
-                              });
-                            },),
-                        ),
-                      ),
-                    ),*/
                   ],
                 ),
-/*
 
-                Padding(
-                  padding: EdgeInsets.all(15),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      // enabledBorder: new OutlineInputBorder(
-                      //   //borderRadius: new BorderRadius.circular(25.0),
-                      //   borderSide:  BorderSide(color: Colors.pinkAccent ),
-                      //
-                      // ),
-                      focusedBorder: new OutlineInputBorder(
-                        //borderRadius: new BorderRadius.circular(25.0),
-                        borderSide:  BorderSide(color: Colors.cyan ),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 50,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(15,7.5,7.5,0),
+                        child: GestureDetector(
+                          onTap: () async{
+                            Database.updateGroceries(
+                              productName: _titleController.text,
+                              docId: widget.documentId,
+                              //description: _descriptionController.text,
+                            );
 
-                      ),
-                      border: OutlineInputBorder(borderSide:  BorderSide(color: Colors.blue ),),
-                      labelText: 'Product Name',
-                      hintText: 'Enter Product Name',
-                    ),
-                  ),
-                ),*/
+                            _titleController.clear();
 
+                            CustomSnackBar(
+                                context, const Text('Grocery Updated'));
+                          },
+                          child:
 
-
-
-
-               /* InputDecorator(
-                  decoration: InputDecoration(
-                    labelText: 'Fruit',
-                    hintText: 'Selection',
-                    //labelStyle: Theme.of(context).primaryTextTheme.caption.copyWith(color: Colors.black),
-                    border: const OutlineInputBorder(),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child:
-                    DropdownButton<String>(
-                      isExpanded: true,
-                      isDense: true,
-                      value: dropdownValue,
-                      icon: const Icon(Icons.arrow_downward),
-                      iconSize: 24,
-                      elevation: 16,
-                      style: const TextStyle(color: Colors.deepPurple),
-                      underline: Container(
-                        height: 2,
-                        color: Colors.deepPurpleAccent,
-                      ),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          dropdownValue = newValue!;
-                        });
-                      },
-                      items: <String>['One', 'Two', 'Free', 'Four']
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),
-                  *//*  DropdownButton(
-                      isExpanded: true,
-                      isDense: true, // Reduces the dropdowns height by +/- 50%
-                      icon: Icon(Icons.keyboard_arrow_down),
-                      value: _selectedFruit,
-                      items: _fruits.map((item) {
-                        return DropdownMenuItem(
-                          value: item,
-                          child: Text(item),
-                        );
-                      }).toList(),
-                      onChanged: (selectedItem) => setState(() => _selectedFruit = selectedItem,
-                      ),
-                    ),*//*
-                  ),
-                ),*/
-
-
-
-           /* DropdownButton<String>(
-              value: dropdownValue,
-              icon: const Icon(Icons.arrow_downward),
-              iconSize: 24,
-              elevation: 16,
-              style: const TextStyle(color: Colors.deepPurple),
-              underline: Container(
-                height: 2,
-                color: Colors.deepPurpleAccent,
-              ),
-              onChanged: (String? newValue) {
-                setState(() {
-                  dropdownValue = newValue!;
-                });
-              },
-              items: <String>['One', 'Two', 'Free', 'Four']
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),*/
-
-               /* Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: TextFormField(),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: TextFormField(),
-                ),*/
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GestureDetector(
-                    onTap: () async{
-                      Database.addGrocery(
-                        productName: _titleController.text,
-                        //description: _descriptionController.text,
-                      );
-
-                      _titleController.clear();
-
-                      CustomSnackBar(
-                          context, const Text('Grocery Added'));
-                    },
-                    child:
-
-                    Container(
-                      width: Responsive.deviceWidth(65, context),
-                      height: Responsive.deviceHeight(7, context),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.teal,
-                            Colors.blue,
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black12,
-                            offset: Offset(5, 5),
-                            blurRadius: 10,
-                          )
-                        ],
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Press',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 30,
-                            fontWeight: FontWeight.w500,
+                          Container(
+                            width: Responsive.deviceWidth(65, context),
+                            height: Responsive.deviceHeight(7, context),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.teal,
+                                  Colors.blue,
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  offset: Offset(5, 5),
+                                  blurRadius: 10,
+                                )
+                              ],
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Update Grocery',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
+                    Expanded(
+                      flex: 50,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(7.5,7.5,15,0),
+                        child: GestureDetector(
+                          onTap: () async{
+                            Database.updateGroceries(
+                              productName: _titleController.text,
+                              docId: widget.documentId,
+                              //description: _descriptionController.text,
+                            );
+
+                            _titleController.clear();
+
+                            CustomSnackBar(
+                                context, const Text('Grocery Updated'));
+                          },
+                          child:
+
+                          Container(
+                            width: Responsive.deviceWidth(65, context),
+                            height: Responsive.deviceHeight(7, context),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.teal,
+                                  Colors.blue,
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  offset: Offset(5, 5),
+                                  blurRadius: 10,
+                                )
+                              ],
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Mark Consumed',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 )
               ],
             ),

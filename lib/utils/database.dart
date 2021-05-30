@@ -66,6 +66,23 @@ class Database {
         .catchError((e) => print(e));
   }
 
+  static Future<void> updateGroceries({
+    required String productName,
+    required String docId,
+  }) async {
+    DocumentReference documentReferencer =
+    _mainCollection.doc(userUid).collection('groceries').doc(docId);
+
+    Map<String, dynamic> data = <String, dynamic>{
+      "productName": productName,
+    };
+
+    await documentReferencer
+        .update(data)
+        .whenComplete(() => print("Note groceries updated in the database"))
+        .catchError((e) => print(e));
+  }
+
   static Stream<QuerySnapshot> readGroceries() {
     CollectionReference notesGroceriesCollection =
         _mainCollection.doc(userUid).collection('groceries');
