@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:rt_gem/screens/calender_screen.dart';
 import 'package:rt_gem/widgets/AnimatedIndexedStack.dart';
 import 'package:rt_gem/widgets/custom_dialog/CustomDialog.dart';
 import 'package:rt_gem/widgets/isApp/bottom_navigation_view/bottom_bar_view.dart';
@@ -87,7 +88,7 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
           index: _selectedIndex,
           children: <Widget>[
             HomePage(),
-            Scaffold(),
+            TableEventsExample(),
             MyDiaryScreen(animationController: animationController),
             TrainingScreen(animationController: animationController)
           ],

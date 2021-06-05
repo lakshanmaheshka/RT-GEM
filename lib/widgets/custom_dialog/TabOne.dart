@@ -187,7 +187,7 @@ class _TabOneState extends State<TabOne> with TickerProviderStateMixin {
                         ),
                         border: OutlineInputBorder(borderSide:  BorderSide(color: Colors.blue ),)
                     ),
-                    items: <String>['Beverages', 'Bread/Cereals/Bakery', 'Dairy', 'Canned Goods', 'Frozen Foods', 'Others']
+                    items: <String>['Beverages', 'Bread/Bakery', 'Dairy', 'Cereals', 'Canned Goods', 'Frozen Foods', 'Others']
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,

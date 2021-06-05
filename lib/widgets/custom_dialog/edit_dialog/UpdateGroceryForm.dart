@@ -332,8 +332,8 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm> with TickerProvid
                     Expanded(
                       flex: 50,
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(15,7.5,7.5,0),
-                        child: GestureDetector(
+                        padding: const EdgeInsets.fromLTRB(15,7.5,2,0),
+                        child: InkWell(
                           onTap: () async{
                             Database.updateGroceries(
                               productName: _titleController.text,
@@ -341,7 +341,7 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm> with TickerProvid
                               //description: _descriptionController.text,
                             );
 
-                            _titleController.clear();
+                            //_titleController.clear();
 
                             CustomSnackBar(
                                 context, const Text('Grocery Updated'));
@@ -384,9 +384,65 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm> with TickerProvid
                       ),
                     ),
                     Expanded(
+                      flex: 20,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(4,7.5,4,0),
+                        child: InkWell(
+                          onTap: () async {
+                            setState(() {
+                              //_isDeleting = true;
+                            });
+
+                            Database.deleteGrocery(
+                              docId: widget.documentId,
+                            );
+
+                            CustomSnackBar(
+                                context, const Text('Grocery Deleted'));
+
+                            setState(() {
+                              //_isDeleting = false;
+                            });
+
+                            Navigator.of(context).pop();
+                          },
+                          child:
+
+                          Container(
+                            width: Responsive.deviceWidth(6, context),
+                            height: Responsive.deviceHeight(7, context),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.teal,
+                                  Colors.blue,
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  offset: Offset(5, 5),
+                                  blurRadius: 10,
+                                )
+                              ],
+                            ),
+                            child: Center(
+                              child: Icon(
+                                Icons.delete,
+                                color: Colors.white,
+                              )
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
                       flex: 50,
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(7.5,7.5,15,0),
+                        padding: const EdgeInsets.fromLTRB(2,7.5,15,0),
                         child: GestureDetector(
                           onTap: () async{
                             Database.updateGroceries(

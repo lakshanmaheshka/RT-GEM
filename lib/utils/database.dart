@@ -108,4 +108,17 @@ class Database {
         .whenComplete(() => print('Note item deleted from the database'))
         .catchError((e) => print(e));
   }
+
+  static Future<void> deleteGrocery({
+    required String docId,
+  }) async {
+    DocumentReference documentReferencer =
+    _mainCollection.doc(userUid).collection('groceries').doc(docId);
+
+    await documentReferencer
+        .delete()
+        .whenComplete(() => print('Note groceries deleted from the database'))
+        .catchError((e) => print(e));
+  }
+
 }
