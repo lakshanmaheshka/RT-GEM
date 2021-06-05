@@ -71,7 +71,7 @@ class _MealsListViewState extends State<MealsListView>
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
                         final int count =
-                        mealsListData.length > 10 ? 10 : mealsListData.length;
+                        snapshot.data!.docs.length > 10 ? 10 : snapshot.data!.docs.length;
                         final Animation<double> animation =
                         Tween<double>(begin: 0.0, end: 1.0).animate(
                             CurvedAnimation(
@@ -83,13 +83,19 @@ class _MealsListViewState extends State<MealsListView>
                         var noteInfo = snapshot.data!.docs[index].data();
                         String docID = snapshot.data!.docs[index].id;
                         String productName = noteInfo['productName'];
+                        String category = noteInfo['category'];
+                        String manufactureDate = noteInfo['manufacturedDate'];
+                        String expiryDate = noteInfo['expiryDate'];
 
-                        return MealsView(
-                          mealsListData: mealsListData[index],
+                        return ItemsView(
                           animation: animation,
                           animationController: animationController,
                           productName: productName,
+
                           docID: docID,
+                          currentCategory: category,
+                          currentItemMfg: manufactureDate,
+                          currentItemExp: expiryDate,
                         );
                       },
                     );
@@ -117,13 +123,16 @@ class _MealsListViewState extends State<MealsListView>
   }
 }
 
-class MealsView extends StatelessWidget {
-  const MealsView(
-      {Key? key, this.mealsListData,required this.productName,required this.docID, this.animationController, this.animation})
+class ItemsView extends StatelessWidget {
+  const ItemsView(
+      {Key? key,required this.productName,required this.docID, this.animationController, this.animation, required this.currentCategory, required this.currentItemMfg, required this.currentItemExp})
       : super(key: key);
 
-  final MealsListData? mealsListData;
+  // final MealsListData? mealsListData;
   final String productName;
+  final String currentCategory;
+  final String currentItemMfg;
+  final String currentItemExp;
   final String docID;
   final AnimationController? animationController;
   final Animation<dynamic>? animation;
@@ -158,6 +167,9 @@ class MealsView extends StatelessWidget {
                             builder: (BuildContext context) {
                               return EditDialog(
                                   currentProductName: productName,
+                                currentCategory: currentCategory,
+                                currentItemMfg: currentItemMfg,
+                                currentItemExp: currentItemExp,
                                 documentId: docID,
 
                               );
@@ -214,7 +226,7 @@ class MealsView extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
-                                        <String>['Bread,', 'Peanut butter,', 'Apple'].join('\n'),
+                                        <String>[currentCategory, currentItemMfg, currentItemExp].join('\n'),
                                         style: TextStyle(
                                           fontFamily: FitnessAppTheme.fontName,
                                           fontWeight: FontWeight.w500,
@@ -227,60 +239,6 @@ class MealsView extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              mealsListData!.kacl != 0
-                                  ? Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: <Widget>[
-                                        Text(
-                                          "525",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontFamily: FitnessAppTheme.fontName,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 24,
-                                            letterSpacing: 0.2,
-                                            color: FitnessAppTheme.white,
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 4, bottom: 3),
-                                          child: Text(
-                                            'kcal',
-                                            style: TextStyle(
-                                              fontFamily:
-                                                  FitnessAppTheme.fontName,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 10,
-                                              letterSpacing: 0.2,
-                                              color: FitnessAppTheme.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  : Container(
-                                      decoration: BoxDecoration(
-                                        color: FitnessAppTheme.nearlyWhite,
-                                        shape: BoxShape.circle,
-                                        boxShadow: <BoxShadow>[
-                                          BoxShadow(
-                                              color: FitnessAppTheme.nearlyBlack
-                                                  .withOpacity(0.4),
-                                              offset: Offset(8.0, 8.0),
-                                              blurRadius: 8.0),
-                                        ],
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(6.0),
-                                        child: Icon(
-                                          Icons.add,
-                                          color: HexColor(mealsListData!.endColor),
-                                          size: 24,
-                                        ),
-                                      ),
-                                    ),
                             ],
                           ),
                         ),

@@ -40,8 +40,10 @@ class _TableEventsExampleState extends State<TableEventsExample> {
 
   List<Event> _getEventsForDay(DateTime day) {
     // Implementation example
+    print(kEvents);
     return kEvents[day] ?? [];
   }
+
 
   List<Event> _getEventsForRange(DateTime start, DateTime end) {
     // Implementation example
@@ -87,6 +89,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
 
   @override
   Widget build(BuildContext context) {
+    print(kEvents);
     return Scaffold(
       appBar: AppBar(
         title: Text('TableCalendar - Events'),

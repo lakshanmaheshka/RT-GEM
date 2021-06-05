@@ -27,18 +27,18 @@ class Database {
 
   static Future<void> addGrocery({
     required String productName,
-    //required String category,
-    //required String manufacturedDate,
-    //required String expiryDate,
+    required String category,
+    required String manufacturedDate,
+    required String expiryDate,
   }) async {
     DocumentReference documentReferencer =
     _mainCollection.doc(userUid).collection('groceries').doc();
 
     Map<String, dynamic> data = <String, dynamic>{
       "productName": productName,
-      //"category": category,
-      //"manufacturedDate": manufacturedDate,
-      //"expiryDate": expiryDate,
+      "category": category,
+      "manufacturedDate": manufacturedDate,
+      "expiryDate": expiryDate,
     };
 
     await documentReferencer

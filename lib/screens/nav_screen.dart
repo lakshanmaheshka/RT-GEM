@@ -196,7 +196,7 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
                   }
                   setState(() {
                     tabBody =
-                        TrainingScreen(animationController: animationController);
+                        TableEventsExample();
                   });
                 });
                 break;

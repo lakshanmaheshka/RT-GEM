@@ -21,6 +21,7 @@ class TabOne extends StatefulWidget {
 class _TabOneState extends State<TabOne> with TickerProviderStateMixin {
   //final _formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  late final GlobalKey<FormFieldState> _key;
   var dropdownValue;
   var newContact;
   var month;
@@ -170,6 +171,7 @@ class _TabOneState extends State<TabOne> with TickerProviderStateMixin {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(15,7.5,15,7.5),
                   child: DropdownButtonFormField<String>(
+                    //key: _formKey,
                     value: dropdownValue,
                     decoration: InputDecoration(
                         filled: false,
@@ -187,7 +189,7 @@ class _TabOneState extends State<TabOne> with TickerProviderStateMixin {
                         ),
                         border: OutlineInputBorder(borderSide:  BorderSide(color: Colors.blue ),)
                     ),
-                    items: <String>['Beverages', 'Bread/Bakery', 'Dairy', 'Cereals', 'Canned Goods', 'Frozen Foods', 'Others']
+                    items: <String>['Beverages', 'Bread/Bakery', 'Dairy', 'Cereals', 'Canned Goods', 'Frozen Foods','Snack Foods', 'Others']
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
@@ -502,11 +504,23 @@ class _TabOneState extends State<TabOne> with TickerProviderStateMixin {
                   child: GestureDetector(
                     onTap: () async{
                       Database.addGrocery(
-                        productName: _titleController.text,
-                        //description: _descriptionController.text,
+                          productName: _titleController.text,
+                          category: dropdownValue,
+                          manufacturedDate: _controllerManufacture.text,
+                          expiryDate: _controllerExpiration.text
                       );
 
+                      _formKey.currentState!.reset();
                       _titleController.clear();
+                      _controllerExpiration.clear();
+                      _controllerManufacture.clear();
+
+                      setState(() {
+                        dropdownValue = null;
+                      });
+
+
+
 
                       CustomSnackBar(
                           context, const Text('Grocery Added'));

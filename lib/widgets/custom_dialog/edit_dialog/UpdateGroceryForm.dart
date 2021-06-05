@@ -11,10 +11,16 @@ import 'package:rt_gem/widgets/snackbar.dart';
 
 class UpdateGroceryForm extends StatefulWidget {
   final String currentProductName;
+  final String currentCategory;
+  final String currentItemMfg;
+  final String currentItemExp;
   final String documentId;
 
   const UpdateGroceryForm({
     required this.currentProductName,
+    required this.currentCategory,
+    required this.currentItemMfg,
+    required this.currentItemExp,
     required this.documentId,
     Key? key,
   }) :  super(key: key);
@@ -29,8 +35,8 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm> with TickerProvid
   var dropdownValue;
   var newContact;
   var month;
-  final TextEditingController _controllerManufacture = new TextEditingController();
-  final TextEditingController _controllerExpiration = new TextEditingController();
+  late TextEditingController _controllerManufacture = new TextEditingController();
+  late TextEditingController _controllerExpiration = new TextEditingController();
   late Animation _arrowAnimation;
   late AnimationController _arrowAnimationController;
   late AnimationController _animationController;
@@ -140,6 +146,15 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm> with TickerProvid
     _titleController = TextEditingController(
       text: widget.currentProductName,
     );
+    _controllerManufacture = TextEditingController(
+      text: widget.currentItemMfg,
+    );
+    _controllerExpiration  = TextEditingController(
+      text: widget.currentItemExp,
+    );
+
+    dropdownValue = widget.currentCategory;
+
   }
 
   @override
@@ -195,7 +210,7 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm> with TickerProvid
                         ),
                         border: OutlineInputBorder(borderSide:  BorderSide(color: Colors.blue ),)
                     ),
-                    items: <String>['Beverages', 'Bread/Cereals/Bakery', 'Dairy', 'Canned Goods', 'Frozen Foods', 'Others']
+                    items: <String>['Beverages', 'Bread/Bakery', 'Dairy', 'Cereals', 'Canned Goods', 'Frozen Foods','Snack Foods', 'Others']
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,

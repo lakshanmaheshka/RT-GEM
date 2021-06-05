@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:rt_gem/widgets/custom_dialog/CustomDialog.dart';
 import 'package:rt_gem/widgets/isApp/ui_view/glass_view.dart';
 
 import '../fintness_app_theme.dart';
@@ -166,6 +167,11 @@ class _BottomBarViewState extends State<BottomBarView>
                           focusColor: Colors.transparent,
                           onTap: () {
                             widget.addClick!();
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return CustomDialog();
+                                });
                           },
                           child: Icon(
                             Icons.add,
