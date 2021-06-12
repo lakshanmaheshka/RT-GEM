@@ -2,15 +2,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rt_gem/screens/calender_screen.dart';
 import 'package:rt_gem/widgets/AnimatedIndexedStack.dart';
-import 'package:rt_gem/widgets/custom_dialog/CustomDialog.dart';
+import 'package:rt_gem/widgets/custom_dialog/add_dialog/add_dialog.dart';
 import 'package:rt_gem/widgets/isApp/bottom_navigation_view/bottom_bar_view.dart';
 import 'package:rt_gem/widgets/isApp/models/tabIcon_data.dart';
-import 'package:rt_gem/widgets/isApp/my_diary/my_diary_screen.dart';
+import 'package:rt_gem/widgets/isApp/my_diary/home_screen.dart';
 import 'package:rt_gem/widgets/isApp/traning/training_screen.dart';
 import 'package:rt_gem/widgets/widgets.dart';
 
 import '../theme.dart';
-import 'home_page.dart';
+import 'profile_screen.dart';
 
 class NavScreen extends StatefulWidget {
   @override
@@ -28,9 +28,9 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
 
   final List<IconData> _icons = const [
     Icons.home,
-    Icons.ondemand_video,
-    Icons.home,
-    Icons.ondemand_video,
+    Icons.calendar_today_rounded,
+    Icons.receipt,
+    Icons.account_box_rounded,
   ];
   int _selectedIndex = 0;
 
@@ -45,7 +45,7 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
 
     animationController = AnimationController(
         duration: const Duration(milliseconds: 600), vsync: this);
-    tabBody = MyDiaryScreen(animationController: animationController);
+    tabBody = HomeScreen(animationController: animationController);
     super.initState();
   }
 
@@ -87,10 +87,10 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
         body: AnimatedIndexedStack(
           index: _selectedIndex,
           children: <Widget>[
-            HomePage(),
-            TableEventsExample(),
-            MyDiaryScreen(animationController: animationController),
-            TrainingScreen(animationController: animationController)
+            HomeScreen(animationController: animationController),
+            CalendarScreen(),
+            TrainingScreen(animationController: animationController),
+            ProfileScreen(),
           ],
         ),
         bottomNavigationBar: !Responsive.isDesktop(context)
@@ -163,7 +163,7 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
                   }
                   setState(() {
                     tabBody =
-                        MyDiaryScreen(animationController: animationController);
+                        HomeScreen(animationController: animationController);
                   });
                 });
                 break;
@@ -185,7 +185,7 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
                   }
                   setState(() {
                     tabBody =
-                        HomePage();
+                        ProfileScreen();
                   });
                 });
                 break;
@@ -196,7 +196,7 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
                   }
                   setState(() {
                     tabBody =
-                        TableEventsExample();
+                        CalendarScreen();
                   });
                 });
                 break;

@@ -9,12 +9,12 @@ import 'package:rt_gem/utils/utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 
-class TableEventsExample extends StatefulWidget {
+class CalendarScreen extends StatefulWidget {
   @override
-  _TableEventsExampleState createState() => _TableEventsExampleState();
+  _CalendarScreenState createState() => _CalendarScreenState();
 }
 
-class _TableEventsExampleState extends State<TableEventsExample> {
+class _CalendarScreenState extends State<CalendarScreen> {
   late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
