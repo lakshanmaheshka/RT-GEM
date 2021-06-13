@@ -8,6 +8,7 @@ class Database {
 
   static Future<void> addGrocery({
     required String productName,
+    required String quantity,
     required String category,
     required String manufacturedDate,
     required String expiryDate,
@@ -17,9 +18,11 @@ class Database {
 
     Map<String, dynamic> data = <String, dynamic>{
       "productName": productName,
+      "quantity": quantity,
       "category": category,
       "manufacturedDate": manufacturedDate,
       "expiryDate": expiryDate,
+      "isConsumed": false
     };
 
     await documentReferencer
@@ -36,14 +39,41 @@ class Database {
   }
 
   static Future<void> updateGroceries({
-    required String productName,
     required String docId,
+    required String productName,
+    required String quantity,
+    required String category,
+    required String manufacturedDate,
+    required String expiryDate,
   }) async {
     DocumentReference documentReferencer =
     _mainCollection.doc(userUid).collection('groceries').doc(docId);
 
     Map<String, dynamic> data = <String, dynamic>{
       "productName": productName,
+      "quantity": quantity,
+      "category": category,
+      "manufacturedDate": manufacturedDate,
+      "expiryDate": expiryDate,
+      "isConsumed": false
+    };
+
+    await documentReferencer
+        .update(data)
+        .whenComplete(() => print("Note groceries updated in the database"))
+        .catchError((e) => print(e));
+  }
+
+
+  static Future<void> markConsumedGroceries({
+    required String docId,
+    //required bool isConsumed
+  }) async {
+    DocumentReference documentReferencer =
+    _mainCollection.doc(userUid).collection('groceries').doc(docId);
+
+    Map<String, dynamic> data = <String, dynamic>{
+      "isConsumed": true
     };
 
     await documentReferencer

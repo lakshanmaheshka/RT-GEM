@@ -3,12 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rt_gem/utils/custom_colors.dart';
 import 'package:rt_gem/utils/database.dart';
-import 'package:rt_gem/widgets/custom_dialog/add_dialog/add_dialog.dart';
 import 'package:rt_gem/widgets/custom_dialog/edit_dialog/edit_dialog.dart';
-import 'package:rt_gem/widgets/isApp/models/meals_list_data.dart';
-import 'package:rt_gem/widgets/isApp/ui_view/glass_view.dart';
-
-import '../fintness_app_theme.dart';
+import '../../utils/app_theme.dart';
 
 class GroceryListView extends StatefulWidget {
   const GroceryListView(
@@ -25,7 +21,6 @@ class GroceryListView extends StatefulWidget {
 class _GroceryListViewState extends State<GroceryListView>
     with TickerProviderStateMixin {
   AnimationController? animationController;
-  List<MealsListData> mealsListData = MealsListData.tabIconsList;
 
   @override
   void initState() {
@@ -86,6 +81,7 @@ class _GroceryListViewState extends State<GroceryListView>
                         String category = groceries['category'];
                         String manufactureDate = groceries['manufacturedDate'];
                         String expiryDate = groceries['expiryDate'];
+                        String quantity = groceries['quantity'];
 
                         return ItemsView(
                           animation: animation,
@@ -96,6 +92,7 @@ class _GroceryListViewState extends State<GroceryListView>
                           currentCategory: category,
                           currentItemMfg: manufactureDate,
                           currentItemExp: expiryDate,
+                          currentQuantity: quantity
                         );
                       },
                     );
@@ -284,7 +281,7 @@ List<HexColor> getCategoryColor(String currentCategory) {
 
 class ItemsView extends StatelessWidget {
   const ItemsView(
-      {Key? key,required this.productName,required this.docID, this.animationController, this.animation, required this.currentCategory, required this.currentItemMfg, required this.currentItemExp})
+      {Key? key,required this.productName,required this.docID, this.animationController, this.animation, required this.currentCategory, required this.currentItemMfg, required this.currentItemExp, required this.currentQuantity})
       : super(key: key);
 
   // final MealsListData? mealsListData;
@@ -292,6 +289,7 @@ class ItemsView extends StatelessWidget {
   final String currentCategory;
   final String currentItemMfg;
   final String currentItemExp;
+  final String currentQuantity;
   final String docID;
   final AnimationController? animationController;
   final Animation<dynamic>? animation;
@@ -329,6 +327,7 @@ class ItemsView extends StatelessWidget {
                                 currentCategory: currentCategory,
                                 currentItemMfg: currentItemMfg,
                                 currentItemExp: currentItemExp,
+                                currentQuantity: currentQuantity,
                                 documentId: docID,
 
                               );
@@ -366,11 +365,11 @@ class ItemsView extends StatelessWidget {
                                 productName!,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  fontFamily: FitnessAppTheme.fontName,
+                                  fontFamily: AppTheme.fontName,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
                                   letterSpacing: 0.2,
-                                  color: FitnessAppTheme.white,
+                                  color: AppTheme.white,
                                 ),
                               ),
                               Expanded(
@@ -384,11 +383,11 @@ class ItemsView extends StatelessWidget {
                                       Text(
                                         <String>[currentCategory, currentItemMfg, currentItemExp].join('\n'),
                                         style: TextStyle(
-                                          fontFamily: FitnessAppTheme.fontName,
+                                          fontFamily: AppTheme.fontName,
                                           fontWeight: FontWeight.w500,
                                           fontSize: 10,
                                           letterSpacing: 0.2,
-                                          color: FitnessAppTheme.white,
+                                          color: AppTheme.white,
                                         ),
                                       ),
                                     ],
@@ -408,7 +407,7 @@ class ItemsView extends StatelessWidget {
                       width: 84,
                       height: 84,
                       decoration: BoxDecoration(
-                        color: FitnessAppTheme.nearlyWhite.withOpacity(0.2),
+                        color: AppTheme.nearlyWhite.withOpacity(0.2),
                         shape: BoxShape.circle,
                       ),
                     ),

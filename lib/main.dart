@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
@@ -19,6 +20,8 @@ Future main() async {
   await Firebase.initializeApp();
 
   runApp(MyApp());
+  print("object ");
+  FirebaseMessaging.instance.getToken().then(print);
 }
 
 class MyApp extends StatelessWidget {

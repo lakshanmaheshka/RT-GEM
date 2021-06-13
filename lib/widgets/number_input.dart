@@ -162,6 +162,10 @@ class NumberInputWithIncrementDecrement extends StatefulWidget {
 
   final String suffixText;
 
+  final String labelText;
+
+  final IconData? prefixIcon;
+
   /// Background color of increment decrement buttons.
   final Color? incDecBgColor;
   NumberInputWithIncrementDecrement({
@@ -196,6 +200,8 @@ class NumberInputWithIncrementDecrement extends StatefulWidget {
     this.incIconDecoration,
     this.incDecBgColor,
     required this.suffixText,
+    required this.labelText,
+    this.prefixIcon,
   });
 
   @override
@@ -328,11 +334,15 @@ class _NumberInputWithIncrementDecrementState
                     autovalidate: widget.autovalidate,
                     decoration: widget.numberFieldDecoration ??
                         InputDecoration(
-                          prefixIcon: Icon(Icons.access_time),
-                          labelText: 'Best Before',
+                          prefixIcon: Icon(widget.prefixIcon),
+                          labelText: widget.labelText,
                           suffix: Text(widget.suffixText, overflow: TextOverflow.clip,
                             maxLines: 1,
-                            softWrap: false,),
+                            softWrap: true,
+                            style: TextStyle(
+                              fontSize: 12,
+                            ),
+                          ),
                           //suffixText: widget.suffixText,
 
                           /*IconButton(

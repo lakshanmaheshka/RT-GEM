@@ -1,12 +1,12 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rt_gem/screens/calender_screen.dart';
 import 'package:rt_gem/widgets/AnimatedIndexedStack.dart';
 import 'package:rt_gem/widgets/custom_dialog/add_dialog/add_dialog.dart';
 import 'package:rt_gem/widgets/isApp/bottom_navigation_view/bottom_bar_view.dart';
-import 'package:rt_gem/widgets/isApp/models/tabIcon_data.dart';
-import 'package:rt_gem/widgets/isApp/my_diary/home_screen.dart';
-import 'package:rt_gem/widgets/isApp/traning/training_screen.dart';
+import 'package:rt_gem/widgets/isApp/bottom_navigation_view/tabIcon_data.dart';
+import 'package:rt_gem/screens/home_screen.dart';
 import 'package:rt_gem/widgets/widgets.dart';
 
 import '../theme.dart';
@@ -47,12 +47,30 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
         duration: const Duration(milliseconds: 600), vsync: this);
     tabBody = HomeScreen(animationController: animationController);
     super.initState();
+    firebaseOnMessage();
   }
 
   @override
   void dispose() {
     animationController!.dispose();
     super.dispose();
+  }
+
+  void firebaseOnMessage(){
+    FirebaseMessaging.onMessage.listen((message){
+      if (message != null) {
+        final title = message.notification!.title;
+        final body = message.notification!.body;
+        showDialog(context: context, builder: (context){
+          return SimpleDialog(
+            children: [
+              Text('Title: $title'),
+              Text('Body: $body')
+            ],
+          );
+        });
+      }
+    });
   }
 
   @override
@@ -89,7 +107,7 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
           children: <Widget>[
             HomeScreen(animationController: animationController),
             CalendarScreen(),
-            TrainingScreen(animationController: animationController),
+            HomeScreen(animationController: animationController),
             ProfileScreen(),
           ],
         ),
@@ -174,7 +192,7 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
                   }
                   setState(() {
                     tabBody =
-                        TrainingScreen(animationController: animationController);
+                        HomeScreen(animationController: animationController);
                   });
                 });
                 break;

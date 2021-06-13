@@ -12,6 +12,7 @@ import 'package:rt_gem/widgets/snackbar.dart';
 class UpdateGroceryForm extends StatefulWidget {
   final String currentProductName;
   final String currentCategory;
+  final String currentQuantity;
   final String currentItemMfg;
   final String currentItemExp;
   final String documentId;
@@ -19,24 +20,29 @@ class UpdateGroceryForm extends StatefulWidget {
   const UpdateGroceryForm({
     required this.currentProductName,
     required this.currentCategory,
+    required this.currentQuantity,
     required this.currentItemMfg,
     required this.currentItemExp,
     required this.documentId,
     Key? key,
-  }) :  super(key: key);
+  }) : super(key: key);
 
   @override
   _UpdateGroceryFormState createState() => _UpdateGroceryFormState();
 }
 
-class _UpdateGroceryFormState extends State<UpdateGroceryForm> with TickerProviderStateMixin {
+class _UpdateGroceryFormState extends State<UpdateGroceryForm>
+    with TickerProviderStateMixin {
   //final _formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   var dropdownValue;
   var newContact;
   var month;
-  late TextEditingController _controllerManufacture = new TextEditingController();
-  late TextEditingController _controllerExpiration = new TextEditingController();
+  late TextEditingController _controllerManufacture =
+      new TextEditingController();
+  late TextEditingController _controllerExpiration =
+      new TextEditingController();
+  late TextEditingController _controllerQuantity = new TextEditingController();
   late Animation _arrowAnimation;
   late AnimationController _arrowAnimationController;
   late AnimationController _animationController;
@@ -45,8 +51,6 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm> with TickerProvid
   bool expirationType = false;
   TextEditingController _controllerone = TextEditingController();
   late TextEditingController _titleController = TextEditingController();
-
-
 
   Future<Null> _chooseDateManufacture(
       BuildContext context, String initialDateString) async {
@@ -106,8 +110,7 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm> with TickerProvid
   }
 
   void showMessage(String message, [MaterialColor color = Colors.red]) {
-    CustomSnackBar(
-        context,  Text(message));
+    CustomSnackBar(context, Text(message));
   }
 
   void _submitForm() {
@@ -135,7 +138,8 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm> with TickerProvid
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(duration: Duration(seconds: 2), vsync: this);
+    _animationController =
+        AnimationController(duration: Duration(seconds: 2), vsync: this);
     _animation = IntTween(begin: 35, end: 450).animate(_animationController);
     _animation.addListener(() => setState(() {}));
     _arrowAnimationController =
@@ -149,12 +153,14 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm> with TickerProvid
     _controllerManufacture = TextEditingController(
       text: widget.currentItemMfg,
     );
-    _controllerExpiration  = TextEditingController(
+    _controllerExpiration = TextEditingController(
+      text: widget.currentItemExp,
+    );
+    _controllerQuantity = TextEditingController(
       text: widget.currentItemExp,
     );
 
     dropdownValue = widget.currentCategory;
-
   }
 
   @override
@@ -176,107 +182,143 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm> with TickerProvid
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(15,15,15,7.5),
+                  padding: const EdgeInsets.fromLTRB(15, 15, 15, 7.5),
                   child: TextFormField(
                     decoration: const InputDecoration(
-                      border: OutlineInputBorder(borderSide:  BorderSide(color: Colors.blue ),),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
                       //icon: const Icon(Icons.person),
                       hintText: 'Enter Product Name',
                       labelText: 'Product Name',
                     ),
                     inputFormatters: [new LengthLimitingTextInputFormatter(30)],
-                    validator: (val) => val!.isEmpty ? 'Name is required' : null,
+                    validator: (val) =>
+                        val!.isEmpty ? 'Name is required' : null,
                     controller: _titleController,
                   ),
                 ),
-
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15,7.5,15,7.5),
-                  child: DropdownButtonFormField<String>(
-                    value: dropdownValue,
-                    decoration: InputDecoration(
-                        filled: false,
-                        labelText: 'Category',
-                        labelStyle: new TextStyle(color: Colors.green),
-                        enabledBorder: new OutlineInputBorder(
-                          //borderRadius: new BorderRadius.circular(25.0),
-                          borderSide:  BorderSide(color: Colors.pinkAccent ),
-
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 50,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(15, 7.5, 15, 7.5),
+                        child: NumberInputWithIncrementDecrement(
+                          controller: TextEditingController(),
+                          suffixText: "Item/s",
+                          enabled: expirationType,
+                          labelText: "Quantity",
+                          prefixIcon: Icons.add_to_photos,
                         ),
-                        focusedBorder: new OutlineInputBorder(
-                          //borderRadius: new BorderRadius.circular(25.0),
-                          borderSide:  BorderSide(color: Colors.cyan ),
-
-                        ),
-                        border: OutlineInputBorder(borderSide:  BorderSide(color: Colors.blue ),)
+                      ),
                     ),
-                    items: <String>['Beverages', 'Bread/Bakery', 'Dairy', 'Cereals', 'Canned Goods', 'Frozen Foods','Snack Foods', 'Others']
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    // items: _countries.map((country) => DropdownMenuItem<String>(value: country.countryCode, child: Text(country.name))).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        dropdownValue = newValue;
-                      });
-                    },),
+                    Expanded(
+                      flex: 50,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 7.5, 15, 7.5),
+                        child: DropdownButtonFormField<String>(
+                          value: dropdownValue,
+                          decoration: InputDecoration(
+                              filled: false,
+                              labelText: 'Category',
+                              labelStyle: new TextStyle(color: Colors.green),
+                              enabledBorder: new OutlineInputBorder(
+                                //borderRadius: new BorderRadius.circular(25.0),
+                                borderSide:
+                                    BorderSide(color: Colors.pinkAccent),
+                              ),
+                              focusedBorder: new OutlineInputBorder(
+                                //borderRadius: new BorderRadius.circular(25.0),
+                                borderSide: BorderSide(color: Colors.cyan),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.blue),
+                              )),
+                          items: <String>[
+                            'Beverages',
+                            'Bread/Bakery',
+                            'Dairy Products',
+                            'Cereals',
+                            'Canned Foods',
+                            'Frozen Foods',
+                            'Snack Foods',
+                            'Others'
+                          ].map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          // items: _countries.map((country) => DropdownMenuItem<String>(value: country.countryCode, child: Text(country.name))).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              dropdownValue = newValue;
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(15,7.5,15,7.5),
+                  padding: const EdgeInsets.fromLTRB(15, 7.5, 15, 7.5),
                   child: new Expanded(
                       child: new TextFormField(
-                        onTap: (){
-                          // Below line stops keyboard from appearing
-                          FocusScope.of(context).requestFocus(new FocusNode());
-                          _chooseDateManufacture(context, _controllerManufacture.text);
-                          // Show Date Picker Here
-
-                        },
-                        decoration: new InputDecoration(
-                          border: OutlineInputBorder(borderSide:  BorderSide(color: Colors.blue ),),
-                          //icon: const Icon(Icons.calendar_today),
-                          hintText: 'Select Manufactured Date',
-                          labelText: 'Manufactured Date',
-                          suffixIcon: Icon(Icons.calendar_today_outlined)
+                    onTap: () {
+                      // Below line stops keyboard from appearing
+                      FocusScope.of(context).requestFocus(new FocusNode());
+                      _chooseDateManufacture(
+                          context, _controllerManufacture.text);
+                      // Show Date Picker Here
+                    },
+                    decoration: new InputDecoration(
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
                         ),
-                        controller: _controllerManufacture,
-                        keyboardType: TextInputType.datetime,
-                        validator: (val) => val!.isEmpty ? 'Manufactured Date is required' : null,
-                        //validator: (val) =>
-                        //isValidDob(val!) ? null : 'Not a valid date',
-                        //onSaved: (val) => newContact.dob = convertToDate(val!),
-                      )),
+                        //icon: const Icon(Icons.calendar_today),
+                        hintText: 'Select Manufactured Date',
+                        labelText: 'Manufactured Date',
+                        suffixIcon: Icon(Icons.calendar_today_outlined)),
+                    controller: _controllerManufacture,
+                    keyboardType: TextInputType.datetime,
+                    validator: (val) =>
+                        val!.isEmpty ? 'Manufactured Date is required' : null,
+                    //validator: (val) =>
+                    //isValidDob(val!) ? null : 'Not a valid date',
+                    //onSaved: (val) => newContact.dob = convertToDate(val!),
+                  )),
                 ),
-
                 Row(
                   children: [
                     new Expanded(
                         flex: 100,
                         child: Padding(
-                          padding: const EdgeInsets.fromLTRB(15,7.5,0,0),
+                          padding: const EdgeInsets.fromLTRB(15, 7.5, 0, 0),
                           child: new TextFormField(
                             enabled: !expirationType,
-                            onTap: (){
+                            onTap: () {
                               // Below line stops keyboard from appearing
-                              FocusScope.of(context).requestFocus(new FocusNode());
-                              _chooseDateExpiration(context, _controllerExpiration.text);
+                              FocusScope.of(context)
+                                  .requestFocus(new FocusNode());
+                              _chooseDateExpiration(
+                                  context, _controllerExpiration.text);
                               // Show Date Picker Here
-
                             },
                             decoration: new InputDecoration(
-                                border: OutlineInputBorder(borderSide:  BorderSide(color: Colors.blue ),),
-                                //icon: const Icon(Icons.calendar_today),
-                                hintText: 'Select Expiration Date',
-                                labelText: 'Expiration Date',
-                                suffixIcon: Icon(Icons.calendar_today),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.blue),
+                              ),
+                              //icon: const Icon(Icons.calendar_today),
+                              hintText: 'Select Expiration Date',
+                              labelText: 'Expiration Date',
+                              suffixIcon: Icon(Icons.calendar_today),
                             ),
                             controller: _controllerExpiration,
                             keyboardType: TextInputType.datetime,
-                            validator: (val) => val!.isEmpty ? 'Expiration Date is required' : null,
+                            validator: (val) => val!.isEmpty
+                                ? 'Expiration Date is required'
+                                : null,
                             //validator: (val) =>
                             //isValidDob(val!) ? null : 'Not a valid date',
                             //onSaved: (val) => newContact.dob = convertToDate(val!),
@@ -297,8 +339,6 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm> with TickerProvid
                     //   ],
                     // ),
 
-
-
                     Container(
                       child: AnimatedBuilder(
                         animation: _arrowAnimationController,
@@ -318,10 +358,11 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm> with TickerProvid
                                     ? _arrowAnimationController.reverse()
                                     : _arrowAnimationController.forward();
                               },
-                              icon:Icon(Icons.arrow_left_sharp,
+                              icon: Icon(
+                                Icons.arrow_left_sharp,
                                 //size: 50.0,
-                                color: Colors.black,)
-                          ),
+                                color: Colors.black,
+                              )),
                         ),
                         //  child:
                       ),
@@ -330,40 +371,42 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm> with TickerProvid
                     Expanded(
                       flex: _animation.value,
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0,7.5,15,0),
+                        padding: const EdgeInsets.fromLTRB(0, 7.5, 15, 0),
                         child: NumberInputWithIncrementDecrement(
                           controller: TextEditingController(),
-                            suffixText: expirationType == true ?  "Months" : "",
+                          suffixText: expirationType == true ? "Month/s" : "",
                           enabled: expirationType,
+                          labelText: "Best Before",
+                          prefixIcon: Icons.access_time,
                         ),
                       ),
                     ),
-
                   ],
                 ),
-
                 Row(
                   children: [
                     Expanded(
                       flex: 50,
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(15,7.5,2,0),
+                        padding: const EdgeInsets.fromLTRB(15, 7.5, 2, 0),
                         child: InkWell(
-                          onTap: () async{
+                          onTap: () async {
                             Database.updateGroceries(
-                              productName: _titleController.text,
-                              docId: widget.documentId,
-                              //description: _descriptionController.text,
-                            );
+                                docId: widget.documentId,
+                                productName: _titleController.text,
+                                quantity: _controllerQuantity.text,
+                                category: dropdownValue,
+                                manufacturedDate: _controllerManufacture.text,
+                                expiryDate: _controllerExpiration.text
+                                //description: _descriptionController.text,
+                                );
 
                             //_titleController.clear();
 
                             CustomSnackBar(
                                 context, const Text('Grocery Updated'));
                           },
-                          child:
-
-                          Container(
+                          child: Container(
                             width: Responsive.deviceWidth(65, context),
                             height: Responsive.deviceHeight(7, context),
                             decoration: BoxDecoration(
@@ -401,7 +444,7 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm> with TickerProvid
                     Expanded(
                       flex: 20,
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(4,7.5,4,0),
+                        padding: const EdgeInsets.fromLTRB(4, 7.5, 4, 0),
                         child: InkWell(
                           onTap: () async {
                             setState(() {
@@ -421,9 +464,7 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm> with TickerProvid
 
                             Navigator.of(context).pop();
                           },
-                          child:
-
-                          Container(
+                          child: Container(
                             width: Responsive.deviceWidth(6, context),
                             height: Responsive.deviceHeight(7, context),
                             decoration: BoxDecoration(
@@ -445,11 +486,10 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm> with TickerProvid
                               ],
                             ),
                             child: Center(
-                              child: Icon(
-                                Icons.delete,
-                                color: Colors.white,
-                              )
-                            ),
+                                child: Icon(
+                              Icons.delete,
+                              color: Colors.white,
+                            )),
                           ),
                         ),
                       ),
@@ -457,13 +497,11 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm> with TickerProvid
                     Expanded(
                       flex: 50,
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(2,7.5,15,0),
+                        padding: const EdgeInsets.fromLTRB(2, 7.5, 15, 0),
                         child: GestureDetector(
-                          onTap: () async{
-                            Database.updateGroceries(
-                              productName: _titleController.text,
+                          onTap: () async {
+                            Database.markConsumedGroceries(
                               docId: widget.documentId,
-                              //description: _descriptionController.text,
                             );
 
                             _titleController.clear();
@@ -471,9 +509,7 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm> with TickerProvid
                             CustomSnackBar(
                                 context, const Text('Grocery Updated'));
                           },
-                          child:
-
-                          Container(
+                          child: Container(
                             width: Responsive.deviceWidth(65, context),
                             height: Responsive.deviceHeight(7, context),
                             decoration: BoxDecoration(

@@ -8,12 +8,15 @@ import 'update_grocery_tab.dart';
 class EditDialog extends StatefulWidget {
   final String currentProductName;
   final String currentCategory;
+  final String currentQuantity;
   final String currentItemMfg;
   final String currentItemExp;
   final String documentId;
 
+
   const EditDialog({
     required this.currentProductName,
+    required this.currentQuantity,
     required this.currentCategory,
     required this.currentItemMfg,
     required this.currentItemExp,
@@ -87,6 +90,7 @@ class _EditDialogState extends State<EditDialog> with SingleTickerProviderStateM
                         currentCategory: widget.currentCategory,
                         currentItemMfg: widget.currentItemMfg,
                         currentItemExp: widget.currentItemExp,
+                        currentQuantity: widget.currentQuantity,
                         documentId: widget.documentId,
                       ),
                       TabTwo()

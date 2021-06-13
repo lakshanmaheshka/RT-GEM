@@ -25,18 +25,19 @@ class _AddGroceryTabState extends State<AddGroceryTab>
   var dropdownValue;
   var newContact;
   var month;
-  final TextEditingController _controllerManufacture =
-      new TextEditingController();
-  final TextEditingController _controllerExpiration =
-      new TextEditingController();
+  final TextEditingController _controllerManufacture = new TextEditingController();
+  final TextEditingController _controllerExpiration  = new TextEditingController();
+  final TextEditingController _controllerBestBefore  = new TextEditingController();
+  final TextEditingController _controllerQuantity  = new TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+
   late Animation _arrowAnimation;
   late AnimationController _arrowAnimationController;
   late AnimationController _animationController;
   late Animation _animation;
-  final TextEditingController _controller = new TextEditingController();
+  // final TextEditingController _controller = new TextEditingController();
   bool expirationType = false;
-  TextEditingController _controllerone = TextEditingController();
-  final TextEditingController _titleController = TextEditingController();
+  // TextEditingController _controllerone = TextEditingController();
   final FocusNode _titleFocusNode = FocusNode();
   final FocusNode _descriptionFocusNode = FocusNode();
 
@@ -122,7 +123,7 @@ class _AddGroceryTabState extends State<AddGroceryTab>
         AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     _arrowAnimation =
         Tween(begin: 0.0, end: pi).animate(_arrowAnimationController);
-    _controllerone.text = "0";
+    //_controllerone.text = "0";
   }
 
   @override
@@ -164,48 +165,68 @@ class _AddGroceryTabState extends State<AddGroceryTab>
                     focusNode: _titleFocusNode,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 7.5, 15, 7.5),
-                  child: DropdownButtonFormField<String>(
-                    //key: _formKey,
-                    value: dropdownValue,
-                    decoration: InputDecoration(
-                        filled: false,
-                        labelText: 'Category',
-                        labelStyle: new TextStyle(color: Colors.green),
-                        enabledBorder: new OutlineInputBorder(
-                          //borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(color: Colors.pinkAccent),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 50,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(15, 7.5, 15, 7.5),
+                        child: NumberInputWithIncrementDecrement(
+                          controller: _controllerQuantity,
+                          suffixText: "Item/s",
+                          enabled: true,
+                          labelText: "Quantity",
+                          prefixIcon: Icons.add_to_photos,
                         ),
-                        focusedBorder: new OutlineInputBorder(
-                          //borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(color: Colors.cyan),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 50,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 7.5, 15, 7.5),
+                        child: DropdownButtonFormField<String>(
+                          //key: _formKey,
+                          value: dropdownValue,
+                          decoration: InputDecoration(
+                              filled: false,
+                              labelText: 'Category',
+                              labelStyle: new TextStyle(color: Colors.green),
+                              enabledBorder: new OutlineInputBorder(
+                                //borderRadius: new BorderRadius.circular(25.0),
+                                borderSide: BorderSide(color: Colors.pinkAccent),
+                              ),
+                              focusedBorder: new OutlineInputBorder(
+                                //borderRadius: new BorderRadius.circular(25.0),
+                                borderSide: BorderSide(color: Colors.cyan),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.blue),
+                              )),
+                          items: <String>[
+                            'Beverages',
+                            'Bread/Bakery',
+                            'Dairy Products',
+                            'Cereals',
+                            'Canned Foods',
+                            'Frozen Foods',
+                            'Snack Foods',
+                            'Others'
+                          ].map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          // items: _countries.map((country) => DropdownMenuItem<String>(value: country.countryCode, child: Text(country.name))).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              dropdownValue = newValue;
+                            });
+                          },
                         ),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue),
-                        )),
-                    items: <String>[
-                      'Beverages',
-                      'Bread/Bakery',
-                      'Dairy Products',
-                      'Cereals',
-                      'Canned Foods',
-                      'Frozen Foods',
-                      'Snack Foods',
-                      'Others'
-                    ].map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    // items: _countries.map((country) => DropdownMenuItem<String>(value: country.countryCode, child: Text(country.name))).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        dropdownValue = newValue;
-                      });
-                    },
-                  ),
+                      ),
+                    ),
+                  ],
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(15, 7.5, 15, 7.5),
@@ -305,22 +326,25 @@ class _AddGroceryTabState extends State<AddGroceryTab>
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(0, 7.5, 15, 0),
                         child: NumberInputWithIncrementDecrement(
-                          controller: TextEditingController(),
-                          suffixText: expirationType == true ? "Months" : "",
+                          controller: _controllerBestBefore,
+                          suffixText: expirationType == true ? "Month/s" : "",
                           enabled: expirationType,
+                          labelText: "Best Before",
+                          prefixIcon: Icons.access_time,
                         ),
                       ),
                     ),
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GestureDetector(
+                  padding: const EdgeInsets.fromLTRB(8.0,30,8,8),
+                  child: InkWell(
                     onTap: () async {
                       ///ToDo: add form validations
-                      //_submitForm();
+                      _submitForm();
                       Database.addGrocery(
                           productName: _titleController.text,
+                          quantity: _controllerQuantity.text,
                           category: dropdownValue,
                           manufacturedDate: _controllerManufacture.text,
                           expiryDate: _controllerExpiration.text);
@@ -329,6 +353,8 @@ class _AddGroceryTabState extends State<AddGroceryTab>
                       _titleController.clear();
                       _controllerExpiration.clear();
                       _controllerManufacture.clear();
+                      _controllerQuantity.text = "1";
+                      _controllerBestBefore.text = "1";
 
                       setState(() {
                         dropdownValue = null;
@@ -359,10 +385,10 @@ class _AddGroceryTabState extends State<AddGroceryTab>
                       ),
                       child: Center(
                         child: Text(
-                          'Press',
+                          'Add Item',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 30,
+                            fontSize: 25,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
