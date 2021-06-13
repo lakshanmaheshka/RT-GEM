@@ -123,6 +123,165 @@ class _GroceryListViewState extends State<GroceryListView>
   }
 }
 
+
+Widget getCategoryImage(String currentCategory) {
+  switch(currentCategory){
+    case "Beverages":
+      return SizedBox(
+          width: 60,
+          height: 60,
+          child: Image.asset("assets/images/Beverages.png"));
+
+      break;
+
+    case "Bread/Bakery": {
+      return SizedBox(
+          width: 60,
+          height: 60,
+          child: Image.asset("assets/images/BreadBakery.png"));
+    }
+    break;
+
+    case "Dairy Products": {
+      return SizedBox(
+          width: 60,
+          height: 60,
+          child: Image.asset("assets/images/DairyProducts.png"));
+    }
+    break;
+
+    case "Cereals": {
+      return SizedBox(
+          width: 60,
+          height: 60,
+          child: Image.asset("assets/images/Cereals.png"));
+    }
+    break;
+
+    case "Canned Foods": {
+      return SizedBox(
+          width: 60,
+          height: 60,
+          child: Image.asset("assets/images/CannedFoods.png"));
+    }
+    break;
+
+    case "Frozen Foods": {
+      return SizedBox(
+          width: 60,
+          height: 60,
+          child: Image.asset("assets/images/FrozenFoods.png"));
+    }
+    break;
+
+    case 'Snack Foods':
+    //statements;
+      return SizedBox(
+          width: 60,
+          height: 60,
+          child: Image.asset("assets/images/SnackFoods.png"));
+
+      break;
+
+    case "Others": {
+      return SizedBox(
+          width: 65,
+          height: 65,
+          child: Image.asset("assets/images/others.png"));
+    }
+    break;
+
+
+    default: {
+      return SizedBox(
+          width: 65,
+          height: 65,
+          child: Image.asset("assets/images/others.png"));
+    }
+
+  }
+}
+
+
+List<HexColor> getCategoryColor(String currentCategory) {
+  switch(currentCategory){
+    case "Beverages":
+      return <HexColor>[
+        HexColor('#FA7D82'),
+        HexColor('#FFB295'),
+      ];
+
+      break;
+
+    case "Bread/Bakery": {
+      return  <HexColor>[
+        HexColor('#fc4a1a'),
+        HexColor('#f7b733'),
+      ];
+    }
+    break;
+
+    case "Dairy Products": {
+      return  <HexColor>[
+        HexColor('#f7ff00'),
+        HexColor('#db36a4'),
+      ];
+    }
+    break;
+
+    case "Cereals": {
+      return  <HexColor>[
+        HexColor('#d53369'),
+        HexColor('#cbad6d'),
+      ];
+    }
+    break;
+
+    case "Canned Foods": {
+      return  <HexColor>[
+        HexColor('#f857a6'),
+        HexColor('#ff5858'),
+      ];
+    }
+    break;
+
+    case "Frozen Foods": {
+      return  <HexColor>[
+        HexColor('#2193b0'),
+        HexColor('#6dd5ed'),
+      ];
+    }
+    break;
+
+    case 'Snack Foods':
+    //statements;
+      return  <HexColor>[
+        HexColor('#FC5C7D'),
+        HexColor('#6A82FB'),
+      ];
+
+      break;
+
+    case "Others": {
+      return  <HexColor>[
+        HexColor('#11998e'),
+        HexColor('#38ef7d'),
+      ];
+    }
+    break;
+
+
+    default: {
+      return  <HexColor>[
+        HexColor('#11998e'),
+        HexColor('#38ef7d'),
+      ];
+    }
+
+  }
+}
+
+
 class ItemsView extends StatelessWidget {
   const ItemsView(
       {Key? key,required this.productName,required this.docID, this.animationController, this.animation, required this.currentCategory, required this.currentItemMfg, required this.currentItemExp})
@@ -185,10 +344,7 @@ class ItemsView extends StatelessWidget {
                                 blurRadius: 8.0),
                           ],
                           gradient: LinearGradient(
-                            colors: <HexColor>[
-                              HexColor('#FA7D82'),
-                              HexColor('#FFB295'),
-                            ],
+                            colors: getCategoryColor(currentCategory),
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
@@ -260,77 +416,7 @@ class ItemsView extends StatelessWidget {
                   Positioned(
                     top: 0,
                     left: 15,
-                    child: SizedBox(
-                      width: 60,
-                      height: 60,
-                      child:
-
-
-
-                      //Image.asset("assets/images/Beverages.png"),
-
-
-
-                      (() {
-                        switch(currentCategory) {
-                          case "Beverages":
-                            Image.asset("assets/images/Beverages.png");
-
-                          break;
-
-                          case "Bread/Bakery": {
-                            Image.asset("assets/images/BreadBakery.png");
-                          }
-                          break;
-
-                          case "Dairy Products": {
-                            Image.asset("assets/images/DairyProducts.png");
-                          }
-                          break;
-
-                          case "Cereals": {
-                            Image.asset("assets/images/Cereals.png");
-                          }
-                          break;
-
-                          case "Canned Foods": {
-                            Image.asset("assets/images/CannedFoods.png");
-                          }
-                          break;
-
-                          case "Frozen Foods": {
-                            Image.asset("assets/images/FrozenFoods.png");
-                          }
-                          break;
-
-                          case 'Snack Foods':
-                            //statements;
-                            Image.asset("assets/images/SnackFoods.png");
-
-                          break;
-
-                          case "Others": {
-                            CircleAvatar(
-                              backgroundColor: Colors.brown.shade800,
-                              child:  Image.asset("assets/images/Others.jpg"),
-                            );
-                          }
-                          break;
-
-
-                          default: {
-                            //statements;
-                            Image.asset("assets/breakfast.png");
-                          }
-
-                        }
-                      }())
-
-
-
-
-
-                    ),
+                    child: getCategoryImage(currentCategory),
                   )
                 ],
               ),
