@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rt_gem/budget/screens/new_transaction.dart';
 import 'package:rt_gem/widgets/responsive.dart';
 
 class TabTwo extends StatefulWidget {
@@ -57,12 +58,16 @@ class _TabTwoState extends State<TabTwo> {
                     ],
                   ),
                   child: Center(
-                    child: Text(
-                      'Press',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 30,
-                        fontWeight: FontWeight.w500,
+                    child: InkWell(
+                      onTap:  () =>
+                      Navigator.of(context).pushNamed(NewTransaction.routeName),
+                      child: Text(
+                        'Press',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 30,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ),

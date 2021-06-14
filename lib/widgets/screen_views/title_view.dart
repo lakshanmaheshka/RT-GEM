@@ -7,13 +7,15 @@ class TitleView extends StatelessWidget {
   final String subTxt;
   final AnimationController? animationController;
   final Animation? animation;
+  final bool isButtonEnabled;
 
   const TitleView(
       {Key? key,
       this.titleTxt: "",
       this.subTxt: "",
       this.animationController,
-      this.animation})
+      this.animation,
+      required this.isButtonEnabled})
       : super(key: key);
 
   @override
@@ -44,7 +46,7 @@ class TitleView extends StatelessWidget {
                         ),
                       ),
                     ),
-                    InkWell(
+                    isButtonEnabled ? InkWell(
                       highlightColor: Colors.transparent,
                       borderRadius: BorderRadius.all(Radius.circular(4.0)),
                       onTap: () {},
@@ -75,7 +77,7 @@ class TitleView extends StatelessWidget {
                           ],
                         ),
                       ),
-                    )
+                    ) : SizedBox()
                   ],
                 ),
               ),

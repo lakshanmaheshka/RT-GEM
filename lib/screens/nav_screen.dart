@@ -1,7 +1,9 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:rt_gem/budget/budget.dart';
 import 'package:rt_gem/screens/calender_screen.dart';
+import 'package:rt_gem/screens/receipt_screen.dart';
 import 'package:rt_gem/widgets/AnimatedIndexedStack.dart';
 import 'package:rt_gem/widgets/custom_dialog/add_dialog/add_dialog.dart';
 import 'package:rt_gem/widgets/isApp/bottom_navigation_view/bottom_bar_view.dart';
@@ -10,6 +12,7 @@ import 'package:rt_gem/screens/home_screen.dart';
 import 'package:rt_gem/widgets/widgets.dart';
 
 import '../theme.dart';
+import 'calender_screen.dart';
 import 'profile_screen.dart';
 
 class NavScreen extends StatefulWidget {
@@ -106,9 +109,10 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
           index: _selectedIndex,
           children: <Widget>[
             HomeScreen(animationController: animationController),
-            CalendarScreen(),
-            HomeScreen(animationController: animationController),
-            ProfileScreen(),
+            CalenderScreen(animationController: animationController),
+            ReceiptScreen(animationController: animationController),
+            BudgetApp()
+            //ProfileScreen(),
           ],
         ),
         bottomNavigationBar: !Responsive.isDesktop(context)
@@ -192,7 +196,7 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
                   }
                   setState(() {
                     tabBody =
-                        HomeScreen(animationController: animationController);
+                        CalenderScreen(animationController: animationController);
                   });
                 });
                 break;
@@ -203,7 +207,7 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
                   }
                   setState(() {
                     tabBody =
-                        ProfileScreen();
+                        ReceiptScreen(animationController: animationController);
                   });
                 });
                 break;
@@ -214,7 +218,7 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
                   }
                   setState(() {
                     tabBody =
-                        CalendarScreen();
+                        BudgetApp();
                   });
                 });
                 break;
