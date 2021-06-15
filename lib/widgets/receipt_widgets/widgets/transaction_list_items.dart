@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:rt_gem/budget/models/transaction.dart';
+import 'package:rt_gem/utils/receipt_models/transaction.dart';
 
 class TransactionListItems extends StatefulWidget {
   final Transaction trx;
@@ -47,7 +47,10 @@ class _TransactionListItemsState extends State<TransactionListItems> {
               children: [
                 Text(
                   "${widget.trx.title}",
-                  style: Theme.of(context).textTheme.headline1,
+                  style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
                 ),
                 Text(
                   DateFormat.yMMMd().format(widget.trx.date!),

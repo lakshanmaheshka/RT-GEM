@@ -1,4 +1,4 @@
-import 'package:rt_gem/budget/screens/home_screen.dart';
+import 'package:rt_gem/screens/receipt_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -34,7 +34,7 @@ class AppDrawer extends StatelessWidget {
                     title: const Text("Home"),
                     onTap: () {
                       Navigator.of(context)
-                          .pushReplacementNamed(HomeScreen.routeName);
+                          .pushReplacementNamed(ReceiptScreen.routeName);
                     },
                   ),
                   ListTile(

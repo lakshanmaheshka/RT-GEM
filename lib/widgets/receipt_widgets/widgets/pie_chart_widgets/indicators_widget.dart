@@ -1,4 +1,4 @@
-import 'package:rt_gem/budget/models/pie_data.dart';
+import 'package:rt_gem/utils/receipt_models/pie_data.dart';
 import 'package:flutter/material.dart';
 
 class IndicatorsWidget extends StatelessWidget {

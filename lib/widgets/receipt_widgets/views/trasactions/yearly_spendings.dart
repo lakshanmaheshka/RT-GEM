@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:rt_gem/budget/models/pie_data.dart';
-import 'package:rt_gem/budget/models/transaction.dart';
-import 'package:rt_gem/budget/screens/statistics/pie_chart.dart';
-import 'package:rt_gem/budget/screens/statistics/yearly_stats.dart';
-import 'package:rt_gem/budget/widgets/no_trancaction.dart';
-import 'package:rt_gem/budget/widgets/transaction_list_items.dart';
+import 'package:rt_gem/utils/receipt_models/pie_data.dart';
+import 'package:rt_gem/utils/receipt_models/transaction.dart';
+import 'package:rt_gem/widgets/receipt_widgets/views/statistics/pie_chart.dart';
+import 'package:rt_gem/widgets/receipt_widgets/views/statistics/yearly_stats.dart';
+import 'package:rt_gem/widgets/receipt_widgets/widgets/no_trancaction.dart';
+import 'package:rt_gem/widgets/receipt_widgets/widgets/transaction_list_items.dart';
 
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -105,7 +105,10 @@ class _YearlySpendingsState extends State<YearlySpendings> {
                   children: <Widget>[
                     Text(
                       'Show Chart',
-                      style: Theme.of(context).textTheme.headline1,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
                     ),
                     Switch.adaptive(
                       activeColor: Theme.of(context).accentColor,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:random_color/random_color.dart';
 
-import 'package:rt_gem/budget/models/transaction.dart';
+import 'package:rt_gem/utils/receipt_models/transaction.dart';
 
 class PieData {
   final String? name;

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import 'package:rt_gem/budget/models/transaction.dart';
-import 'package:rt_gem/budget/constants/categories.dart';
+import 'package:rt_gem/utils/receipt_models/transaction.dart';
+import 'package:rt_gem/utils/constants_categories.dart';
 import 'package:rt_gem/utils/database.dart';
 
 class NewTransaction extends StatefulWidget {
@@ -206,7 +206,7 @@ class _NewTransactionState extends State<NewTransaction> {
               dropdownValue = newValue;
             });
           },
-          items: categories.map<DropdownMenuItem<String>>((String value) {
+          items: receiptCategories.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
               child: Text(value),

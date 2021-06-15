@@ -1,52 +1,25 @@
-import 'package:rt_gem/budget/widgets/touch_input.dart';
+import 'package:rt_gem/widgets/receipt_widgets/widgets/touch_input.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import 'package:fl_chart/fl_chart.dart';
 
-import 'package:rt_gem/budget/models/transaction.dart';
 
-class WeaklyStats extends StatefulWidget {
-  final List<Transaction>? rescentTransactions;
+class YearlyStats extends StatefulWidget {
+  final List<Map<String, Object>>? groupedTransactionValues;
 
-  WeaklyStats({
+  const YearlyStats({
     Key? key,
-    this.rescentTransactions,
+    this.groupedTransactionValues,
   }) : super(key: key);
 
   @override
-  _WeaklyStatsState createState() => _WeaklyStatsState();
+  _YearlyStatsState createState() => _YearlyStatsState();
 }
 
-class _WeaklyStatsState extends State<WeaklyStats> {
+class _YearlyStatsState extends State<YearlyStats> {
   // final List<double> weeklyData = [5.0, 6.5, 5.0, 7.5, 9.0, 11.5, 6.5];
 
   int? touchedIndex;
-
-  List<Map<String, Object>> get groupedTransactionValues {
-    return List.generate(7, (index) {
-      final weekDay = DateTime.now().subtract(
-        Duration(days: index),
-      );
-      var totalSum = 0;
-      for (var i = 0; i < widget.rescentTransactions!.length; i++) {
-        if (widget.rescentTransactions![i].date!.day == weekDay.day &&
-            widget.rescentTransactions![i].date!.month == weekDay.month &&
-            widget.rescentTransactions![i].date!.year == weekDay.year) {
-          totalSum += widget.rescentTransactions![i].amount!;
-        }
-      }
-
-      /*print(DateFormat.E().format(weekDay));
-      print(totalSum);*/
-
-      return {
-        'date': DateFormat.d().format(weekDay), //.substring(0, 1),
-        'amount': totalSum.toDouble(),
-        'day': DateFormat.EEEE().format(weekDay),
-      };
-    }).reversed.toList();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +49,7 @@ class _WeaklyStatsState extends State<WeaklyStats> {
                 height: 4,
               ),
               Text(
-                'Last Seven Days',
+                'Monthly Analysis',
                 style: TextStyle(
                     color: Theme.of(context)
                         .primaryColorLight, //const Color(0xff379982),
@@ -127,8 +100,8 @@ class _WeaklyStatsState extends State<WeaklyStats> {
 
   List<BarChartGroupData> _buildAllBars() {
     return List.generate(
-      groupedTransactionValues.length,
-      (index) => _buildBar(index, groupedTransactionValues[index]['amount'] as double,
+      widget.groupedTransactionValues!.length,
+      (index) => _buildBar(index, widget.groupedTransactionValues![index]['amount'] as double,
           isTouched: index == touchedIndex),
     );
   }
@@ -158,26 +131,29 @@ class _WeaklyStatsState extends State<WeaklyStats> {
         getTitles: (double value) {
           switch (value.toInt()) {
             case 0:
-              return groupedTransactionValues[0]['date']
-                  .toString();//.substring(0,3);
+              return widget.groupedTransactionValues![0]['month']
+                  .toString()
+                  .substring(0, 3);
             case 1:
-              return groupedTransactionValues[1]['date']
-                  .toString();//.substring(0, 3);
+              return widget.groupedTransactionValues![1]['month']
+                  .toString()
+                  .substring(0, 3);
             case 2:
-              return groupedTransactionValues[2]['date']
-                  .toString();//.substring(0, 3);
+              return widget.groupedTransactionValues![2]['month']
+                  .toString()
+                  .substring(0, 3);
             case 3:
-              return groupedTransactionValues[3]['date']
-                  .toString();//.substring(0, 3);
+              return widget.groupedTransactionValues![3]['month']
+                  .toString()
+                  .substring(0, 3);
             case 4:
-              return groupedTransactionValues[4]['date']
-                  .toString();//.substring(0, 3);
+              return widget.groupedTransactionValues![4]['month']
+                  .toString()
+                  .substring(0, 3);
             case 5:
-              return groupedTransactionValues[5]['date']
-                  .toString();//.substring(0, 3);
-            case 6:
-              return groupedTransactionValues[6]['date']
-                  .toString();//.substring(0, 3);
+              return widget.groupedTransactionValues![5]['month']
+                  .toString()
+                  .substring(0, 3);
             default:
               return '';
           }
@@ -201,25 +177,22 @@ class _WeaklyStatsState extends State<WeaklyStats> {
           String? weekDay;
           switch (group.x.toInt()) {
             case 0:
-              weekDay = groupedTransactionValues[0]['day'] as String?;
+              weekDay = widget.groupedTransactionValues![0]['month'] as String?;
               break;
             case 1:
-              weekDay = groupedTransactionValues[1]['day'] as String?;
+              weekDay = widget.groupedTransactionValues![1]['month'] as String?;
               break;
             case 2:
-              weekDay = groupedTransactionValues[2]['day'] as String?;
+              weekDay = widget.groupedTransactionValues![2]['month'] as String?;
               break;
             case 3:
-              weekDay = groupedTransactionValues[3]['day'] as String?;
+              weekDay = widget.groupedTransactionValues![3]['month'] as String?;
               break;
             case 4:
-              weekDay = groupedTransactionValues[4]['day'] as String?;
+              weekDay = widget.groupedTransactionValues![4]['month'] as String?;
               break;
             case 5:
-              weekDay = groupedTransactionValues[5]['day'] as String?;
-              break;
-            case 6:
-              weekDay = groupedTransactionValues[6]['day'] as String?;
+              weekDay = widget.groupedTransactionValues![5]['month'] as String?;
               break;
           }
           return BarTooltipItem(

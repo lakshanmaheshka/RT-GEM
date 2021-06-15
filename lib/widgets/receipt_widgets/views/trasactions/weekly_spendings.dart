@@ -2,37 +2,46 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
-import 'package:rt_gem/budget/models/pie_data.dart';
-import 'package:rt_gem/budget/models/transaction.dart';
-import 'package:rt_gem/budget/screens/statistics/pie_chart.dart';
-import 'package:rt_gem/budget/widgets/no_trancaction.dart';
-import 'package:rt_gem/budget/widgets/transaction_list_items.dart';
+import 'package:rt_gem/utils/receipt_models/pie_data.dart';
+import 'package:rt_gem/utils/receipt_models/transaction.dart';
+import 'package:rt_gem/widgets/receipt_widgets/views/statistics/pie_chart.dart';
+import 'package:rt_gem/widgets/receipt_widgets/views/statistics/weekly_stats.dart';
+import 'package:rt_gem/widgets/receipt_widgets/widgets/no_trancaction.dart';
+import 'package:rt_gem/widgets/receipt_widgets/widgets/transaction_list_items.dart';
 
-class DailySpendings extends StatefulWidget {
+class WeeklySpendings extends StatefulWidget {
   @override
-  _DailySpendingsState createState() => _DailySpendingsState();
+  _WeeklySpendingsState createState() => _WeeklySpendingsState();
 }
 
-class _DailySpendingsState extends State<DailySpendings> {
+class _WeeklySpendingsState extends State<WeeklySpendings> {
   bool _showChart = false;
   late Transactions trxData;
-  Function? deleteFn;
+  // List<Transaction> recentTransaction;
+  // List<PieData> recentData;
+  // Function deleteFn;
 
   @override
   void initState() {
     super.initState();
-    trxData = Provider.of<Transactions>(context, listen: false);
 
-    deleteFn =
-        Provider.of<Transactions>(context, listen: false).deleteTransaction;
+    trxData = Provider.of<Transactions>(context, listen: false);
+    // recentTransaction =
+    //     Provider.of<Transactions>(context, listen: false).rescentTransactions;
+
+    // deleteFn =
+    //     Provider.of<Transactions>(context, listen: false).deleteTransaction;
+
+    // recentData = PieData().pieChartData(recentTransaction);
   }
 
   @override
   Widget build(BuildContext context) {
-    final dailyTrans = Provider.of<Transactions>(context).dailyTransactions();
-
-    final List<PieData> dailyData = PieData().pieChartData(dailyTrans);
-
+    final deleteFn =
+        Provider.of<Transactions>(context).deleteTransaction;
+    final recentTransaction =
+        Provider.of<Transactions>(context, listen: false).rescentTransactions;
+    final recentData = PieData().pieChartData(recentTransaction);
     return SingleChildScrollView(
       physics: ScrollPhysics(),
       child: Column(
@@ -56,7 +65,7 @@ class _DailySpendingsState extends State<DailySpendings> {
                         ),
                       ),
                       Text(
-                        "₹${trxData.getTotal(dailyTrans)}",
+                        "₹${trxData.getTotal(recentTransaction)}",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -69,7 +78,10 @@ class _DailySpendingsState extends State<DailySpendings> {
                     children: <Widget>[
                       Text(
                         'Show Chart',
-                        style: Theme.of(context).textTheme.headline1,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
                       ),
                       Switch.adaptive(
                         activeColor: Theme.of(context).accentColor,
@@ -84,21 +96,45 @@ class _DailySpendingsState extends State<DailySpendings> {
                   ),
                 ],
               )),
-          dailyTrans.isEmpty
+          recentTransaction.isEmpty
               ? NoTransactions()
               : (_showChart
-                  ? MyPieChart(pieData: dailyData)
+                  ? weaklyChart(context, recentTransaction, recentData)
                   : ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (ctx, index) {
                         return TransactionListItems(
-                            trx: dailyTrans[index], dltTrxItem: deleteFn);
+                            trx: recentTransaction[index],
+                            dltTrxItem: deleteFn);
                       },
-                      itemCount: dailyTrans.length,
+                      itemCount: recentTransaction.length,
                     ))
         ],
       ),
+    );
+  }
+
+  Column weaklyChart(
+    BuildContext context,
+    List<Transaction> recentTransaction,
+    List<PieData> recentData,
+  ) {
+    return Column(
+      children: [
+        Card(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(20),
+            ),
+          ),
+          color: Theme.of(context).primaryColorDark,
+          child: MyPieChart(pieData: recentData),
+        ),
+        WeaklyStats(
+          rescentTransactions: recentTransaction,
+        )
+      ],
     );
   }
 }

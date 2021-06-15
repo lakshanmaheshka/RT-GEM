@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:rt_gem/utils/constants_categories.dart';
 import 'package:rt_gem/utils/database.dart';
 import 'package:rt_gem/widgets/number_input.dart';
 import 'package:rt_gem/widgets/responsive.dart';
@@ -235,16 +236,7 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm>
                               border: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.blue),
                               )),
-                          items: <String>[
-                            'Beverages',
-                            'Bread/Bakery',
-                            'Dairy Products',
-                            'Cereals',
-                            'Canned Foods',
-                            'Frozen Foods',
-                            'Snack Foods',
-                            'Others'
-                          ].map<DropdownMenuItem<String>>((String value) {
+                          items: groceryCategories.map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: Text(value),

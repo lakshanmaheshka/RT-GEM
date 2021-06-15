@@ -2,7 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:rt_gem/utils/constants_categories.dart';
 import 'package:rt_gem/utils/database.dart';
+import 'package:rt_gem/utils/receipt_models/transaction.dart';
 import 'package:rt_gem/widgets/number_input.dart';
 import 'package:rt_gem/widgets/responsive.dart';
 import 'dart:async';
@@ -181,7 +183,7 @@ class _AddReceiptTabState extends State<AddReceiptTab>
                     val!.isEmpty ? 'Amount is required' : null,
                     controller: _amountController,
                     keyboardType: TextInputType.number,
-                    focusNode: _titleFocusNode,
+                    //focusNode: _titleFocusNode,
                   ),
                 ),
                 Padding(
@@ -204,16 +206,7 @@ class _AddReceiptTabState extends State<AddReceiptTab>
                         border: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.blue),
                         )),
-                    items: <String>[
-                      'Beverages',
-                      'Bread/Bakery',
-                      'Dairy Products',
-                      'Cereals',
-                      'Canned Foods',
-                      'Frozen Foods',
-                      'Snack Foods',
-                      'Others'
-                    ].map<DropdownMenuItem<String>>((String value) {
+                    items: receiptCategories.map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value),
@@ -268,6 +261,19 @@ class _AddReceiptTabState extends State<AddReceiptTab>
                         category: dropdownValue,
                         addedDate: _controllerDate.text,
                       );
+
+                      DateFormat dateForm = DateFormat("dd/MM/yyyy");
+                      print(dateForm.parse(_controllerDate.text));
+                      //
+                      // transactions.addTransactions(
+                      //   Transaction(
+                      //     id: DateTime.now().toString(),
+                      //     title: _titleController.text,
+                      //     amount: int.parse(_amountController.text),
+                      //     date: dateForm.parse(_controllerDate.text),
+                      //     category: dropdownValue,
+                      //   ),
+                      // );
 
                       _addReceiptFormKey.currentState!.reset();
                       _titleController.clear();

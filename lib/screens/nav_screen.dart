@@ -1,10 +1,8 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:rt_gem/budget/budget.dart';
 import 'package:rt_gem/screens/calender_screen.dart';
-import 'package:rt_gem/screens/receipt_s.dart';
-import 'package:rt_gem/screens/receipt_screen.dart';
+import 'package:rt_gem/screens/receipt_main.dart';
 import 'package:rt_gem/widgets/AnimatedIndexedStack.dart';
 import 'package:rt_gem/widgets/custom_dialog/add_dialog/add_dialog.dart';
 import 'package:rt_gem/widgets/isApp/bottom_navigation_view/bottom_bar_view.dart';
@@ -111,9 +109,8 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
           children: <Widget>[
             HomeScreen(animationController: animationController),
             CalenderScreen(animationController: animationController),
-            ReceiptScreen(),
-            BudgetApp()
-            //ProfileScreen(),
+            ReceiptMain(),
+            ProfileScreen(),
           ],
         ),
         bottomNavigationBar: !Responsive.isDesktop(context)
@@ -208,7 +205,7 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
                   }
                   setState(() {
                     tabBody =
-                        ReceiptScreen();
+                        ReceiptMain();
                   });
                 });
                 break;
@@ -219,7 +216,7 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
                   }
                   setState(() {
                     tabBody =
-                        BudgetApp();
+                        ProfileScreen();
                   });
                 });
                 break;
