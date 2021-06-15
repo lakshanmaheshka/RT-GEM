@@ -70,7 +70,7 @@ class _CustomDialogState extends State<CustomDialog> with SingleTickerProviderSt
                   child: TabBarView(
                     children: [
                       AddGroceryTab(),
-                      TabTwo()
+                      AddReceiptTab()
                     ],
                     controller: _tabController,
                   ),

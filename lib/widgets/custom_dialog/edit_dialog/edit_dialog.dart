@@ -93,7 +93,7 @@ class _EditDialogState extends State<EditDialog> with SingleTickerProviderStateM
                         currentQuantity: widget.currentQuantity,
                         documentId: widget.documentId,
                       ),
-                      TabTwo()
+                      AddReceiptTab()
 
                     ],
                     controller: _tabController,

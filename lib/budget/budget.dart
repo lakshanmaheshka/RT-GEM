@@ -45,7 +45,7 @@ class BudgetApp extends StatelessWidget {
             ),
             routes: {
               HomeScreen.routeName: (_) => HomeScreen(),
-              NewTransaction.routeName: (_) => NewTransaction(),
+              //NewTransaction.routeName: (_) => NewTransaction(),
             },
           );
         });

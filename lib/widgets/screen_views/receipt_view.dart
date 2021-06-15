@@ -2,13 +2,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rt_gem/budget/models/pie_data.dart';
+import 'package:rt_gem/budget/models/transaction.dart';
+import 'package:rt_gem/budget/screens/statistics/pie_chart.dart';
 import 'package:rt_gem/utils/custom_colors.dart';
 import 'package:rt_gem/utils/database.dart';
 import 'dart:math' as math;
 
 import '../../utils/app_theme.dart';
 
-class ReceiptGraphView extends StatelessWidget {
+class ReceiptGraphView extends StatefulWidget {
   final AnimationController? animationController;
   final Animation? animation;
 
@@ -16,120 +20,164 @@ class ReceiptGraphView extends StatelessWidget {
       {Key? key, this.animationController, this.animation})
       : super(key: key);
 
+  @override
+  _ReceiptGraphViewState createState() => _ReceiptGraphViewState();
+}
+
+class _ReceiptGraphViewState extends State<ReceiptGraphView> {
+
+  bool _showChart = false;
+  late Transactions trxData;
+  Function? deleteFn;
+
+  @override
+  void initState() {
+    super.initState();
+    trxData = Provider.of<Transactions>(context, listen: false);
+
+    deleteFn =
+        Provider.of<Transactions>(context, listen: false).deleteTransaction;
+  }
+
 
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    final dailyTrans = Provider.of<Transactions>(context).dailyTransactions();
 
-    return AnimatedBuilder(
-      animation: animationController!,
-      builder: (BuildContext context, Widget? child) {
-        return FadeTransition(
-          opacity: animation as Animation<double>,
-          child: new Transform(
-            transform: new Matrix4.translationValues(
-                0.0, 30 * (1.0 - animation!.value), 0.0),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  left: 24, right: 24, top: 16, bottom: 18),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: AppTheme.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(8.0),
-                      bottomLeft: Radius.circular(8.0),
-                      bottomRight: Radius.circular(8.0),
-                      topRight: Radius.circular(68.0)),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                        color: AppTheme.grey.withOpacity(0.2),
-                        offset: Offset(1.1, 1.1),
-                        blurRadius: 10.0),
-                  ],
-                ),
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: Database.readGroceries(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Container(
-                          height: 225,
-                          child: Text('Something went wrong')
-                      );
-                    } else if (snapshot.hasData || snapshot.data != null) {
-                      return Column(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20, right: 20),
-                            child: Container(
-                              width: double.infinity,
-                              height: 250,
-                              child: Padding(
-                                padding: EdgeInsets.all(10),
-                                child: Stack(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        top: 10,
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+    final List<PieData> dailyData = PieData().pieChartData(dailyTrans);
+
+
+    return ChangeNotifierProvider(
+        create: (context) => Transactions(),
+        builder: (context, child) {
+          return AnimatedBuilder(
+            animation: widget.animationController!,
+            builder: (BuildContext context, Widget? child) {
+              return FadeTransition(
+                opacity: widget.animation as Animation<double>,
+                child: new Transform(
+                  transform: new Matrix4.translationValues(
+                      0.0, 30 * (1.0 - widget.animation!.value), 0.0),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        left: 24, right: 24, top: 16, bottom: 18),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: AppTheme.white,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(8.0),
+                            bottomLeft: Radius.circular(8.0),
+                            bottomRight: Radius.circular(8.0),
+                            topRight: Radius.circular(68.0)),
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                              color: AppTheme.grey.withOpacity(0.2),
+                              offset: Offset(1.1, 1.1),
+                              blurRadius: 10.0),
+                        ],
+                      ),
+                      child: StreamBuilder<QuerySnapshot>(
+                        stream: Database.readGroceries(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return Container(
+                                height: 225,
+                                child: Text('Something went wrong')
+                            );
+                          } else if (snapshot.hasData || snapshot.data != null) {
+                            return Column(
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 20, right: 20),
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: 250,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(10),
+                                      child: Stack(
                                         children: [
+                                          // Padding(
+                                          //   padding: const EdgeInsets.only(
+                                          //     top: 10,
+                                          //   ),
+                                          //   child: Column(
+                                          //     crossAxisAlignment: CrossAxisAlignment.start,
+                                          //     children: [
+                                          //       Text(
+                                          //         "Net balance",
+                                          //         style: TextStyle(
+                                          //             fontWeight: FontWeight.w500,
+                                          //             fontSize: 13,
+                                          //             color: Color(0xff67727d)),
+                                          //       ),
+                                          //       SizedBox(
+                                          //         height: 10,
+                                          //       ),
+                                          //       Text(
+                                          //         "\$2446.90",
+                                          //         style: TextStyle(
+                                          //           fontWeight: FontWeight.bold,
+                                          //           fontSize: 25,
+                                          //         ),
+                                          //       )
+                                          //     ],
+                                          //   ),
+                                          // ),
+                                          // Positioned(
+                                          //   bottom: 0,
+                                          //   child: Container(
+                                          //     width: (size.width - 20),
+                                          //     height: 150,
+                                          //
+                                          //   ),
+                                          // )
+
+                                          dailyTrans.isEmpty ?
                                           Text(
                                             "Net balance",
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w500,
                                                 fontSize: 13,
                                                 color: Color(0xff67727d)),
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          Text(
-                                            "\$2446.90",
+                                          ) : Text(
+                                            "Not",
                                             style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 25,
-                                            ),
-                                          )
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 13,
+                                                color: Color(0xff67727d)),
+                                          ),
+
+                                          MyPieChart(pieData: dailyData)
                                         ],
                                       ),
                                     ),
-                                    Positioned(
-                                      bottom: 0,
-                                      child: Container(
-                                        width: (size.width - 20),
-                                        height: 150,
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
 
-                                      ),
-                                    )
-                                  ],
+                          return Container(
+                            height: 225,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  CustomColors.firebaseOrange,
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      );
-                    }
-
-                    return Container(
-                      height: 225,
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            CustomColors.firebaseOrange,
-                          ),
-                        ),
+                          );
+                        },
                       ),
-                    );
-                  },
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
+              );
+            },
+          );
+        });
   }
 }
 

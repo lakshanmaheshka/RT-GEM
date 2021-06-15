@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'package:rt_gem/budget/models/transaction.dart';
 import 'package:rt_gem/budget/constants/categories.dart';
+import 'package:rt_gem/utils/database.dart';
 
 class NewTransaction extends StatefulWidget {
   static const routeName = '/new-transaction';
@@ -114,12 +115,24 @@ class _NewTransactionState extends State<NewTransaction> {
                 color: Theme.of(context).primaryColor,
                 textColor: Theme.of(context).textTheme.button!.color,
                 onPressed: () {
+
+
+
+
                   FocusScope.of(context).unfocus();
                   if (inputTitleController.text.isNotEmpty &&
                       (int.parse(inputAmountController.text)) >= 0 &&
                       _selectedDate != null) {
                     final enteredTitle = inputTitleController.text;
                     final enteredAmount = int.parse(inputAmountController.text);
+
+                    // Database.addReceipt(
+                    //   id: DateTime.now().toString(),
+                    //   receiptName: enteredTitle,
+                    //   amount: enteredAmount,
+                    //   category: dropdownValue!,
+                    //   addedDate: _selectedDate.toString(),
+                    // );
 
                     transactions.addTransactions(
                       Transaction(

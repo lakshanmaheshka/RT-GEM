@@ -1,5 +1,10 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:rt_gem/utils/database.dart';
 
 import '../DBhelp/dbhelper.dart';
 
@@ -45,7 +50,15 @@ class Transactions with ChangeNotifier {
   void addTransactions(Transaction transaction) {
     _transactions.add(transaction);
     notifyListeners();
-    DBHelper.insert(transaction);
+    print("data");
+    Database.addReceipt(
+      id: transaction.id!,
+      receiptName: transaction.title!,
+      amount: transaction.amount!,
+      category: transaction.category!,
+      addedDate: transaction.date.toString(),
+    );
+    // DBHelper.insert(transaction);
   }
 
   List<Transaction> monthlyTransactions(String? month, String year) {
@@ -96,20 +109,23 @@ class Transactions with ChangeNotifier {
   }
 
   Future<void> fetchTransactions() async {
-    final fetchedData = await DBHelper.fetch();
+
+    final fetchedData = await Database.getData();
+
     _transactions = fetchedData
         .map(
           (item) => Transaction(
             id: item['id'],
-            title: item['title'],
+            title: item['receiptName'],
             amount: item['amount'],
             date: DateTime.parse(
-              item['date'],
+              item['addedDate'],
             ),
             category: item['category'],
           ),
         )
         .toList();
+
     _transactions.sort((a, b) => b.date!.compareTo(a.date!));
     notifyListeners();
   }
@@ -118,7 +134,7 @@ class Transactions with ChangeNotifier {
     final item = _transactions.firstWhere((item) => item.id == id);
     _transactions.remove(item);
     notifyListeners();
-    DBHelper.delete(id);
+    // DBHelper.delete(id);
   }
 
   List<Map<String, Object>> firstSixMonthsTransValues(

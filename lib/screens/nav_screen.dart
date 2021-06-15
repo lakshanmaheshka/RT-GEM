@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rt_gem/budget/budget.dart';
 import 'package:rt_gem/screens/calender_screen.dart';
+import 'package:rt_gem/screens/receipt_s.dart';
 import 'package:rt_gem/screens/receipt_screen.dart';
 import 'package:rt_gem/widgets/AnimatedIndexedStack.dart';
 import 'package:rt_gem/widgets/custom_dialog/add_dialog/add_dialog.dart';
@@ -110,7 +111,7 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
           children: <Widget>[
             HomeScreen(animationController: animationController),
             CalenderScreen(animationController: animationController),
-            ReceiptScreen(animationController: animationController),
+            ReceiptScreen(),
             BudgetApp()
             //ProfileScreen(),
           ],
@@ -207,7 +208,7 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
                   }
                   setState(() {
                     tabBody =
-                        ReceiptScreen(animationController: animationController);
+                        ReceiptScreen();
                   });
                 });
                 break;
