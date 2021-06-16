@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:rt_gem/utils/database.dart';
 import 'package:rt_gem/utils/receipt_models/transaction.dart';
 
 class TransactionListItems extends StatefulWidget {
-  final Transaction trx;
+  final Receipt trx;
   final Function? dltTrxItem;
+  final String documentId;
+
 
   const TransactionListItems({
     Key? key,
     required this.trx,
     required this.dltTrxItem,
+    required this.documentId,
   }) : super(key: key);
   @override
   _TransactionListItemsState createState() => _TransactionListItemsState();
@@ -78,6 +82,9 @@ class _TransactionListItemsState extends State<TransactionListItems> {
                           FlatButton(
                               onPressed: () {
                                 widget.dltTrxItem!(widget.trx.id);
+                                Database.deleteReceipt(
+                                  docId: widget.documentId,
+                                );
                                 Navigator.pop(context);
                               },
                               child: Text(

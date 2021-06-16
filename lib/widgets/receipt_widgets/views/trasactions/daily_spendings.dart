@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 import 'package:rt_gem/utils/app_theme.dart';
+import 'package:rt_gem/utils/custom_colors.dart';
+import 'package:rt_gem/utils/database.dart';
 
 import 'package:rt_gem/utils/receipt_models/pie_data.dart';
 import 'package:rt_gem/utils/receipt_models/transaction.dart';
@@ -144,7 +147,7 @@ class _DailySpendingsState extends State<DailySpendings> {
                   // ),
                 ],
               )),
-          dailyTrans.isEmpty
+       /*   dailyTrans.isEmpty
               ? NoTransactions()
               :  ListView.builder(
                       shrinkWrap: true,
@@ -154,7 +157,87 @@ class _DailySpendingsState extends State<DailySpendings> {
                             trx: dailyTrans[index], dltTrxItem: deleteFn);
                       },
                       itemCount: dailyTrans.length,
-                    )
+                    ),*/
+
+          dailyTrans.isEmpty
+              ? NoTransactions()
+              : StreamBuilder<QuerySnapshot>(
+            stream: Database.readReceipts(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Text('Something went wrong');
+              } else if (snapshot.hasData || snapshot.data != null) {
+                return  ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (ctx, index) {
+                    var receipts = snapshot.data!.docs[index].data();
+                    String docID = snapshot.data!.docs[index].id;
+                    String id = receipts['id'];
+                    String receiptName = receipts['receiptName'];
+                    int amount = receipts['amount'];
+                    String expiryDate = receipts['category'];
+                    String addedDate = receipts['addedDate'];
+
+
+                    return TransactionListItems(
+                        trx: dailyTrans[index], dltTrxItem: deleteFn, documentId: docID);
+                  },
+                  itemCount: dailyTrans.length,
+                );
+
+
+
+
+                 /* ListView.builder(
+                  padding: const EdgeInsets.only(
+                      top: 0, bottom: 0, right: 16, left: 16),
+                  itemCount: snapshot.data!.docs.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    final int count =
+                    snapshot.data!.docs.length > 10 ? 10 : snapshot.data!.docs.length;
+                    final Animation<double> animation =
+                    Tween<double>(begin: 0.0, end: 1.0).animate(
+                        CurvedAnimation(
+                            parent: animationController!,
+                            curve: Interval((1 / count) * index, 1.0,
+                                curve: Curves.fastOutSlowIn)));
+                    animationController!.forward();
+
+                    var groceries = snapshot.data!.docs[index].data();
+                    String docID = snapshot.data!.docs[index].id;
+                    String productName = groceries['productName'];
+                    String category = groceries['category'];
+                    String manufactureDate = groceries['manufacturedDate'];
+                    String expiryDate = groceries['expiryDate'];
+                    String quantity = groceries['quantity'];
+
+                    return ItemsView(
+                        animation: animation,
+                        animationController: animationController,
+                        productName: productName,
+
+                        docID: docID,
+                        currentCategory: category,
+                        currentItemMfg: manufactureDate,
+                        currentItemExp: expiryDate,
+                        currentQuantity: quantity
+                    );
+                  },
+                );*/
+              }
+
+              return Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    CustomColors.firebaseOrange,
+                  ),
+                ),
+              );
+            },
+          ),
+
         ],
       ),
     );

@@ -3,11 +3,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rt_gem/screens/calender_screen.dart';
 import 'package:rt_gem/screens/receipt_main.dart';
+import 'package:rt_gem/widgets/receipt_widgets/views/trasactions/add_receipt.dart';
 import 'package:rt_gem/widgets/AnimatedIndexedStack.dart';
 import 'package:rt_gem/widgets/custom_dialog/add_dialog/add_dialog.dart';
 import 'package:rt_gem/widgets/isApp/bottom_navigation_view/bottom_bar_view.dart';
 import 'package:rt_gem/widgets/isApp/bottom_navigation_view/tabIcon_data.dart';
 import 'package:rt_gem/screens/home_screen.dart';
+import 'package:rt_gem/widgets/receipt_widgets/views/new_transaction.dart';
 import 'package:rt_gem/widgets/widgets.dart';
 
 import '../theme.dart';
@@ -26,6 +28,8 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
   final _formKey = GlobalKey<FormState>();
   TabController? _tabController;
   List<TabIconData> tabIconsList = TabIconData.tabIconsList;
+
+  bool isInReceipt = false;
 
 
   final List<IconData> _icons = const [
@@ -88,17 +92,31 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
                   //currentUser: currentUser,
                   icons: _icons,
                   selectedIndex: _selectedIndex,
-                   onTap: (index) => setState(() => _selectedIndex = index),
+                   onTap: (index) => setState(() {
+                     _selectedIndex = index;
+                     index == 2 ? isInReceipt = true : isInReceipt = false;
+                   }),
                 ),
               )
             : null,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return CustomDialog();
-                });
+            if(isInReceipt){
+
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddReceipt()));
+
+            }  else {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return CustomDialog();
+                  });
+            }
+
+
+
           },
           tooltip: 'Increment Counter',
           child: const Icon(Icons.add),
@@ -120,7 +138,22 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
                 child: CustomTabBar(
                   icons: _icons,
                   selectedIndex: _selectedIndex,
-                  onTap: (index) => setState(() => _selectedIndex = index),
+                  onTap: (index) => setState(() {
+                    _selectedIndex = index;
+                    if(index == 2){
+                      isInReceipt = true;
+                      print("index" + index.toString());
+                      print("seledindex" + _selectedIndex.toString());
+
+                      print("isInRecipt" + isInReceipt.toString());
+                    } else {
+                      isInReceipt = false;
+                      print("index" + index.toString());
+                      print("seledindex" + _selectedIndex.toString());
+
+                      print("isInRecipt" + isInReceipt.toString());
+                    }
+                  }),
                 ),
               )
             : const SizedBox.shrink(),

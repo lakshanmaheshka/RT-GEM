@@ -3,7 +3,6 @@ import 'package:rt_gem/provider/google_sign_in.dart';
 import 'package:rt_gem/screens/nav_screen.dart';
 import 'package:rt_gem/utils/database.dart';
 import 'package:rt_gem/widgets/background_painter.dart';
-import 'package:rt_gem/screens/profile_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

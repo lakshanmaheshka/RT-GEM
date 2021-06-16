@@ -167,8 +167,8 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm>
   @override
   void dispose() {
     super.dispose();
-    _arrowAnimationController?.dispose();
-    _animationController?.dispose();
+    _arrowAnimationController.dispose();
+    _animationController.dispose();
   }
 
   @override

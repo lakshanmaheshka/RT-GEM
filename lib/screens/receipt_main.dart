@@ -12,33 +12,30 @@ import 'package:rt_gem/widgets/receipt_widgets/views/new_transaction.dart';
 class ReceiptMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (context) => Transactions(),
-        builder: (context, child) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'RT GEM',
-            theme: ThemeData(
-              primaryColor: AppTheme.white,
-              accentColor: AppTheme.white.withOpacity(0.4),
-              fontFamily: 'Quicksand',
-              appBarTheme: AppBarTheme(
-                textTheme: ThemeData.light().textTheme.copyWith(
-                  headline1: const TextStyle(
-                    fontFamily: AppTheme.fontName,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 24,
-                    letterSpacing: 1.2,
-                    color: AppTheme.darkerText,
-                  ),
-                ),
-              ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'RT GEM',
+      theme: ThemeData(
+        primaryColor: AppTheme.white,
+        accentColor: AppTheme.white.withOpacity(0.4),
+        fontFamily: 'Quicksand',
+        appBarTheme: AppBarTheme(
+          textTheme: ThemeData.light().textTheme.copyWith(
+            headline1: const TextStyle(
+              fontFamily: AppTheme.fontName,
+              fontWeight: FontWeight.w700,
+              fontSize: 24,
+              letterSpacing: 1.2,
+              color: AppTheme.darkerText,
             ),
-            routes: {
-              ReceiptScreen.routeName: (_) => ReceiptScreen(),
-              NewTransaction.routeName: (_) => NewTransaction(),
-            },
-          );
-        });
+          ),
+        ),
+      ),
+      home: ReceiptScreen(),
+      // routes: {
+      //   ReceiptScreen.routeName: (_) => ReceiptScreen(),
+      //   //NewTransaction.routeName: (_) => NewTransaction(),
+      // },
+    );
   }
 }

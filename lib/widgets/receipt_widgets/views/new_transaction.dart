@@ -8,7 +8,7 @@ import 'package:rt_gem/utils/constants_categories.dart';
 import 'package:rt_gem/utils/database.dart';
 
 class NewTransaction extends StatefulWidget {
-  static const routeName = '/new-transaction';
+  // static const routeName = '/new-transaction';
   @override
   _NewTransactionState createState() => _NewTransactionState();
 }
@@ -135,7 +135,7 @@ class _NewTransactionState extends State<NewTransaction> {
                     // );
 
                     transactions.addTransactions(
-                      Transaction(
+                      Receipt(
                         id: DateTime.now().toString(),
                         title: enteredTitle,
                         amount: enteredAmount,

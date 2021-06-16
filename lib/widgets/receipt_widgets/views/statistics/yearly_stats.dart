@@ -26,7 +26,7 @@ class _YearlyStatsState extends State<YearlyStats> {
     return Column(
       children: [
         Container(
-          height: 350,
+          height: 300,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18.0),
             color: Theme.of(context).primaryColorDark, //Color(0xff81e5cd),

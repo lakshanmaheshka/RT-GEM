@@ -131,8 +131,8 @@ class _AddReceiptTabState extends State<AddReceiptTab>
   @override
   void dispose() {
     super.dispose();
-    _arrowAnimationController?.dispose();
-    _animationController?.dispose();
+    _arrowAnimationController.dispose();
+    _animationController.dispose();
   }
 
   @override

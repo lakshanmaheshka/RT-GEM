@@ -11,7 +11,7 @@ import '../widgets/receipt_widgets/views/new_transaction.dart';
 import '../widgets/receipt_widgets/views/trasactions/weekly_spendings.dart';
 
 class ReceiptScreen extends StatefulWidget {
-  static const routeName = '/';
+  //static const routeName = '/';
   @override
   _ReceiptScreenState createState() => _ReceiptScreenState();
 }
@@ -42,20 +42,17 @@ class _ReceiptScreenState extends State<ReceiptScreen>
           "Receipt Tracker",
           style: Theme.of(context).appBarTheme.textTheme!.headline1,
         ),
-        actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () =>
-                  Navigator.of(context).pushNamed(NewTransaction.routeName)),
-        ],
+        // actions: <Widget>[
+        //   IconButton(
+        //       icon: Icon(Icons.add),
+        //       onPressed: () {})
+        //           //Navigator.of(context).pushNamed(NewTransaction.routeName)),
+        // ],
         bottom: new TabBar(
           unselectedLabelColor: Colors.grey,
           labelColor: Colors.black,
           indicatorColor: Theme.of(context).primaryColorDark,
           tabs: <Widget>[
-            new Tab(
-              text: "Daily",
-            ),
             new Tab(
               text: "Weekly",
             ),
@@ -64,6 +61,9 @@ class _ReceiptScreenState extends State<ReceiptScreen>
             ),
             new Tab(
               text: 'Yearly',
+            ),
+            new Tab(
+              text: "Daily",
             ),
           ],
           controller: tabController,
@@ -80,10 +80,10 @@ class _ReceiptScreenState extends State<ReceiptScreen>
                     ? Center(child: CircularProgressIndicator())
                     : TabBarView(
                         children: <Widget>[
-                          new DailySpendings(),
                           new WeeklySpendings(),
                           new MonthlySpendings(),
                           new YearlySpendings(),
+                          new DailySpendings(),
                         ],
                         controller: tabController,
                       ),

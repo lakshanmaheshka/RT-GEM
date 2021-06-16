@@ -1,13 +1,10 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:rt_gem/screens/main_page.dart';
-import 'package:rt_gem/screens/main_page.dart';
-import 'package:rt_gem/theme.dart';
+import 'package:rt_gem/utils/receipt_models/transaction.dart';
 
-import 'screens/login_page.dart';
 import 'provider/email_sign_in.dart';
 import 'provider/google_sign_in.dart';
 
@@ -32,6 +29,7 @@ class MyApp extends StatelessWidget {
     providers: [
       ChangeNotifierProvider(create: (context) => GoogleSignInProvider()),
       ChangeNotifierProvider(create: (context) => EmailSignInProvider()),
+      ChangeNotifierProvider(create: (context) => Transactions()),
     ],
     child: MaterialApp(
       debugShowCheckedModeBanner: false,

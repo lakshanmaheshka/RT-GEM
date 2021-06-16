@@ -7,17 +7,17 @@ import 'package:intl/intl.dart';
 import 'package:rt_gem/utils/database.dart';
 
 
-class Transaction {
+class Receipt {
   final String? id;
   final String? title;
   final int? amount;
   final DateTime? date;
   final String? category;
 
-  const Transaction(
+  const Receipt(
       {this.id, this.title, this.amount, this.date, this.category});
 
-  Map<String, dynamic> toMap(Transaction t) {
+  Map<String, dynamic> toMap(Receipt t) {
     return {
       'id': t.id,
       'title': t.title,
@@ -29,13 +29,13 @@ class Transaction {
 }
 
 class Transactions with ChangeNotifier {
-  List<Transaction> _transactions = [];
+  List<Receipt> _transactions = [];
 
-  List<Transaction> get transactions {
+  List<Receipt> get transactions {
     return [..._transactions];
   }
 
-  int getTotal(List<Transaction> transaction) {
+  int getTotal(List<Receipt> transaction) {
     var total = 0;
     if (transaction.isEmpty) {
       return total;
@@ -46,7 +46,7 @@ class Transactions with ChangeNotifier {
     return total;
   }
 
-  void addTransactions(Transaction transaction) {
+  void addTransactions(Receipt transaction) {
     _transactions.add(transaction);
     notifyListeners();
     print("data");
@@ -60,7 +60,7 @@ class Transactions with ChangeNotifier {
     // DBHelper.insert(transaction);
   }
 
-  List<Transaction> monthlyTransactions(String? month, String year) {
+  List<Receipt> monthlyTransactions(String? month, String year) {
     return _transactions.where((trx) {
       if (DateFormat('yyyy')
                   .format(DateTime.parse(trx.date!.toIso8601String())) ==
@@ -74,7 +74,7 @@ class Transactions with ChangeNotifier {
     }).toList();
   }
 
-  List<Transaction> yearlyTransactions(String year) {
+  List<Receipt> yearlyTransactions(String year) {
     return _transactions.where((trx) {
       if (DateFormat('yyyy')
               .format(DateTime.parse(trx.date!.toIso8601String())) ==
@@ -85,7 +85,7 @@ class Transactions with ChangeNotifier {
     }).toList();
   }
 
-  List<Transaction> dailyTransactions() {
+  List<Receipt> dailyTransactions() {
     return _transactions.where((trx) {
       if (DateTime.now().day ==
               DateTime.parse(trx.date!.toIso8601String()).day &&
@@ -99,7 +99,7 @@ class Transactions with ChangeNotifier {
     }).toList();
   }
 
-  List<Transaction> get rescentTransactions {
+  List<Receipt> get rescentTransactions {
     return transactions.where((tx) {
       return tx.date!.isAfter(DateTime.now().subtract(
         Duration(days: 7),
@@ -113,7 +113,7 @@ class Transactions with ChangeNotifier {
 
     _transactions = fetchedData
         .map(
-          (item) => Transaction(
+          (item) => Receipt(
             id: item['id'],
             title: item['receiptName'],
             amount: item['amount'],
@@ -137,7 +137,7 @@ class Transactions with ChangeNotifier {
   }
 
   List<Map<String, Object>> firstSixMonthsTransValues(
-      List<Transaction> trans, int year) {
+      List<Receipt> trans, int year) {
     return List.generate(6, (index) {
       List<int> months = [
         DateTime.january,
@@ -172,7 +172,7 @@ class Transactions with ChangeNotifier {
   }
 
   List<Map<String, Object>> lastSixMonthsTransValues(
-      List<Transaction> trans, int year) {
+      List<Receipt> trans, int year) {
     return List.generate(6, (index) {
       List<int> months = [
         DateTime.july,

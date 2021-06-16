@@ -17,7 +17,7 @@ class PieData {
     this.price,
   });
 
-  List<PieData> pieChartData(List<Transaction> trx) {
+  List<PieData> pieChartData(List<Receipt> trx) {
     int total = Transactions().getTotal(trx);
     List<Map<String, Object?>> finalData = sortedPieData(trx);
     RandomColor _randomColor = RandomColor();
@@ -43,7 +43,7 @@ class PieData {
   }
 
   // Sortig Data According To Category vise
-  List<Map<String, Object?>> sortedPieData(List<Transaction> trx) {
+  List<Map<String, Object?>> sortedPieData(List<Receipt> trx) {
     List<Map<String, Object?>> finalList = [];
 
     for (var i = 0; i < trx.length; i++) {
