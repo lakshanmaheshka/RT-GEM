@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rt_gem/utils/app_theme.dart';
 import 'package:rt_gem/utils/custom_colors.dart';
@@ -305,6 +306,8 @@ class _YearlySpendingsState extends State<YearlySpendings> {
                     );
                   },
                 ),
+
+          kIsWeb ? SizedBox( ) : SizedBox( height: 80),
         ],
       ),
     );

@@ -1,5 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rt_gem/utils/custom_colors.dart';
 import 'package:rt_gem/utils/database.dart';
@@ -27,7 +28,7 @@ class SummaryView extends StatelessWidget {
                 0.0, 30 * (1.0 - animation!.value), 0.0),
             child: Padding(
               padding: const EdgeInsets.only(
-                  left: 24, right: 24, top: 16, bottom: 18),
+                  left: 15, right: 15, top: 16, bottom: 18),
               child: Container(
                 decoration: BoxDecoration(
                   color: AppTheme.white,
@@ -194,7 +195,7 @@ class SummaryView extends StatelessWidget {
                                                         fontFamily:
                                                         AppTheme.fontName,
                                                         fontWeight: FontWeight.w500,
-                                                        fontSize: 16,
+                                                        fontSize: kIsWeb ? 16 : 14,
                                                         letterSpacing: -0.1,
                                                         color: AppTheme.grey
                                                             .withOpacity(0.5),
@@ -370,11 +371,11 @@ class SummaryView extends StatelessWidget {
                                     children: <Widget>[
                                       Expanded(
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
                                           children: <Widget>[
                                             Text(
-                                              'Beverages',
+                                              ' \nBeverages',
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 fontFamily: AppTheme.fontName,
@@ -433,11 +434,11 @@ class SummaryView extends StatelessWidget {
                                       ),
                                       Expanded(
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
                                           children: <Widget>[
                                             Text(
-                                              'Bread/Bakery',
+                                              'Bread/\nBakery',
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 fontFamily: AppTheme.fontName,
@@ -496,11 +497,11 @@ class SummaryView extends StatelessWidget {
                                       ),
                                       Expanded(
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
                                           children: <Widget>[
                                             Text(
-                                              'Dairy Products',
+                                              'Dairy\nProducts',
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 fontFamily: AppTheme.fontName,
@@ -566,10 +567,10 @@ class SummaryView extends StatelessWidget {
                                           children: <Widget>[
                                             Column(
                                               mainAxisAlignment: MainAxisAlignment.center,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
                                               children: <Widget>[
                                                 Text(
-                                                  'Cereals',
+                                                  ' \nCereals',
                                                   style: TextStyle(
                                                     fontFamily: AppTheme.fontName,
                                                     fontWeight: FontWeight.w500,
@@ -638,10 +639,10 @@ class SummaryView extends StatelessWidget {
                                     Expanded(
                                       child: Column(
                                         mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
                                         children: <Widget>[
                                           Text(
-                                            'Canned Foods',
+                                            'Canned\nFoods',
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               fontFamily: AppTheme.fontName,
@@ -701,10 +702,10 @@ class SummaryView extends StatelessWidget {
                                     Expanded(
                                       child: Column(
                                         mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
                                         children: <Widget>[
                                           Text(
-                                            'Frozen Foods',
+                                            'Frozen\nFoods',
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               fontFamily: AppTheme.fontName,
@@ -763,11 +764,11 @@ class SummaryView extends StatelessWidget {
                                     ),
                                     Expanded(
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
                                         children: <Widget>[
                                           Text(
-                                            'Snack Foods',
+                                            'Snack\nFoods',
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               fontFamily: AppTheme.fontName,
@@ -833,10 +834,10 @@ class SummaryView extends StatelessWidget {
                                         children: <Widget>[
                                           Column(
                                             mainAxisAlignment: MainAxisAlignment.center,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
                                             children: <Widget>[
                                               Text(
-                                                'Others',
+                                                ' \nOthers',
                                                 style: TextStyle(
                                                   fontFamily: AppTheme.fontName,
                                                   fontWeight: FontWeight.w500,

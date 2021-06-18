@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:rt_gem/screens/main_page.dart';
+import 'package:rt_gem/utils/app_theme.dart';
 import 'package:rt_gem/utils/receipt_models/transaction.dart';
 
 import 'provider/email_sign_in.dart';
@@ -34,7 +35,24 @@ class MyApp extends StatelessWidget {
     child: MaterialApp(
       debugShowCheckedModeBanner: false,
       title: title,
-      theme: ThemeData(primarySwatch: Colors.deepOrange),
+      theme: ThemeData(
+        primaryColor: Colors.blue,
+        accentColor: Colors.blue.withOpacity(0.4),
+        fontFamily: 'Quicksand',
+        appBarTheme: AppBarTheme(
+          backgroundColor: AppTheme.white,
+          iconTheme: IconThemeData(color: Colors.blue),
+          textTheme: ThemeData.light().textTheme.copyWith(
+            headline6: const TextStyle(
+              fontFamily: AppTheme.fontName,
+              fontWeight: FontWeight.w700,
+              //fontSize: 30,
+              letterSpacing: 1.2,
+              color: AppTheme.darkerText,
+            ),
+          ),
+        ),
+      ),
       home: MainPage(),
     ),
   );

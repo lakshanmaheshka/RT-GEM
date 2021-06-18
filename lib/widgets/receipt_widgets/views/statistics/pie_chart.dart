@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:rt_gem/utils/receipt_models/pie_data.dart';
 import 'package:rt_gem/widgets/receipt_widgets/widgets/pie_chart_widgets/indicators_widget.dart';
 import 'package:rt_gem/widgets/receipt_widgets/widgets/pie_chart_widgets/pie_chart_sections.dart';
@@ -23,7 +24,7 @@ class _MyPieChartState extends State<MyPieChart> {
   @override
   Widget build(BuildContext context) {
     final screenWidht = MediaQuery.of(context).size.width;
-    return Row(
+    return kIsWeb ? Row(
       children: <Widget>[
         Expanded(
           child: PieChart(
@@ -58,6 +59,46 @@ class _MyPieChartState extends State<MyPieChart> {
               ),
             ),
           ],
+        ),
+      ],
+    )
+        :
+    Row(
+      children: <Widget>[
+
+        // Row(
+        //   mainAxisSize: MainAxisSize.min,
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   children: [
+        //     Padding(
+        //       padding: const EdgeInsets.all(2),
+        //       child: IndicatorsWidget(
+        //         pieData: widget.pieData,
+        //       ),
+        //     ),
+        //   ],
+        // ),
+        Expanded(
+          child: PieChart(
+            PieChartData(
+              pieTouchData: PieTouchData(
+                touchCallback: (pieTouchResponse) {
+                  setState(() {
+                    if (pieTouchResponse.touchInput is FlLongPressEnd ||
+                        pieTouchResponse.touchInput is FlPanEnd) {
+                      touchedIndex = -1;
+                    } else {
+                      touchedIndex = pieTouchResponse.touchedSection!.touchedSectionIndex;
+                    }
+                  });
+                },
+              ),
+              borderData: FlBorderData(show: false),
+              sectionsSpace: 0,
+              centerSpaceRadius: 30,
+              sections: getSections(touchedIndex, widget.pieData!,250),
+            ),
+          ),
         ),
       ],
     );

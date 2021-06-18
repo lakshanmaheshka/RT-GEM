@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:rt_gem/utils/database.dart';
 import 'package:rt_gem/utils/receipt_models/transaction.dart';
+import 'package:rt_gem/widgets/receipt_widgets/widgets/pie_chart_widgets/pie_chart_sections.dart';
+
+import '../../snackbar.dart';
 
 class TransactionListItems extends StatefulWidget {
   final Receipt trx;
@@ -29,7 +32,7 @@ class _TransactionListItemsState extends State<TransactionListItems> {
             Container(
               margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
               padding: const EdgeInsets.all(8.0),
-              child: Text("₹${widget.trx.amount}",
+              child: Text("${getCurrency()}${widget.trx.amount}",
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -79,12 +82,13 @@ class _TransactionListItemsState extends State<TransactionListItems> {
                         content: const Text(
                             'Do you really want to delete this transaction?'),
                         actions: [
-                          FlatButton(
+                          TextButton(
                               onPressed: () {
                                 widget.dltTrxItem!(widget.trx.id);
                                 Database.deleteReceipt(
                                   docId: widget.documentId,
                                 );
+                                CustomSnackBar(context, const Text('Receipt Deleted'));
                                 Navigator.pop(context);
                               },
                               child: Text(
@@ -93,7 +97,7 @@ class _TransactionListItemsState extends State<TransactionListItems> {
                                     fontSize: 20,
                                     color: Theme.of(context).primaryColor),
                               )),
-                          FlatButton(
+                          TextButton(
                               onPressed: () {
                                 Navigator.pop(context);
                               },

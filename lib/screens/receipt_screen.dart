@@ -1,23 +1,23 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-
+import 'package:rt_gem/utils/receipt_models/transaction.dart';
 import 'package:provider/provider.dart';
+import 'package:rt_gem/utils/app_theme.dart';
+import 'package:rt_gem/widgets/custom_dialog/add_dialog/add_dialog.dart';
+import 'package:rt_gem/widgets/receipt_widgets/views/trasactions/daily_spendings.dart';
+import 'package:rt_gem/widgets/receipt_widgets/views/trasactions/monthly_spendings.dart';
+import 'package:rt_gem/widgets/receipt_widgets/views/trasactions/weekly_spendings.dart';
+import 'package:rt_gem/widgets/receipt_widgets/views/trasactions/yearly_spendings.dart';
 
-import '../utils/receipt_models/transaction.dart';
-import '../widgets/receipt_widgets/views/trasactions/daily_spendings.dart';
-import '../widgets/receipt_widgets/views/trasactions/monthly_spendings.dart';
-import '../widgets/receipt_widgets/views/trasactions/yearly_spendings.dart';
-import '../widgets/receipt_widgets/widgets/app_drawer.dart';
-import '../widgets/receipt_widgets/views/new_transaction.dart';
-import '../widgets/receipt_widgets/views/trasactions/weekly_spendings.dart';
 
 class ReceiptScreen extends StatefulWidget {
-  //static const routeName = '/';
   @override
   _ReceiptScreenState createState() => _ReceiptScreenState();
 }
 
-class _ReceiptScreenState extends State<ReceiptScreen>
-    with SingleTickerProviderStateMixin {
+class _ReceiptScreenState extends State<ReceiptScreen> with SingleTickerProviderStateMixin {
+
   TabController? tabController;
 
   @override
@@ -34,13 +34,18 @@ class _ReceiptScreenState extends State<ReceiptScreen>
 
   @override
   Widget build(BuildContext context) {
-    final Size screenSize = MediaQuery.of(context).size;
-
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: AppTheme.white,
         title: Text(
           "Receipt Tracker",
-          style: Theme.of(context).appBarTheme.textTheme!.headline1,
+          style: const TextStyle(
+            fontFamily: AppTheme.fontName,
+            fontWeight: FontWeight.w700,
+            fontSize: 24,
+            letterSpacing: 1.2,
+            color: AppTheme.darkerText,
+          ),
         ),
         // actions: <Widget>[
         //   IconButton(
@@ -76,17 +81,17 @@ class _ReceiptScreenState extends State<ReceiptScreen>
             future: Provider.of<Transactions>(context, listen: false)
                 .fetchTransactions(),
             builder: (ctx, snapshot) =>
-                (snapshot.connectionState == ConnectionState.waiting)
-                    ? Center(child: CircularProgressIndicator())
-                    : TabBarView(
-                        children: <Widget>[
-                          new WeeklySpendings(),
-                          new MonthlySpendings(),
-                          new YearlySpendings(),
-                          new DailySpendings(),
-                        ],
-                        controller: tabController,
-                      ),
+            (snapshot.connectionState == ConnectionState.waiting)
+                ? Center(child: CircularProgressIndicator())
+                : TabBarView(
+              children: <Widget>[
+                new WeeklySpendings(),
+                new MonthlySpendings(),
+                new YearlySpendings(),
+                new DailySpendings(),
+              ],
+              controller: tabController,
+            ),
           ),
         ),
       ),

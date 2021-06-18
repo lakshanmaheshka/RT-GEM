@@ -2,14 +2,14 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rt_gem/screens/calender_screen.dart';
-import 'package:rt_gem/screens/receipt_main.dart';
-import 'package:rt_gem/widgets/receipt_widgets/views/trasactions/add_receipt.dart';
+import 'package:rt_gem/screens/receipt_screen.dart';
+import 'package:rt_gem/widgets/isApp/views/add_grocery.dart';
+import 'package:rt_gem/widgets/receipt_widgets/views/add_receipt.dart';
 import 'package:rt_gem/widgets/AnimatedIndexedStack.dart';
 import 'package:rt_gem/widgets/custom_dialog/add_dialog/add_dialog.dart';
 import 'package:rt_gem/widgets/isApp/bottom_navigation_view/bottom_bar_view.dart';
 import 'package:rt_gem/widgets/isApp/bottom_navigation_view/tabIcon_data.dart';
 import 'package:rt_gem/screens/home_screen.dart';
-import 'package:rt_gem/widgets/receipt_widgets/views/new_transaction.dart';
 import 'package:rt_gem/widgets/widgets.dart';
 
 import '../theme.dart';
@@ -128,7 +128,7 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
           children: <Widget>[
             HomeScreen(animationController: animationController),
             CalenderScreen(animationController: animationController),
-            ReceiptMain(),
+            ReceiptScreen(),
             ProfileScreen(),
           ],
         ),
@@ -159,32 +159,20 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
               )
             : const SizedBox.shrink(),
       )
-                   :
-               Scaffold(
-                  backgroundColor: Colors.transparent,
-                  body: FutureBuilder<bool>(
-                    future: getData(),
-                    builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                      if (!snapshot.hasData) {
-                        return const SizedBox();
-                      } else {
-                        return Stack(
-                          children: <Widget>[
-                            tabBody,
-                            bottomBar(),
-                          ],
-                        );
-                      }
-                    },
-                  ),
-                ),
+          :
+              Stack(
+                children: <Widget>[
+                  tabBody,
+                  bottomBar(),
+                ],
+              ),
     );
   }
 
-  Future<bool> getData() async {
-    await Future<dynamic>.delayed(const Duration(milliseconds: 200));
-    return true;
-  }
+  // Future<bool> getData() async {
+  //   await Future<dynamic>.delayed(const Duration(milliseconds: 200));
+  //   return true;
+  // }
 
   Widget tabBody = Container(
       decoration: const BoxDecoration(
@@ -202,22 +190,40 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
 
   Widget bottomBar() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-        const Expanded(
-          child: SizedBox(),
-        ),
+        // const Expanded(
+        //   child: SizedBox(),
+        // ),
         BottomBarView(
           tabIconsList: tabIconsList,
-          addClick: () {},
+          addClick: () {
+
+            if(isInReceipt){
+
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddReceipt()));
+
+            }  else {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddGrocery()));
+            }
+
+          },
           changeIndex: (int index) {
 
             switch (index) {
               case 0:
+
                 animationController!.reverse().then<dynamic>((data) {
                   if (!mounted) {
                     return;
                   }
                   setState(() {
+                    isInReceipt = false;
                     tabBody =
                         HomeScreen(animationController: animationController);
                   });
@@ -229,6 +235,7 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
                     return;
                   }
                   setState(() {
+                    isInReceipt = false;
                     tabBody =
                         CalenderScreen(animationController: animationController);
                   });
@@ -240,8 +247,9 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
                     return;
                   }
                   setState(() {
+                    isInReceipt = true;
                     tabBody =
-                        ReceiptMain();
+                        ReceiptScreen();
                   });
                 });
                 break;
@@ -251,6 +259,7 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
                     return;
                   }
                   setState(() {
+                    isInReceipt = false;
                     tabBody =
                         ProfileScreen();
                   });

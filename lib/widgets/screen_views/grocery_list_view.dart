@@ -1,9 +1,11 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rt_gem/utils/custom_colors.dart';
 import 'package:rt_gem/utils/database.dart';
 import 'package:rt_gem/widgets/custom_dialog/edit_dialog/edit_dialog.dart';
+import 'package:rt_gem/widgets/isApp/views/edit_grocery.dart';
 import '../../utils/app_theme.dart';
 
 class GroceryListView extends StatefulWidget {
@@ -319,6 +321,8 @@ class ItemsView extends StatelessWidget {
                         topRight: Radius.circular(54.0),
                       ),
                       onTap: () {
+
+                        kIsWeb ?
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -331,7 +335,18 @@ class ItemsView extends StatelessWidget {
                                 documentId: docID,
 
                               );
-                            });
+                            }) :
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => EditGrocery(
+                              currentProductName: productName,
+                              currentCategory: currentCategory,
+                              currentItemMfg: currentItemMfg,
+                              currentItemExp: currentItemExp,
+                              currentQuantity: currentQuantity,
+                              documentId: docID,
+
+                            )));
                       },
                       child: Container(
                         decoration: BoxDecoration(
