@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class CustomColors {
@@ -18,5 +20,15 @@ class HexColor extends Color {
       hexColor = 'FF' + hexColor;
     }
     return int.parse(hexColor, radix: 16);
+  }
+}
+
+
+class RandomColor {
+  static final Random _random = new Random();
+
+  /// Returns a random color.
+  static Color next() {
+    return new Color(0xFF000000 + _random.nextInt(0x00FFFFFF));
   }
 }

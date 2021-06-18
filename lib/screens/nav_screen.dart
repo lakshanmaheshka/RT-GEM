@@ -84,7 +84,8 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
     final Size screenSize = MediaQuery.of(context).size;
     return DefaultTabController(
       length: _icons.length,
-      child: kIsWeb ? Scaffold(
+      child: kIsWeb ?
+              Scaffold(
         appBar: Responsive.isDesktop(context)
             ? PreferredSize(
                 preferredSize: Size(screenSize.width, 100.0),
@@ -157,24 +158,26 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
                 ),
               )
             : const SizedBox.shrink(),
-      ) : Scaffold(
-        backgroundColor: Colors.transparent,
-        body: FutureBuilder<bool>(
-          future: getData(),
-          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-            if (!snapshot.hasData) {
-              return const SizedBox();
-            } else {
-              return Stack(
-                children: <Widget>[
-                  tabBody,
-                  bottomBar(),
-                ],
-              );
-            }
-          },
-        ),
-      ),
+      )
+                   :
+               Scaffold(
+                  backgroundColor: Colors.transparent,
+                  body: FutureBuilder<bool>(
+                    future: getData(),
+                    builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                      if (!snapshot.hasData) {
+                        return const SizedBox();
+                      } else {
+                        return Stack(
+                          children: <Widget>[
+                            tabBody,
+                            bottomBar(),
+                          ],
+                        );
+                      }
+                    },
+                  ),
+                ),
     );
   }
 

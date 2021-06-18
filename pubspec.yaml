@@ -43,6 +43,8 @@ dependencies:
   path: ^1.8.0
   random_color: ^1.0.6-nullsafety
   url_launcher: ^6.0.6
+  http: ^0.13.3
+  webview_flutter: ^2.0.8
 
 
   # google sign in

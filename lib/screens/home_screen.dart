@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:rt_gem/widgets/screen_views/recipe_tile.dart';
+import 'package:rt_gem/widgets/screen_views/recipe_view.dart';
 
 import 'package:rt_gem/widgets/screen_views/summary_view.dart';
 import 'package:rt_gem/widgets/screen_views/title_view.dart';
@@ -116,6 +118,18 @@ class _HomeScreenState extends State<HomeScreen>
         isButtonEnabled: true,
       ),
     );
+
+    listViews.add(
+      RecipeView(
+        animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+            parent: widget.animationController!,
+            curve:
+            Interval((1 / count) * 1, 1.0, curve: Curves.fastOutSlowIn))),
+        animationController: widget.animationController,
+      ),
+    );
+
+
   }
 
   Future<bool> getData() async {
