@@ -119,7 +119,7 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
 
 
           },
-          tooltip: 'Increment Counter',
+          tooltip: isInReceipt ? 'Add Receipt' : 'Add Grocery',
           child: const Icon(Icons.add),
         ),
         floatingActionButtonLocation: Responsive.isDesktop(context) ? FloatingActionButtonLocation.centerTop : FloatingActionButtonLocation.endFloat,

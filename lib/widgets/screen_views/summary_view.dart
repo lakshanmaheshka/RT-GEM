@@ -8,7 +8,7 @@ import 'dart:math' as math;
 
 import '../../utils/app_theme.dart';
 
-class SummaryView extends StatelessWidget {
+class SummaryView extends StatefulWidget {
   final AnimationController? animationController;
   final Animation? animation;
 
@@ -17,15 +17,43 @@ class SummaryView extends StatelessWidget {
       : super(key: key);
 
   @override
+  _SummaryViewState createState() => _SummaryViewState();
+}
+
+class _SummaryViewState extends State<SummaryView> {
+
+
+  late String expires;
+
+  late int itemsleft = 0;
+  late int itemsused = 0;
+  late int itemformonth = 50;
+
+
+  late double citemleft = 0.0;
+  late double citemsused = 25.0;
+  late double citemformonth = 50.0;
+
+
+  @override
+  void initState() {
+    super.initState();
+    expires = "this week";
+    itemsleft = itemformonth - itemsused;
+    citemleft = citemformonth - citemsused;
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: animationController!,
+      animation: widget.animationController!,
       builder: (BuildContext context, Widget? child) {
         return FadeTransition(
-          opacity: animation as Animation<double>,
+          opacity: widget.animation as Animation<double>,
           child: new Transform(
             transform: new Matrix4.translationValues(
-                0.0, 30 * (1.0 - animation!.value), 0.0),
+                0.0, 30 * (1.0 - widget.animation!.value), 0.0),
             child: Padding(
               padding: const EdgeInsets.only(
                   left: 15, right: 15, top: 16, bottom: 18),
@@ -120,7 +148,7 @@ class SummaryView extends StatelessWidget {
                                                         const EdgeInsets.only(
                                                             left: 4, bottom: 3),
                                                         child: Text(
-                                                          '${(snapshot.data!.docs.length * animation!.value).toInt()}',
+                                                          '${(snapshot.data!.docs.length * widget.animation!.value).toInt()}',
                                                           textAlign: TextAlign.center,
                                                           style: TextStyle(
                                                             fontFamily:
@@ -134,27 +162,6 @@ class SummaryView extends StatelessWidget {
                                                           ),
                                                         ),
                                                       ),
-                                                      /*Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 4, bottom: 3),
-                                                  child: Text(
-                                                    'Kcal',
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                      fontFamily:
-                                                          FitnessAppTheme
-                                                              .fontName,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 12,
-                                                      letterSpacing: -0.2,
-                                                      color: FitnessAppTheme
-                                                          .grey
-                                                          .withOpacity(0.5),
-                                                    ),
-                                                  ),
-                                                ),*/
                                                     ],
                                                   )
                                                 ],
@@ -177,88 +184,72 @@ class SummaryView extends StatelessWidget {
                                                     Radius.circular(4.0)),
                                               ),
                                             ),
-                                            Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                                children: <Widget>[
-                                                  Padding(
-                                                    padding: const EdgeInsets.only(
-                                                        left: 4, bottom: 2),
-                                                    child: Text(
-                                                      'Expires this week',
-                                                      textAlign: TextAlign.center,
-                                                      style: TextStyle(
-                                                        fontFamily:
-                                                        AppTheme.fontName,
-                                                        fontWeight: FontWeight.w500,
-                                                        fontSize: kIsWeb ? 16 : 14,
-                                                        letterSpacing: -0.1,
-                                                        color: AppTheme.grey
-                                                            .withOpacity(0.5),
+                                            InkWell(
+                                              onTap: (){
+                                                setState(() {
+                                                  expires = "today";
+                                                });
+                                              },
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(
+                                                          left: 4, bottom: 2),
+                                                      child: Text(
+                                                        'Expires $expires',
+                                                        textAlign: TextAlign.center,
+                                                        style: TextStyle(
+                                                          fontFamily:
+                                                          AppTheme.fontName,
+                                                          fontWeight: FontWeight.w500,
+                                                          fontSize: kIsWeb ? 16 : 14,
+                                                          letterSpacing: -0.1,
+                                                          color: AppTheme.grey
+                                                              .withOpacity(0.5),
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                    crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                    children: <Widget>[
-                                                      SizedBox(
-                                                        width: 28,
-                                                        height: 28,
-                                                        child: Image.asset(
-                                                            "assets/fitness_app/burned.png"),
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                        const EdgeInsets.only(
-                                                            left: 4, bottom: 3),
-                                                        child: Text(
-                                                          '${(5 * animation!.value).toInt()}',
-                                                          textAlign: TextAlign.center,
-                                                          style: TextStyle(
-                                                            fontFamily:
-                                                            AppTheme
-                                                                .fontName,
-                                                            fontWeight:
-                                                            FontWeight.w600,
-                                                            fontSize: 16,
-                                                            color: AppTheme
-                                                                .darkerText,
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                      crossAxisAlignment:
+                                                      CrossAxisAlignment.end,
+                                                      children: <Widget>[
+                                                        SizedBox(
+                                                          width: 28,
+                                                          height: 28,
+                                                          child: Image.asset(
+                                                              "assets/fitness_app/burned.png"),
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                          const EdgeInsets.only(
+                                                              left: 4, bottom: 3),
+                                                          child: Text(
+                                                            '${(5 * widget.animation!.value).toInt()}',
+                                                            textAlign: TextAlign.center,
+                                                            style: TextStyle(
+                                                              fontFamily:
+                                                              AppTheme
+                                                                  .fontName,
+                                                              fontWeight:
+                                                              FontWeight.w600,
+                                                              fontSize: 16,
+                                                              color: AppTheme
+                                                                  .darkerText,
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-/*
-                                                      Padding(
-                                                        padding:
-                                                        const EdgeInsets.only(
-                                                            left: 8, bottom: 3),
-                                                        child: Text(
-                                                          'Kcal',
-                                                          textAlign: TextAlign.center,
-                                                          style: TextStyle(
-                                                            fontFamily:
-                                                            AppTheme
-                                                                .fontName,
-                                                            fontWeight:
-                                                            FontWeight.w600,
-                                                            fontSize: 12,
-                                                            letterSpacing: -0.2,
-                                                            color: AppTheme
-                                                                .grey
-                                                                .withOpacity(0.5),
-                                                          ),
-                                                        ),
-                                                      ),
-*/
-                                                    ],
-                                                  )
-                                                ],
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
                                               ),
                                             )
                                           ],
@@ -295,7 +286,7 @@ class SummaryView extends StatelessWidget {
                                               CrossAxisAlignment.center,
                                               children: <Widget>[
                                                 Text(
-                                                  '${(3 * animation!.value).toInt()}',
+                                                  '${(itemsleft * widget.animation!.value).toInt()}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                     fontFamily:
@@ -333,9 +324,14 @@ class SummaryView extends StatelessWidget {
                                                   HexColor("#8A98E8"),
                                                   HexColor("#8A98E8")
                                                 ],
-                                                angle: 340 +
-                                                    (360 - 140) *
-                                                        (1.0 - animation!.value)),
+                                                angle: itemformonth == 0 ?   (0 +
+                    (1.0 - widget.animation!.value)) :
+
+
+
+                                                (340/
+                                                    itemformonth) * itemsleft+
+                                                        (1.0 - widget.animation!.value)),
                                             child: SizedBox(
                                               width: 108,
                                               height: 108,
@@ -399,7 +395,7 @@ class SummaryView extends StatelessWidget {
                                                 child: Row(
                                                   children: <Widget>[
                                                     Container(
-                                                      width: ((70 / 1.2) * animation!.value),
+                                                      width: ((70 / 1.2) * widget.animation!.value),
                                                       height: 4,
                                                       decoration: BoxDecoration(
                                                         gradient: LinearGradient(colors: [
@@ -462,7 +458,7 @@ class SummaryView extends StatelessWidget {
                                                 child: Row(
                                                   children: <Widget>[
                                                     Container(
-                                                      width: ((70 / 1.2) * animation!.value),
+                                                      width: ((70 / 1.2) * widget.animation!.value),
                                                       height: 4,
                                                       decoration: BoxDecoration(
                                                         gradient: LinearGradient(colors: [
@@ -526,7 +522,7 @@ class SummaryView extends StatelessWidget {
                                                   children: <Widget>[
                                                     Container(
                                                       width: ((70 / 2) *
-                                                          animationController!.value),
+                                                          widget.animationController!.value),
                                                       height: 4,
                                                       decoration: BoxDecoration(
                                                         gradient:
@@ -594,8 +590,9 @@ class SummaryView extends StatelessWidget {
                                                     child: Row(
                                                       children: <Widget>[
                                                         Container(
-                                                          width: ((70 / 2.5) *
-                                                              animationController!.value),
+                                                          width: (((70 /
+                                                              citemformonth) * citemleft) *
+                                                              widget.animationController!.value),
                                                           height: 4,
                                                           decoration: BoxDecoration(
                                                             gradient:
@@ -615,7 +612,7 @@ class SummaryView extends StatelessWidget {
                                                 Padding(
                                                   padding: const EdgeInsets.only(top: 6),
                                                   child: Text(
-                                                    '10g left',
+                                                    '$citemleft left',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                       fontFamily: AppTheme.fontName,
@@ -666,7 +663,7 @@ class SummaryView extends StatelessWidget {
                                               child: Row(
                                                 children: <Widget>[
                                                   Container(
-                                                    width: ((70 / 1.2) * animation!.value),
+                                                    width: ((70 / 1.2) * widget.animation!.value),
                                                     height: 4,
                                                     decoration: BoxDecoration(
                                                       gradient: LinearGradient(colors: [
@@ -729,7 +726,7 @@ class SummaryView extends StatelessWidget {
                                               child: Row(
                                                 children: <Widget>[
                                                   Container(
-                                                    width: ((70 / 1.2) * animation!.value),
+                                                    width: ((70 / 1.2) * widget.animation!.value),
                                                     height: 4,
                                                     decoration: BoxDecoration(
                                                       gradient: LinearGradient(colors: [
@@ -793,7 +790,7 @@ class SummaryView extends StatelessWidget {
                                                 children: <Widget>[
                                                   Container(
                                                     width: ((70 / 2) *
-                                                        animationController!.value),
+                                                        widget.animationController!.value),
                                                     height: 4,
                                                     decoration: BoxDecoration(
                                                       gradient:
@@ -862,7 +859,7 @@ class SummaryView extends StatelessWidget {
                                                     children: <Widget>[
                                                       Container(
                                                         width: ((70 / 2.5) *
-                                                            animationController!.value),
+                                                            widget.animationController!.value),
                                                         height: 4,
                                                         decoration: BoxDecoration(
                                                           gradient:
@@ -995,7 +992,7 @@ class CurvePainter extends CustomPainter {
     );
     final paint = new Paint()
       ..shader = gradient.createShader(rect)
-      ..strokeCap = StrokeCap.round // StrokeCap.round is not recommended.
+      ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke
       ..strokeWidth = 14;
     final center = new Offset(size.width / 2, size.height / 2);

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:rt_gem/utils/constants_categories.dart';
 import 'package:rt_gem/utils/database.dart';
 import 'package:rt_gem/widgets/number_input.dart';
@@ -10,16 +11,16 @@ import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:rt_gem/widgets/snackbar.dart';
 
-class AddGroceryTab extends StatefulWidget {
-  const AddGroceryTab({
+class AddGroceryForm extends StatefulWidget {
+  const AddGroceryForm({
     Key? key,
   }) : super(key: key);
 
   @override
-  _AddGroceryTabState createState() => _AddGroceryTabState();
+  _AddGroceryFormState createState() => _AddGroceryFormState();
 }
 
-class _AddGroceryTabState extends State<AddGroceryTab>
+class _AddGroceryFormState extends State<AddGroceryForm>
     with TickerProviderStateMixin {
   final GlobalKey<FormState> _addGroceryFormKey = new GlobalKey<FormState>();
   late final GlobalKey<FormFieldState> _key;
@@ -37,7 +38,7 @@ class _AddGroceryTabState extends State<AddGroceryTab>
   late AnimationController _animationController;
   late Animation _animation;
   // final TextEditingController _controller = new TextEditingController();
-  bool expirationType = false;
+  bool isExpirationTypeBestBefore = false;
   // TextEditingController _controllerone = TextEditingController();
   final FocusNode _titleFocusNode = FocusNode();
   final FocusNode _descriptionFocusNode = FocusNode();
@@ -255,7 +256,7 @@ class _AddGroceryTabState extends State<AddGroceryTab>
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(15, 7.5, 0, 0),
                           child: new TextFormField(
-                            enabled: !expirationType,
+                            enabled: !isExpirationTypeBestBefore,
                             onTap: () {
                               // Below line stops keyboard from appearing
                               FocusScope.of(context)
@@ -294,7 +295,7 @@ class _AddGroceryTabState extends State<AddGroceryTab>
                               onPressed: () {
                                 _titleFocusNode.unfocus();
 
-                                expirationType = !expirationType;
+                                isExpirationTypeBestBefore = !isExpirationTypeBestBefore;
                                 if (_animationController.value == 0.0) {
                                   _animationController.forward();
                                 } else {
@@ -319,8 +320,8 @@ class _AddGroceryTabState extends State<AddGroceryTab>
                         padding: const EdgeInsets.fromLTRB(0, 7.5, 15, 0),
                         child: NumberInputWithIncrementDecrement(
                           controller: _controllerBestBefore,
-                          suffixText: expirationType == true ? "Month/s" : "",
-                          enabled: expirationType,
+                          suffixText: isExpirationTypeBestBefore == true ? "Month/s" : "",
+                          enabled: isExpirationTypeBestBefore,
                           labelText: "Best Before",
                           prefixIcon: Icons.access_time,
                         ),
@@ -333,13 +334,31 @@ class _AddGroceryTabState extends State<AddGroceryTab>
                   child: InkWell(
                     onTap: () async {
                       ///ToDo: add form validations
-                      _submitForm();
-                      Database.addGrocery(
-                          productName: _titleController.text,
-                          quantity: _controllerQuantity.text,
-                          category: dropdownValue,
-                          manufacturedDate: _controllerManufacture.text,
-                          expiryDate: _controllerExpiration.text);
+                      //_submitForm();
+                      DateTime convertDate;
+                      if(isExpirationTypeBestBefore == true){
+                        convertDate = convertToDate(_controllerManufacture.text)!;
+                        int i = int.parse(_controllerBestBefore.text);
+                        DateTime d = Jiffy(convertDate).add(months: i).dateTime;
+                        String bestBeforeDate = new DateFormat.yMd().format(d);
+
+                        Database.addGrocery(
+                            productName: _titleController.text,
+                            quantity: _controllerQuantity.text,
+                            category: dropdownValue,
+                            manufacturedDate: _controllerManufacture.text,
+                            expiryDate: bestBeforeDate );
+
+                      } else {
+                        Database.addGrocery(
+                            productName: _titleController.text,
+                            quantity: _controllerQuantity.text,
+                            category: dropdownValue,
+                            manufacturedDate: _controllerManufacture.text,
+                            expiryDate: _controllerExpiration.text );
+                      }
+
+
 
                       _addGroceryFormKey.currentState!.reset();
                       _titleController.clear();

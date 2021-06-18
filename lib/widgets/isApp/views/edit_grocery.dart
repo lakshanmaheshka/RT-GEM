@@ -4,8 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rt_gem/utils/constants_categories.dart';
 import 'package:rt_gem/utils/receipt_models/transaction.dart';
-import 'package:rt_gem/widgets/custom_dialog/add_dialog/add_grocery_tab.dart';
-import 'package:rt_gem/widgets/custom_dialog/edit_dialog/update_grocery_tab.dart';
+import 'package:rt_gem/widgets/screen_views/form_views/add_grocery_formb.dart';
+import 'package:rt_gem/widgets/screen_views/form_views/update_grocery_tab.dart';
 import 'package:rt_gem/widgets/responsive.dart';
 import 'package:rt_gem/widgets/snackbar.dart';
 

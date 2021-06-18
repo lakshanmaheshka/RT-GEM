@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
       title: title,
       theme: ThemeData(
         primaryColor: Colors.blue,
-        accentColor: Colors.blue.withOpacity(0.4),
+        accentColor: Colors.blue.shade800,
         fontFamily: 'Quicksand',
         appBarTheme: AppBarTheme(
           backgroundColor: AppTheme.white,

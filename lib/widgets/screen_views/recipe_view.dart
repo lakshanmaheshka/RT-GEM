@@ -205,23 +205,23 @@ class _RecipeViewState extends State<RecipeView> {
                                       ),
                                     ),
                                   ) : Container(
-                                    child: kIsWeb ? Card(
-                                      child: GridView(
-                                          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                                              mainAxisSpacing: 10.0, maxCrossAxisExtent: 200.0),
-                                          shrinkWrap: true,
-                                          scrollDirection: Axis.vertical,
-                                          physics: ClampingScrollPhysics(),
-                                          children: List.generate(recipies.length, (index) {
-                                            return GridTile(
+                                    child: kIsWeb ? GridView(
+                                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                                            mainAxisSpacing: 10.0, maxCrossAxisExtent: 200.0),
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.vertical,
+                                        physics: ClampingScrollPhysics(),
+                                        children: List.generate(recipies.length, (index) {
+                                          return Card(
+                                            child: GridTile(
                                                 child: RecipieTile(
                                                   title: recipies[index].label,
                                                   imgUrl: recipies[index].image,
                                                   desc: recipies[index].source,
                                                   url: recipies[index].url,
-                                                ));
-                                          })),
-                                    ) :
+                                                )),
+                                          );
+                                        })) :
                                     ListView(
                                         shrinkWrap: true,
                                         scrollDirection: Axis.vertical,

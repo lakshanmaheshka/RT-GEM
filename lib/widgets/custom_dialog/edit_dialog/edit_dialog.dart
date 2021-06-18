@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:rt_gem/widgets/custom_dialog/add_dialog/add_grocery_tab.dart';
+import 'package:rt_gem/widgets/screen_views/form_views/add_grocery_formb.dart';
 import 'package:rt_gem/widgets/custom_dialog/add_dialog/add_receipt_tab.dart';
 import 'package:rt_gem/widgets/responsive.dart';
 
-import 'update_grocery_tab.dart';
+import '../../screen_views/form_views/update_grocery_tab.dart';
 
 class EditDialog extends StatefulWidget {
   final String currentProductName;
