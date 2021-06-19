@@ -46,7 +46,8 @@ dependencies:
   http: ^0.13.3
   webview_flutter: ^2.0.8
   jiffy: ^4.1.0
-
+  camera: ^0.8.1
+  google_ml_kit: ^0.3.0
 
   # google sign in
   google_sign_in: ^5.0.3

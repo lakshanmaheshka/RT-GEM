@@ -32,7 +32,7 @@ List<PieChartSectionData> getSections(
               foreground: Paint()
                 ..style = PaintingStyle.stroke
                 ..strokeWidth = 2
-                ..color = Colors.black!,
+                ..color = Colors.black,
             )
                : TextStyle(
               fontSize: fontSize,

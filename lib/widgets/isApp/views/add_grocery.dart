@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -8,6 +9,9 @@ import 'package:rt_gem/widgets/screen_views/form_views/add_grocery_formb.dart';
 import 'package:rt_gem/widgets/responsive.dart';
 import 'package:rt_gem/widgets/snackbar.dart';
 
+import 'camera_screen.dart';
+
+List<CameraDescription> cameras = [];
 
 class AddGrocery extends StatelessWidget {
   @override
@@ -15,6 +19,30 @@ class AddGrocery extends StatelessWidget {
     return Scaffold( appBar: AppBar(
       title: Text("Add Grocery"),
     ),
-        body:  Container( child: AddGroceryForm(),));
+        body:  Container( child: Column(
+          children: [
+            Center(
+              child: ElevatedButton(
+                child: Text('Open route'),
+                onPressed: () async {
+
+
+                  try {
+                    WidgetsFlutterBinding.ensureInitialized();
+                    cameras = await availableCameras();
+                  } on CameraException catch (e) {
+                    print(e);
+                  }
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CameraScreen()),
+                  );
+
+                },
+              ),
+            ),
+            AddGroceryForm(),
+          ],
+        ),));
   }
 }
