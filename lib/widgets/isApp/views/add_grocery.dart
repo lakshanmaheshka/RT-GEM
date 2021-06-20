@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:rt_gem/utils/constants_categories.dart';
+import 'package:rt_gem/utils/commons.dart';
 import 'package:rt_gem/utils/receipt_models/transaction.dart';
 import 'package:rt_gem/widgets/isApp/scan_provider/scan_provider.dart';
 import 'package:rt_gem/widgets/screen_views/form_views/add_grocery_formb.dart';
@@ -24,7 +24,7 @@ class AddGrocery extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (BuildContext context) { ScanProvider(); },
       child: Scaffold( appBar: AppBar(
-        title: Text("Add Grocery"),
+        title: Text("Add Items"),
       ),
           body:  Container( child: Column(
             children: [

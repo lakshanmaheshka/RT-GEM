@@ -2,10 +2,11 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:rt_gem/utils/constants_categories.dart';
+import 'package:rt_gem/utils/commons.dart';
 import 'package:rt_gem/utils/database.dart';
 import 'package:rt_gem/utils/receipt_models/global_data.dart';
 import 'package:rt_gem/widgets/isApp/views/add_grocery.dart';
@@ -49,7 +50,6 @@ class _AddGroceryFormState extends State<AddGroceryForm>
   // TextEditingController _controllerone = TextEditingController();
   final FocusNode _titleFocusNode = FocusNode();
   final FocusNode _descriptionFocusNode = FocusNode();
-  final  DateFormat dateFormatS = new DateFormat("dd-MM-yyyy");
 
   Future<Null> _chooseDateManufacture(
       BuildContext context, String initialDateString) async {
@@ -59,8 +59,10 @@ class _AddGroceryFormState extends State<AddGroceryForm>
         ? initialDate
         : now);
 
+
     var result = await showDatePicker(
         context: context,
+        locale: const Locale('en', 'GB'),
         initialDate: initialDate,
         firstDate: new DateTime(1900),
         lastDate: new DateTime.now());
@@ -81,6 +83,7 @@ class _AddGroceryFormState extends State<AddGroceryForm>
         : now);
 
     var result = await showDatePicker(
+
         context: context,
         initialDate: initialDate,
         firstDate: new DateTime.now(),
@@ -101,7 +104,7 @@ class _AddGroceryFormState extends State<AddGroceryForm>
 
   DateTime? convertToDate(String input) {
     try {
-      var d = new DateFormat.yMd().parseStrict(input);
+      var d = dateFormatS.parseStrict(input);
       return d;
     } catch (e) {
       return null;
@@ -238,6 +241,11 @@ class _AddGroceryFormState extends State<AddGroceryForm>
                   ],
                 ),
 
+
+                kIsWeb ?
+
+                Container()
+                    :
                 Platform.isAndroid ?
                 Padding(
                   padding: const EdgeInsets.fromLTRB(15, 7.5, 15, 7.5),
@@ -426,22 +434,22 @@ class _AddGroceryFormState extends State<AddGroceryForm>
                         convertDate = convertToDate(_controllerManufacture.text)!;
                         int i = int.parse(_controllerBestBefore.text);
                         DateTime d = Jiffy(convertDate).add(months: i).dateTime;
-                        String bestBeforeDate = new DateFormat.yMd().format(d);
+                        String bestBeforeDate = dateFormatS.format(d);
 
                         Database.addGrocery(
                             productName: _titleController.text,
                             quantity: _controllerQuantity.text,
                             category: dropdownValue,
-                            manufacturedDate: _controllerManufacture.text,
-                            expiryDate: bestBeforeDate );
+                            manufacturedDate: convertToDate(_controllerManufacture.text)!,
+                            expiryDate: convertToDate(bestBeforeDate)! );
 
                       } else {
                         Database.addGrocery(
                             productName: _titleController.text,
                             quantity: _controllerQuantity.text,
                             category: dropdownValue,
-                            manufacturedDate: _controllerManufacture.text,
-                            expiryDate: _controllerExpiration.text );
+                            manufacturedDate: convertToDate(_controllerManufacture.text)!,
+                            expiryDate: convertToDate(_controllerExpiration.text)! );
                       }
 
 

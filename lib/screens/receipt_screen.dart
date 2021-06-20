@@ -78,7 +78,7 @@ class _ReceiptScreenState extends State<ReceiptScreen> with SingleTickerProvider
         child: Container(
           width: 800,
           child: FutureBuilder(
-            future: Provider.of<Transactions>(context, listen: false)
+            future: Provider.of<TransactionsProvider>(context, listen: false)
                 .fetchTransactions(),
             builder: (ctx, snapshot) =>
             (snapshot.connectionState == ConnectionState.waiting)

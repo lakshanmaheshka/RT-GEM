@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:rt_gem/screens/main_page.dart';
 import 'package:rt_gem/utils/app_theme.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
     providers: [
       ChangeNotifierProvider(create: (context) => GoogleSignInProvider()),
       ChangeNotifierProvider(create: (context) => EmailSignInProvider()),
-      ChangeNotifierProvider(create: (context) => Transactions()),
+      ChangeNotifierProvider(create: (context) => TransactionsProvider()),
     ],
     child: MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -53,6 +54,11 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
+      localizationsDelegates: GlobalMaterialLocalizations.delegates,
+      supportedLocales: [
+        const Locale('en', 'US'),
+        const Locale('en', 'GB'),
+      ],
       home: MainPage(),
     ),
   );

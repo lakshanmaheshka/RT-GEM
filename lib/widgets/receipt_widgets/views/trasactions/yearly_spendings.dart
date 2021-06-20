@@ -23,7 +23,7 @@ class YearlySpendings extends StatefulWidget {
 class _YearlySpendingsState extends State<YearlySpendings> {
   String _selectedYear = DateFormat('yyyy').format(DateTime.now());
   bool _showChart = false;
-  late Transactions trxData;
+  late TransactionsProvider trxData;
 
   // Function deleteFn;
   List<PieData>? yearlyData;
@@ -35,7 +35,7 @@ class _YearlySpendingsState extends State<YearlySpendings> {
   @override
   void initState() {
     super.initState();
-    trxData = Provider.of<Transactions>(context, listen: false);
+    trxData = Provider.of<TransactionsProvider>(context, listen: false);
     // deleteFn =
     //     Provider.of<Transactions>(context, listen: false).deleteTransaction;
     // yearlyTrans = Provider.of<Transactions>(context, listen: false)
@@ -62,9 +62,9 @@ class _YearlySpendingsState extends State<YearlySpendings> {
   Widget build(BuildContext context) {
     // final trxData = Provider.of<Transactions>(context, listen: false);
 
-    final deleteFn = Provider.of<Transactions>(context).deleteTransaction;
+    final deleteFn = Provider.of<TransactionsProvider>(context).deleteTransaction;
 
-    final yearlyTrans = Provider.of<Transactions>(context, listen: false)
+    final yearlyTrans = Provider.of<TransactionsProvider>(context, listen: false)
         .yearlyTransactions(_selectedYear);
 
     final List<PieData> yearlyData = PieData().pieChartData(yearlyTrans);

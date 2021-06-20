@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:rt_gem/widgets/screen_views/form_views/add_grocery_formb.dart';
-import 'package:rt_gem/widgets/custom_dialog/add_dialog/add_receipt_tab.dart';
 import 'package:rt_gem/widgets/responsive.dart';
 
 class CustomDialog extends StatefulWidget {
@@ -42,7 +41,7 @@ class _CustomDialogState extends State<CustomDialog> with SingleTickerProviderSt
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                    child: Text(
-                     "Add Grocery",
+                     "Add Items",
                      style: TextStyle(
                        fontSize: 24.0,
                        fontWeight: FontWeight.w700,

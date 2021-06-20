@@ -23,7 +23,7 @@ class SummaryView extends StatefulWidget {
 class _SummaryViewState extends State<SummaryView> {
 
 
-  late String expires;
+  late String expires ="All";
 
   late int itemsleft = 0;
   late int itemsused = 0;
@@ -34,11 +34,12 @@ class _SummaryViewState extends State<SummaryView> {
   late double citemsused = 25.0;
   late double citemformonth = 50.0;
 
+  int filter = 0;
 
   @override
   void initState() {
     super.initState();
-    expires = "this week";
+    //expires = "this week";
     itemsleft = itemformonth - itemsused;
     citemleft = citemformonth - citemsused;
   }
@@ -72,125 +73,90 @@ class _SummaryViewState extends State<SummaryView> {
                         blurRadius: 10.0),
                   ],
                 ),
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: Database.readGroceries(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Container(
-                        height: 225,
-                          child: Text('Something went wrong')
-                      );
-                    } else if (snapshot.hasData || snapshot.data != null) {
-                      return Column(
-                        children: <Widget>[
-                          Padding(
-                            padding:
-                            const EdgeInsets.only(top: 16, left: 16, right: 16),
-                            child: Row(
-                              children: <Widget>[
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 8, right: 8, top: 4),
-                                    child: Column(
-                                      children: <Widget>[
-                                        Row(
-                                          children: <Widget>[
-                                            Container(
-                                              height: 48,
-                                              width: 2,
-                                              decoration: BoxDecoration(
-                                                color: HexColor('#87A0E5')
-                                                    .withOpacity(0.5),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(4.0)),
+                child: InkWell(
+                    onTap: (){
+                      setState(() {
+
+                        filter++;
+
+                        if(filter > 3){
+                          filter = 0;
+                        }
+
+
+                        switch (filter) {
+                          case 0:
+                            expires = "All";
+                            break;
+                          case 1:
+                            expires = "This Day";
+                            break;
+                          case 2:
+                            expires = "This Week";
+                            break;
+                          case 3:
+                            expires = "This Month";
+                            break;
+                          default:
+                            expires = "All";
+                        }
+
+                      });
+                    },
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: filter == 0 ?
+                    Database.readGroceries() :
+                        filter == 1 ?
+                        Database.readGroceriesByDay() :
+                        filter == 2 ?
+                        Database.readGroceriesByWeek() :
+                        filter == 3 ?
+                        Database.readGroceriesByMonth() :  Database.readGroceries(),
+
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Container(
+                          height: 225,
+                            child: Text('Something went wrong')
+                        );
+                      } else if (snapshot.hasData || snapshot.data != null) {
+
+                        // var groceries = snapshot.data!.docs[index].data();
+                        // String docID = snapshot.data!.docs[index].id;
+                        // String productName = groceries['productName'];
+                        // String category = groceries['category'];
+                        // String manufactureDate = dateFormatS.format(groceries['manufacturedDate']);
+                        // String expiryDate = dateFormatS.format(groceries['expiryDate']);
+                        // String quantity = groceries['quantity'];
+
+
+                        return Column(
+                          children: <Widget>[
+
+                            Padding(
+                              padding:
+                              const EdgeInsets.only(top: 16, left: 16, right: 16),
+                              child: Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8, right: 8, top: 4),
+                                      child: Column(
+                                        children: <Widget>[
+                                          Row(
+                                            children: <Widget>[
+                                              Container(
+                                                height: 48,
+                                                width: 2,
+                                                decoration: BoxDecoration(
+                                                  color: HexColor('#87A0E5')
+                                                      .withOpacity(0.5),
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(4.0)),
+                                                ),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                                children: <Widget>[
-                                                  Padding(
-                                                    padding: const EdgeInsets.only(
-                                                        left: 4, bottom: 2),
-                                                    child: Text(
-                                                      'Items Added',
-                                                      textAlign: TextAlign.center,
-                                                      style: TextStyle(
-                                                        fontFamily:
-                                                        AppTheme.fontName,
-                                                        fontWeight: FontWeight.w500,
-                                                        fontSize: 16,
-                                                        letterSpacing: -0.1,
-                                                        color: AppTheme.grey
-                                                            .withOpacity(0.5),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                    crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                    children: <Widget>[
-                                                      SizedBox(
-                                                        width: 28,
-                                                        height: 28,
-                                                        child: Image.asset(
-                                                            "assets/images/AddedItems.png"),
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                        const EdgeInsets.only(
-                                                            left: 4, bottom: 3),
-                                                        child: Text(
-                                                          '${(snapshot.data!.docs.length * widget.animation!.value).toInt()}',
-                                                          textAlign: TextAlign.center,
-                                                          style: TextStyle(
-                                                            fontFamily:
-                                                            AppTheme
-                                                                .fontName,
-                                                            fontWeight:
-                                                            FontWeight.w600,
-                                                            fontSize: 16,
-                                                            color: AppTheme
-                                                                .darkerText,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 8,
-                                        ),
-                                        Row(
-                                          children: <Widget>[
-                                            Container(
-                                              height: 48,
-                                              width: 2,
-                                              decoration: BoxDecoration(
-                                                color: HexColor('#F56E98')
-                                                    .withOpacity(0.5),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(4.0)),
-                                              ),
-                                            ),
-                                            InkWell(
-                                              onTap: (){
-                                                setState(() {
-                                                  expires = "today";
-                                                });
-                                              },
-                                              child: Padding(
+                                              Padding(
                                                 padding: const EdgeInsets.all(8.0),
                                                 child: Column(
                                                   mainAxisAlignment:
@@ -202,13 +168,13 @@ class _SummaryViewState extends State<SummaryView> {
                                                       padding: const EdgeInsets.only(
                                                           left: 4, bottom: 2),
                                                       child: Text(
-                                                        'Expires $expires',
+                                                        'Items Added',
                                                         textAlign: TextAlign.center,
                                                         style: TextStyle(
                                                           fontFamily:
                                                           AppTheme.fontName,
                                                           fontWeight: FontWeight.w500,
-                                                          fontSize: kIsWeb ? 16 : 14,
+                                                          fontSize: 16,
                                                           letterSpacing: -0.1,
                                                           color: AppTheme.grey
                                                               .withOpacity(0.5),
@@ -225,14 +191,14 @@ class _SummaryViewState extends State<SummaryView> {
                                                           width: 28,
                                                           height: 28,
                                                           child: Image.asset(
-                                                              "assets/fitness_app/burned.png"),
+                                                              "assets/images/AddedItems.png"),
                                                         ),
                                                         Padding(
                                                           padding:
                                                           const EdgeInsets.only(
                                                               left: 4, bottom: 3),
                                                           child: Text(
-                                                            '${(5 * widget.animation!.value).toInt()}',
+                                                            '${(snapshot.data!.docs.length * widget.animation!.value).toInt()}',
                                                             textAlign: TextAlign.center,
                                                             style: TextStyle(
                                                               fontFamily:
@@ -250,120 +216,492 @@ class _SummaryViewState extends State<SummaryView> {
                                                     )
                                                   ],
                                                 ),
+                                              )
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                          Row(
+                                            children: <Widget>[
+                                              Container(
+                                                height: 48,
+                                                width: 2,
+                                                decoration: BoxDecoration(
+                                                  color: HexColor('#F56E98')
+                                                      .withOpacity(0.5),
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(4.0)),
+                                                ),
                                               ),
-                                            )
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 16),
-                                  child: Center(
-                                    child: Stack(
-                                      clipBehavior: Clip.none, children: <Widget>[
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Container(
-                                            width: 100,
-                                            height: 100,
-                                            decoration: BoxDecoration(
-                                              color: AppTheme.white,
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(100.0),
-                                              ),
-                                              border: new Border.all(
-                                                  width: 4,
-                                                  color: AppTheme
-                                                      .nearlyDarkBlue
-                                                      .withOpacity(0.2)),
-                                            ),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                              children: <Widget>[
-                                                Text(
-                                                  '${(itemsleft * widget.animation!.value).toInt()}',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontFamily:
-                                                    AppTheme.fontName,
-                                                    fontWeight: FontWeight.normal,
-                                                    fontSize: 24,
-                                                    letterSpacing: 0.0,
-                                                    color: AppTheme
-                                                        .nearlyDarkBlue,
+                                              InkWell(
+                                                onTap: (){
+                                                  setState(() {
+                                                    expires = "today";
+                                                  });
+                                                },
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                    crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                    children: <Widget>[
+                                                      Padding(
+                                                        padding: const EdgeInsets.only(
+                                                            left: 4, bottom: 2),
+                                                        child: Text(
+                                                          'Expires $expires',
+                                                          textAlign: TextAlign.center,
+                                                          style: TextStyle(
+                                                            fontFamily:
+                                                            AppTheme.fontName,
+                                                            fontWeight: FontWeight.w500,
+                                                            fontSize: kIsWeb ? 16 : 14,
+                                                            letterSpacing: -0.1,
+                                                            color: AppTheme.grey
+                                                                .withOpacity(0.5),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment.center,
+                                                        crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
+                                                        children: <Widget>[
+                                                          SizedBox(
+                                                            width: 28,
+                                                            height: 28,
+                                                            child: Image.asset(
+                                                                "assets/fitness_app/burned.png"),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                            const EdgeInsets.only(
+                                                                left: 4, bottom: 3),
+                                                            child: Text(
+                                                              '${(5 * widget.animation!.value).toInt()}',
+                                                              textAlign: TextAlign.center,
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                AppTheme
+                                                                    .fontName,
+                                                                fontWeight:
+                                                                FontWeight.w600,
+                                                                fontSize: 16,
+                                                                color: AppTheme
+                                                                    .darkerText,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      )
+                                                    ],
                                                   ),
                                                 ),
-                                                Text(
-                                                  'Items left',
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 16),
+                                    child: Center(
+                                      child: Stack(
+                                        clipBehavior: Clip.none, children: <Widget>[
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Container(
+                                              width: 100,
+                                              height: 100,
+                                              decoration: BoxDecoration(
+                                                color: AppTheme.white,
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(100.0),
+                                                ),
+                                                border: new Border.all(
+                                                    width: 4,
+                                                    color: AppTheme
+                                                        .nearlyDarkBlue
+                                                        .withOpacity(0.2)),
+                                              ),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                                children: <Widget>[
+                                                  Text(
+                                                    '${(itemsleft * widget.animation!.value).toInt()}',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      fontFamily:
+                                                      AppTheme.fontName,
+                                                      fontWeight: FontWeight.normal,
+                                                      fontSize: 24,
+                                                      letterSpacing: 0.0,
+                                                      color: AppTheme
+                                                          .nearlyDarkBlue,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    'Items left',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      fontFamily:
+                                                      AppTheme.fontName,
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 12,
+                                                      letterSpacing: 0.0,
+                                                      color: AppTheme.grey
+                                                          .withOpacity(0.5),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(4.0),
+                                            child: CustomPaint(
+                                              painter: CurvePainter(
+                                                  colors: [
+                                                    AppTheme.nearlyDarkBlue,
+                                                    HexColor("#8A98E8"),
+                                                    HexColor("#8A98E8")
+                                                  ],
+                                                  angle: itemformonth == 0 ?   (0 +
+                      (1.0 - widget.animation!.value)) :
+
+
+
+                                                  (340/
+                                                      itemformonth) * itemsleft+
+                                                          (1.0 - widget.animation!.value)),
+                                              child: SizedBox(
+                                                width: 108,
+                                                height: 108,
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  expires,
+
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontFamily:
+                                    AppTheme.fontName,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16,
+                                    letterSpacing: -0.1,
+                                    color: AppTheme.grey
+                                        .withOpacity(0.5),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 24, right: 24, top: 8, bottom: 8),
+                              child: Container(
+                                height: 2,
+                                decoration: BoxDecoration(
+                                  color: AppTheme.background,
+                                  borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                                ),
+                              ),
+                            ),
+
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 24, right: 24, top: 8, bottom: 16),
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(0,8,0,8),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: <Widget>[
+                                              Text(
+                                                ' \nBeverages',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontFamily: AppTheme.fontName,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 14,
+                                                  letterSpacing: -0.2,
+                                                  color: AppTheme.darkText,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(top: 4),
+                                                child: Container(
+                                                  height: 4,
+                                                  width: 70,
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                    HexColor('#FA7D82').withOpacity(0.2),
+                                                    borderRadius: BorderRadius.all(
+                                                        Radius.circular(4.0)),
+                                                  ),
+                                                  child: Row(
+                                                    children: <Widget>[
+                                                      Container(
+                                                        width: ((70 / 1.2) * widget.animation!.value),
+                                                        height: 4,
+                                                        decoration: BoxDecoration(
+                                                          gradient: LinearGradient(colors: [
+                                                            HexColor('#FA7D82'),
+                                                            HexColor('#FFB295')
+                                                                .withOpacity(0.5),
+                                                          ]),
+                                                          borderRadius: BorderRadius.all(
+                                                              Radius.circular(4.0)),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(top: 6),
+                                                child: Text(
+                                                  '12g left',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
-                                                    fontFamily:
-                                                    AppTheme.fontName,
-                                                    fontWeight: FontWeight.bold,
+                                                    fontFamily: AppTheme.fontName,
+                                                    fontWeight: FontWeight.w600,
                                                     fontSize: 12,
-                                                    letterSpacing: 0.0,
+                                                    color:
+                                                    AppTheme.grey.withOpacity(0.5),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: <Widget>[
+                                              Text(
+                                                'Bread/\nBakery',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontFamily: AppTheme.fontName,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 14,
+                                                  letterSpacing: -0.2,
+                                                  color: AppTheme.darkText,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(top: 4),
+                                                child: Container(
+                                                  height: 4,
+                                                  width: 70,
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                    HexColor('#fc4a1a').withOpacity(0.2),
+                                                    borderRadius: BorderRadius.all(
+                                                        Radius.circular(4.0)),
+                                                  ),
+                                                  child: Row(
+                                                    children: <Widget>[
+                                                      Container(
+                                                        width: ((70 / 1.2) * widget.animation!.value),
+                                                        height: 4,
+                                                        decoration: BoxDecoration(
+                                                          gradient: LinearGradient(colors: [
+                                                            HexColor('#fc4a1a'),
+                                                            HexColor('#f7b733')
+                                                                .withOpacity(0.5),
+                                                          ]),
+                                                          borderRadius: BorderRadius.all(
+                                                              Radius.circular(4.0)),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(top: 6),
+                                                child: Text(
+                                                  '12g left',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontFamily: AppTheme.fontName,
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 12,
+                                                    color:
+                                                    AppTheme.grey.withOpacity(0.5),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: <Widget>[
+                                              Text(
+                                                'Dairy\nProducts',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontFamily: AppTheme.fontName,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 14,
+                                                  letterSpacing: -0.2,
+                                                  color: AppTheme.darkText,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(top: 4),
+                                                child: Container(
+                                                  height: 4,
+                                                  width: 70,
+                                                  decoration: BoxDecoration(
+                                                    color: HexColor('#f7ff00')
+                                                        .withOpacity(0.2),
+                                                    borderRadius: BorderRadius.all(
+                                                        Radius.circular(4.0)),
+                                                  ),
+                                                  child: Row(
+                                                    children: <Widget>[
+                                                      Container(
+                                                        width: ((70 / 2) *
+                                                            widget.animationController!.value),
+                                                        height: 4,
+                                                        decoration: BoxDecoration(
+                                                          gradient:
+                                                          LinearGradient(colors: [
+                                                            HexColor('#f7ff00')
+                                                                .withOpacity(0.1),
+                                                            HexColor('#db36a4'),
+                                                          ]),
+                                                          borderRadius: BorderRadius.all(
+                                                              Radius.circular(4.0)),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(top: 6),
+                                                child: Text(
+                                                  '30g left',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontFamily: AppTheme.fontName,
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 12,
                                                     color: AppTheme.grey
                                                         .withOpacity(0.5),
                                                   ),
                                                 ),
-                                              ],
-                                            ),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(4.0),
-                                          child: CustomPaint(
-                                            painter: CurvePainter(
-                                                colors: [
-                                                  AppTheme.nearlyDarkBlue,
-                                                  HexColor("#8A98E8"),
-                                                  HexColor("#8A98E8")
+                                        Expanded(
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: <Widget>[
+                                              Column(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: <Widget>[
+                                                  Text(
+                                                    ' \nCereals',
+                                                    style: TextStyle(
+                                                      fontFamily: AppTheme.fontName,
+                                                      fontWeight: FontWeight.w500,
+                                                      fontSize: 14,
+                                                      letterSpacing: -0.2,
+                                                      color: AppTheme.darkText,
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(
+                                                        right: 0, top: 4),
+                                                    child: Container(
+                                                      height: 4,
+                                                      width: 70,
+                                                      decoration: BoxDecoration(
+                                                        color: HexColor('#d53369')
+                                                            .withOpacity(0.2),
+                                                        borderRadius: BorderRadius.all(
+                                                            Radius.circular(4.0)),
+                                                      ),
+                                                      child: Row(
+                                                        children: <Widget>[
+                                                          Container(
+                                                            width: (((70 /
+                                                                citemformonth) * citemleft) *
+                                                                widget.animationController!.value),
+                                                            height: 4,
+                                                            decoration: BoxDecoration(
+                                                              gradient:
+                                                              LinearGradient(colors: [
+                                                                HexColor('#d53369')
+                                                                    .withOpacity(0.1),
+                                                                HexColor('#cbad6d'),
+                                                              ]),
+                                                              borderRadius: BorderRadius.all(
+                                                                  Radius.circular(4.0)),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(top: 6),
+                                                    child: Text(
+                                                      '$citemleft left',
+                                                      textAlign: TextAlign.center,
+                                                      style: TextStyle(
+                                                        fontFamily: AppTheme.fontName,
+                                                        fontWeight: FontWeight.w600,
+                                                        fontSize: 12,
+                                                        color: AppTheme.grey
+                                                            .withOpacity(0.5),
+                                                      ),
+                                                    ),
+                                                  ),
                                                 ],
-                                                angle: itemformonth == 0 ?   (0 +
-                    (1.0 - widget.animation!.value)) :
-
-
-
-                                                (340/
-                                                    itemformonth) * itemsleft+
-                                                        (1.0 - widget.animation!.value)),
-                                            child: SizedBox(
-                                              width: 108,
-                                              height: 108,
-                                            ),
+                                              ),
+                                            ],
                                           ),
                                         )
                                       ],
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 24, right: 24, top: 8, bottom: 8),
-                            child: Container(
-                              height: 2,
-                              decoration: BoxDecoration(
-                                color: AppTheme.background,
-                                borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 24, right: 24, top: 8, bottom: 16),
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(0,8,0,8),
-                                  child: Row(
+                                  Row(
                                     children: <Widget>[
                                       Expanded(
                                         child: Column(
@@ -371,7 +709,7 @@ class _SummaryViewState extends State<SummaryView> {
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           children: <Widget>[
                                             Text(
-                                              ' \nBeverages',
+                                              'Canned\nFoods',
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 fontFamily: AppTheme.fontName,
@@ -388,7 +726,7 @@ class _SummaryViewState extends State<SummaryView> {
                                                 width: 70,
                                                 decoration: BoxDecoration(
                                                   color:
-                                                  HexColor('#FA7D82').withOpacity(0.2),
+                                                  HexColor('#f857a6').withOpacity(0.2),
                                                   borderRadius: BorderRadius.all(
                                                       Radius.circular(4.0)),
                                                 ),
@@ -399,8 +737,8 @@ class _SummaryViewState extends State<SummaryView> {
                                                       height: 4,
                                                       decoration: BoxDecoration(
                                                         gradient: LinearGradient(colors: [
-                                                          HexColor('#FA7D82'),
-                                                          HexColor('#FFB295')
+                                                          HexColor('#f857a6'),
+                                                          HexColor('#ff5858')
                                                               .withOpacity(0.5),
                                                         ]),
                                                         borderRadius: BorderRadius.all(
@@ -434,7 +772,7 @@ class _SummaryViewState extends State<SummaryView> {
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           children: <Widget>[
                                             Text(
-                                              'Bread/\nBakery',
+                                              'Frozen\nFoods',
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 fontFamily: AppTheme.fontName,
@@ -451,7 +789,7 @@ class _SummaryViewState extends State<SummaryView> {
                                                 width: 70,
                                                 decoration: BoxDecoration(
                                                   color:
-                                                  HexColor('#fc4a1a').withOpacity(0.2),
+                                                  HexColor('#87A0E5').withOpacity(0.2),
                                                   borderRadius: BorderRadius.all(
                                                       Radius.circular(4.0)),
                                                 ),
@@ -462,8 +800,8 @@ class _SummaryViewState extends State<SummaryView> {
                                                       height: 4,
                                                       decoration: BoxDecoration(
                                                         gradient: LinearGradient(colors: [
-                                                          HexColor('#fc4a1a'),
-                                                          HexColor('#f7b733')
+                                                          HexColor('#2193b0'),
+                                                          HexColor('#6dd5ed')
                                                               .withOpacity(0.5),
                                                         ]),
                                                         borderRadius: BorderRadius.all(
@@ -497,7 +835,7 @@ class _SummaryViewState extends State<SummaryView> {
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           children: <Widget>[
                                             Text(
-                                              'Dairy\nProducts',
+                                              'Snack\nFoods',
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 fontFamily: AppTheme.fontName,
@@ -513,7 +851,7 @@ class _SummaryViewState extends State<SummaryView> {
                                                 height: 4,
                                                 width: 70,
                                                 decoration: BoxDecoration(
-                                                  color: HexColor('#f7ff00')
+                                                  color: HexColor('#FC5C7D')
                                                       .withOpacity(0.2),
                                                   borderRadius: BorderRadius.all(
                                                       Radius.circular(4.0)),
@@ -527,9 +865,9 @@ class _SummaryViewState extends State<SummaryView> {
                                                       decoration: BoxDecoration(
                                                         gradient:
                                                         LinearGradient(colors: [
-                                                          HexColor('#f7ff00')
+                                                          HexColor('#FC5C7D')
                                                               .withOpacity(0.1),
-                                                          HexColor('#db36a4'),
+                                                          HexColor('#6A82FB'),
                                                         ]),
                                                         borderRadius: BorderRadius.all(
                                                             Radius.circular(4.0)),
@@ -566,7 +904,7 @@ class _SummaryViewState extends State<SummaryView> {
                                               crossAxisAlignment: CrossAxisAlignment.center,
                                               children: <Widget>[
                                                 Text(
-                                                  ' \nCereals',
+                                                  ' \nOthers',
                                                   style: TextStyle(
                                                     fontFamily: AppTheme.fontName,
                                                     fontWeight: FontWeight.w500,
@@ -582,7 +920,7 @@ class _SummaryViewState extends State<SummaryView> {
                                                     height: 4,
                                                     width: 70,
                                                     decoration: BoxDecoration(
-                                                      color: HexColor('#d53369')
+                                                      color: HexColor('#11998e')
                                                           .withOpacity(0.2),
                                                       borderRadius: BorderRadius.all(
                                                           Radius.circular(4.0)),
@@ -590,16 +928,15 @@ class _SummaryViewState extends State<SummaryView> {
                                                     child: Row(
                                                       children: <Widget>[
                                                         Container(
-                                                          width: (((70 /
-                                                              citemformonth) * citemleft) *
+                                                          width: ((70 / 2.5) *
                                                               widget.animationController!.value),
                                                           height: 4,
                                                           decoration: BoxDecoration(
                                                             gradient:
                                                             LinearGradient(colors: [
-                                                              HexColor('#d53369')
+                                                              HexColor('#11998e')
                                                                   .withOpacity(0.1),
-                                                              HexColor('#cbad6d'),
+                                                              HexColor('#38ef7d'),
                                                             ]),
                                                             borderRadius: BorderRadius.all(
                                                                 Radius.circular(4.0)),
@@ -612,7 +949,7 @@ class _SummaryViewState extends State<SummaryView> {
                                                 Padding(
                                                   padding: const EdgeInsets.only(top: 6),
                                                   child: Text(
-                                                    '$citemleft left',
+                                                    '10g left',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                       fontFamily: AppTheme.fontName,
@@ -630,292 +967,26 @@ class _SummaryViewState extends State<SummaryView> {
                                       )
                                     ],
                                   ),
-                                ),
-                                Row(
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: <Widget>[
-                                          Text(
-                                            'Canned\nFoods',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontFamily: AppTheme.fontName,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 14,
-                                              letterSpacing: -0.2,
-                                              color: AppTheme.darkText,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(top: 4),
-                                            child: Container(
-                                              height: 4,
-                                              width: 70,
-                                              decoration: BoxDecoration(
-                                                color:
-                                                HexColor('#f857a6').withOpacity(0.2),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(4.0)),
-                                              ),
-                                              child: Row(
-                                                children: <Widget>[
-                                                  Container(
-                                                    width: ((70 / 1.2) * widget.animation!.value),
-                                                    height: 4,
-                                                    decoration: BoxDecoration(
-                                                      gradient: LinearGradient(colors: [
-                                                        HexColor('#f857a6'),
-                                                        HexColor('#ff5858')
-                                                            .withOpacity(0.5),
-                                                      ]),
-                                                      borderRadius: BorderRadius.all(
-                                                          Radius.circular(4.0)),
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(top: 6),
-                                            child: Text(
-                                              '12g left',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontFamily: AppTheme.fontName,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 12,
-                                                color:
-                                                AppTheme.grey.withOpacity(0.5),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: <Widget>[
-                                          Text(
-                                            'Frozen\nFoods',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontFamily: AppTheme.fontName,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 14,
-                                              letterSpacing: -0.2,
-                                              color: AppTheme.darkText,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(top: 4),
-                                            child: Container(
-                                              height: 4,
-                                              width: 70,
-                                              decoration: BoxDecoration(
-                                                color:
-                                                HexColor('#87A0E5').withOpacity(0.2),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(4.0)),
-                                              ),
-                                              child: Row(
-                                                children: <Widget>[
-                                                  Container(
-                                                    width: ((70 / 1.2) * widget.animation!.value),
-                                                    height: 4,
-                                                    decoration: BoxDecoration(
-                                                      gradient: LinearGradient(colors: [
-                                                        HexColor('#2193b0'),
-                                                        HexColor('#6dd5ed')
-                                                            .withOpacity(0.5),
-                                                      ]),
-                                                      borderRadius: BorderRadius.all(
-                                                          Radius.circular(4.0)),
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(top: 6),
-                                            child: Text(
-                                              '12g left',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontFamily: AppTheme.fontName,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 12,
-                                                color:
-                                                AppTheme.grey.withOpacity(0.5),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: <Widget>[
-                                          Text(
-                                            'Snack\nFoods',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontFamily: AppTheme.fontName,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 14,
-                                              letterSpacing: -0.2,
-                                              color: AppTheme.darkText,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(top: 4),
-                                            child: Container(
-                                              height: 4,
-                                              width: 70,
-                                              decoration: BoxDecoration(
-                                                color: HexColor('#FC5C7D')
-                                                    .withOpacity(0.2),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(4.0)),
-                                              ),
-                                              child: Row(
-                                                children: <Widget>[
-                                                  Container(
-                                                    width: ((70 / 2) *
-                                                        widget.animationController!.value),
-                                                    height: 4,
-                                                    decoration: BoxDecoration(
-                                                      gradient:
-                                                      LinearGradient(colors: [
-                                                        HexColor('#FC5C7D')
-                                                            .withOpacity(0.1),
-                                                        HexColor('#6A82FB'),
-                                                      ]),
-                                                      borderRadius: BorderRadius.all(
-                                                          Radius.circular(4.0)),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(top: 6),
-                                            child: Text(
-                                              '30g left',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontFamily: AppTheme.fontName,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 12,
-                                                color: AppTheme.grey
-                                                    .withOpacity(0.5),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: <Widget>[
-                                          Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            children: <Widget>[
-                                              Text(
-                                                ' \nOthers',
-                                                style: TextStyle(
-                                                  fontFamily: AppTheme.fontName,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 14,
-                                                  letterSpacing: -0.2,
-                                                  color: AppTheme.darkText,
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 0, top: 4),
-                                                child: Container(
-                                                  height: 4,
-                                                  width: 70,
-                                                  decoration: BoxDecoration(
-                                                    color: HexColor('#11998e')
-                                                        .withOpacity(0.2),
-                                                    borderRadius: BorderRadius.all(
-                                                        Radius.circular(4.0)),
-                                                  ),
-                                                  child: Row(
-                                                    children: <Widget>[
-                                                      Container(
-                                                        width: ((70 / 2.5) *
-                                                            widget.animationController!.value),
-                                                        height: 4,
-                                                        decoration: BoxDecoration(
-                                                          gradient:
-                                                          LinearGradient(colors: [
-                                                            HexColor('#11998e')
-                                                                .withOpacity(0.1),
-                                                            HexColor('#38ef7d'),
-                                                          ]),
-                                                          borderRadius: BorderRadius.all(
-                                                              Radius.circular(4.0)),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(top: 6),
-                                                child: Text(
-                                                  '10g left',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontFamily: AppTheme.fontName,
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 12,
-                                                    color: AppTheme.grey
-                                                        .withOpacity(0.5),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
 
-                              ],
+                                ],
+                              ),
+                            )
+                          ],
+                        );
+                      }
+
+                      return Container(
+                        height: 225,
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              CustomColors.firebaseOrange,
                             ),
-                          )
-                        ],
-                      );
-                    }
-
-                    return Container(
-                      height: 225,
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            CustomColors.firebaseOrange,
                           ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               ),
             ),

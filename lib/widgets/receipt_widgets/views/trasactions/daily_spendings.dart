@@ -21,21 +21,21 @@ class DailySpendings extends StatefulWidget {
 
 class _DailySpendingsState extends State<DailySpendings> {
   bool _showChart = false;
-  late Transactions trxData;
+  late TransactionsProvider trxData;
   Function? deleteFn;
 
   @override
   void initState() {
     super.initState();
-    trxData = Provider.of<Transactions>(context, listen: false);
+    trxData = Provider.of<TransactionsProvider>(context, listen: false);
 
     deleteFn =
-        Provider.of<Transactions>(context, listen: false).deleteTransaction;
+        Provider.of<TransactionsProvider>(context, listen: false).deleteTransaction;
   }
 
   @override
   Widget build(BuildContext context) {
-    final dailyTrans = Provider.of<Transactions>(context).dailyTransactions();
+    final dailyTrans = Provider.of<TransactionsProvider>(context).dailyTransactions();
 
     final List<PieData> dailyData = PieData().pieChartData(dailyTrans);
 

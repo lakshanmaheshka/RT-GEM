@@ -28,7 +28,7 @@ class Receipt {
   }
 }
 
-class Transactions with ChangeNotifier {
+class TransactionsProvider with ChangeNotifier {
   List<Receipt> _transactions = [];
 
   List<Receipt> get transactions {

@@ -18,7 +18,7 @@ class PieData {
   });
 
   List<PieData> pieChartData(List<Receipt> trx) {
-    int total = Transactions().getTotal(trx);
+    int total = TransactionsProvider().getTotal(trx);
     List<Map<String, Object?>> finalData = sortedPieData(trx);
     RandomColor _randomColor = RandomColor();
 

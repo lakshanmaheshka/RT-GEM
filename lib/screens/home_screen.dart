@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen>
             curve:
             Interval((1 / count) * 0, 1.0, curve: Curves.fastOutSlowIn))),
         animationController: widget.animationController,
-          isButtonEnabled: true,
+          isButtonEnabled: false,
       ),
     );
     listViews.add(
@@ -109,13 +109,12 @@ class _HomeScreenState extends State<HomeScreen>
     listViews.add(
       TitleView(
         titleTxt: 'Recipes',
-        subTxt: 'Today',
         animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
             parent: widget.animationController!,
             curve:
             Interval((1 / count) * 4, 1.0, curve: Curves.fastOutSlowIn))),
         animationController: widget.animationController,
-        isButtonEnabled: true,
+        isButtonEnabled: false,
       ),
     );
 

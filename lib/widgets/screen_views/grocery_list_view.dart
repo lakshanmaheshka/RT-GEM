@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:rt_gem/utils/commons.dart';
 import 'package:rt_gem/utils/custom_colors.dart';
 import 'package:rt_gem/utils/database.dart';
 import 'package:rt_gem/widgets/custom_dialog/edit_dialog/edit_dialog.dart';
@@ -56,7 +57,7 @@ class _GroceryListViewState extends State<GroceryListView>
               height: 216,
               width: double.infinity,
               child: StreamBuilder<QuerySnapshot>(
-                stream: Database.readGroceries(),
+                stream: Database.readGroceriesByWeek(),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return Text('Something went wrong');
@@ -81,8 +82,8 @@ class _GroceryListViewState extends State<GroceryListView>
                         String docID = snapshot.data!.docs[index].id;
                         String productName = groceries['productName'];
                         String category = groceries['category'];
-                        String manufactureDate = groceries['manufacturedDate'];
-                        String expiryDate = groceries['expiryDate'];
+                        String manufactureDate = dateFormatS.format(groceries['manufacturedDate'].toDate());
+                        String expiryDate = dateFormatS.format(groceries['expiryDate'].toDate());
                         String quantity = groceries['quantity'];
 
                         return ItemsView(

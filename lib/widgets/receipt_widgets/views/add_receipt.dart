@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:rt_gem/utils/constants_categories.dart';
+import 'package:rt_gem/utils/commons.dart';
 import 'package:rt_gem/utils/receipt_models/transaction.dart';
 import 'package:rt_gem/widgets/responsive.dart';
 import 'package:rt_gem/widgets/snackbar.dart';
@@ -24,7 +24,7 @@ class _AddReceiptState extends State<AddReceipt> {
   final TextEditingController _amountController  = new TextEditingController();
   final TextEditingController _controllerQuantity  = new TextEditingController();
   final TextEditingController _titleController = TextEditingController();
-  late Transactions transactions;
+  late TransactionsProvider transactions;
 
   DateTime _selectedDate = DateTime.now();
 
@@ -56,7 +56,7 @@ class _AddReceiptState extends State<AddReceipt> {
     if (result == null) return;
 
     setState(() {
-      _controllerDate.text = new DateFormat.yMd().format(result);
+      _controllerDate.text = dateFormatS.format(result);
     });
   }
 
@@ -77,7 +77,7 @@ class _AddReceiptState extends State<AddReceipt> {
     if (result == null) return;
 
     setState(() {
-      _controllerExpiration.text = new DateFormat.yMd().format(result);
+      _controllerExpiration.text = dateFormatS.format(result);
     });
   }
 
@@ -89,7 +89,7 @@ class _AddReceiptState extends State<AddReceipt> {
 
   DateTime? convertToDate(String input) {
     try {
-      var d = new DateFormat.yMd().parseStrict(input);
+      var d = dateFormatS.parseStrict(input);
       return d;
     } catch (e) {
       return null;
@@ -113,8 +113,8 @@ class _AddReceiptState extends State<AddReceipt> {
   @override
   void initState() {
     super.initState();
-    transactions = Provider.of<Transactions>(context, listen: false);
-    _controllerDate.text = new DateFormat.yMd().format(DateTime.now());
+    transactions = Provider.of<TransactionsProvider>(context, listen: false);
+    _controllerDate.text = dateFormatS.format(DateTime.now());
     //_controllerone.text = "0";
   }
 

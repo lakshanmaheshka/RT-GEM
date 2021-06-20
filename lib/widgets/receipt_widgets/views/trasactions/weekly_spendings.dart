@@ -21,7 +21,7 @@ class WeeklySpendings extends StatefulWidget {
 
 class _WeeklySpendingsState extends State<WeeklySpendings> {
   bool _showChart = false;
-  late Transactions trxData;
+  late TransactionsProvider trxData;
   // List<Transaction> recentTransaction;
   // List<PieData> recentData;
   // Function deleteFn;
@@ -30,7 +30,7 @@ class _WeeklySpendingsState extends State<WeeklySpendings> {
   void initState() {
     super.initState();
 
-    trxData = Provider.of<Transactions>(context, listen: false);
+    trxData = Provider.of<TransactionsProvider>(context, listen: false);
     // recentTransaction =
     //     Provider.of<Transactions>(context, listen: false).rescentTransactions;
 
@@ -43,9 +43,9 @@ class _WeeklySpendingsState extends State<WeeklySpendings> {
   @override
   Widget build(BuildContext context) {
     final deleteFn =
-        Provider.of<Transactions>(context).deleteTransaction;
+        Provider.of<TransactionsProvider>(context).deleteTransaction;
     final recentTransaction =
-        Provider.of<Transactions>(context, listen: false).rescentTransactions;
+        Provider.of<TransactionsProvider>(context, listen: false).rescentTransactions;
     final recentData = PieData().pieChartData(recentTransaction);
     return SingleChildScrollView(
       physics: ScrollPhysics(),

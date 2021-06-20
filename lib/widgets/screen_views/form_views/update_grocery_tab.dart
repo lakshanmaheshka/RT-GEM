@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:rt_gem/utils/constants_categories.dart';
+import 'package:rt_gem/utils/commons.dart';
 import 'package:rt_gem/utils/database.dart';
 import 'package:rt_gem/widgets/number_input.dart';
 import 'package:rt_gem/widgets/responsive.dart';
@@ -53,6 +53,10 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm>
   TextEditingController _controllerone = TextEditingController();
   late TextEditingController _titleController = TextEditingController();
 
+
+
+
+
   Future<Null> _chooseDateManufacture(
       BuildContext context, String initialDateString) async {
     var now = new DateTime.now();
@@ -70,7 +74,7 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm>
     if (result == null) return;
 
     setState(() {
-      _controllerManufacture.text = new DateFormat.yMd().format(result);
+      _controllerManufacture.text = dateFormatS.format(result);
     });
   }
 
@@ -91,7 +95,7 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm>
     if (result == null) return;
 
     setState(() {
-      _controllerExpiration.text = new DateFormat.yMd().format(result);
+      _controllerExpiration.text = dateFormatS.format(result);
     });
   }
 
@@ -103,7 +107,7 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm>
 
   DateTime? convertToDate(String input) {
     try {
-      var d = new DateFormat.yMd().parseStrict(input);
+      var d = dateFormatS.parseStrict(input);
       return d;
     } catch (e) {
       return null;

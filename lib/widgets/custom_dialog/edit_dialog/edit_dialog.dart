@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:rt_gem/widgets/screen_views/form_views/add_grocery_formb.dart';
-import 'package:rt_gem/widgets/custom_dialog/add_dialog/add_receipt_tab.dart';
 import 'package:rt_gem/widgets/responsive.dart';
 
 import '../../screen_views/form_views/update_grocery_tab.dart';
@@ -54,52 +53,28 @@ class _EditDialogState extends State<EditDialog> with SingleTickerProviderStateM
           children: <Widget>[
             Column(
               children: [
-                Material(
-                  color: Colors.indigo,
-                  child: TabBar(
-                    labelColor: Colors.redAccent,
-                    unselectedLabelColor: Colors.white,
-                    indicatorSize: TabBarIndicatorSize.label,
-                    indicator: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10)),
-                        color: Colors.white),
-                    tabs: [
-                      Tab(
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text("Update Grocery"),
-                        ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    child: Text(
+                      "Product Details",
+                      style: TextStyle(
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.w700,
                       ),
-                      Tab(
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text("Add Receipt"),
-                        ),
-                      ),
-                    ],
-                    controller: _tabController,
+                    ),
                   ),
                 ),
                 Expanded(
-                  child: TabBarView(
-                    children: [
-                      UpdateGroceryForm(
-                        currentProductName: widget.currentProductName,
-                        currentCategory: widget.currentCategory,
-                        currentItemMfg: widget.currentItemMfg,
-                        currentItemExp: widget.currentItemExp,
-                        currentQuantity: widget.currentQuantity,
-                        documentId: widget.documentId,
-                      ),
-                      AddReceiptTab()
-
-                    ],
-                    controller: _tabController,
+                  child: UpdateGroceryForm(
+                    currentProductName: widget.currentProductName,
+                    currentCategory: widget.currentCategory,
+                    currentItemMfg: widget.currentItemMfg,
+                    currentItemExp: widget.currentItemExp,
+                    currentQuantity: widget.currentQuantity,
+                    documentId: widget.documentId,
                   ),
                 ),
-
               ],
             ),
             Positioned(

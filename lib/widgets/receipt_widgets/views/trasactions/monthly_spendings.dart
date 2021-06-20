@@ -24,20 +24,20 @@ class _MonthlySpendingsState extends State<MonthlySpendings> {
   String? dropdownValue = DateFormat('MMM').format(DateTime.now());
 
   bool _showChart = false;
-  late Transactions trxData;
+  late TransactionsProvider trxData;
   Function? deleteFn;
 
   @override
   void initState() {
     super.initState();
-    trxData = Provider.of<Transactions>(context, listen: false);
+    trxData = Provider.of<TransactionsProvider>(context, listen: false);
     deleteFn =
-        Provider.of<Transactions>(context, listen: false).deleteTransaction;
+        Provider.of<TransactionsProvider>(context, listen: false).deleteTransaction;
   }
 
   @override
   Widget build(BuildContext context) {
-    final monthlyTrans = Provider.of<Transactions>(context)
+    final monthlyTrans = Provider.of<TransactionsProvider>(context)
         .monthlyTransactions(dropdownValue, _selectedYear);
     final List<PieData> monthlyData = PieData().pieChartData(monthlyTrans);
 

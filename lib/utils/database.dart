@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'commons.dart';
+
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final CollectionReference _mainCollection = _firestore.collection('rt_gem');
 
@@ -10,8 +12,8 @@ class Database {
     required String productName,
     required String quantity,
     required String category,
-    required String manufacturedDate,
-    required String expiryDate,
+    required DateTime manufacturedDate,
+    required DateTime expiryDate,
   }) async {
     DocumentReference documentReferencer =
     _mainCollection.doc(userUid).collection('groceries').doc();
@@ -62,6 +64,52 @@ class Database {
 
     return rtGemGroceriesCollection.snapshots();
   }
+
+  static Stream<QuerySnapshot> readGroceriesByDay() {
+    DateTime date = DateTime.now();
+
+
+    CollectionReference rtGemGroceriesCollection =
+    _mainCollection.doc(userUid).collection('groceries');
+
+    final Query byWeek = rtGemGroceriesCollection
+        .where("expiryDate", isLessThanOrEqualTo: DateTime(date.year, date.month, date.day))
+        .where("expiryDate", isGreaterThanOrEqualTo: DateTime(date.year, date.month, date.day));
+
+
+    return byWeek.snapshots();
+  }
+
+  static Stream<QuerySnapshot> readGroceriesByWeek() {
+    DateTime date = DateTime.now();
+
+
+    CollectionReference rtGemGroceriesCollection =
+    _mainCollection.doc(userUid).collection('groceries');
+
+    final Query byWeek = rtGemGroceriesCollection
+    .where("expiryDate", isLessThanOrEqualTo: findLastDateOfTheWeek(date))
+    .where("expiryDate", isGreaterThanOrEqualTo: findFirstDateOfTheWeek(date));
+
+
+    return byWeek.snapshots();
+  }
+
+  static Stream<QuerySnapshot> readGroceriesByMonth() {
+    DateTime date = DateTime.now();
+
+
+    CollectionReference rtGemGroceriesCollection =
+    _mainCollection.doc(userUid).collection('groceries');
+
+    final Query byWeek = rtGemGroceriesCollection
+        .where("expiryDate", isLessThanOrEqualTo: findLastDateOfTheMonth(date))
+        .where("expiryDate", isGreaterThanOrEqualTo: findFirstDateOfTheMonth(date));
+
+
+    return byWeek.snapshots();
+  }
+
 
   static Stream<QuerySnapshot> readReceipts() {
     CollectionReference rtGemGroceriesCollection =
