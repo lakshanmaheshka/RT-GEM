@@ -2,14 +2,14 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
 import 'add_grocery.dart';
-import 'detail_screen.dart';
+import 'scanned_dates_detail_screen.dart';
 
-class CameraScreen extends StatefulWidget {
+class ScanDateCameraScreen extends StatefulWidget {
   @override
-  _CameraScreenState createState() => _CameraScreenState();
+  _ScanDateCameraScreenState createState() => _ScanDateCameraScreenState();
 }
 
-class _CameraScreenState extends State<CameraScreen> {
+class _ScanDateCameraScreenState extends State<ScanDateCameraScreen> {
   late final CameraController _controller;
 
   // Initializes camera controller to preview on screen
@@ -76,7 +76,7 @@ class _CameraScreenState extends State<CameraScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flutter MLKit Vision'),
+        title: Text('Scan Dates'),
       ),
       body: _controller.value.isInitialized
           ? Stack(
@@ -97,7 +97,7 @@ class _CameraScreenState extends State<CameraScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => DetailScreen(
+                                builder: (context) => ScannedDateDetailsScreen(
                                   imagePath: path,
                                 ),
                               ),

@@ -4,17 +4,18 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:intl/intl.dart';
+import 'package:rt_gem/utils/receipt_models/global_data.dart';
 
-class DetailScreen extends StatefulWidget {
+class ScannedDateDetailsScreen extends StatefulWidget {
   final String imagePath;
 
-  const DetailScreen({required this.imagePath});
+  const ScannedDateDetailsScreen({required this.imagePath});
 
   @override
-  _DetailScreenState createState() => _DetailScreenState();
+  _ScannedDateDetailsScreenState createState() => _ScannedDateDetailsScreenState();
 }
 
-class _DetailScreenState extends State<DetailScreen> {
+class _ScannedDateDetailsScreenState extends State<ScannedDateDetailsScreen> {
   late final String _imagePath;
   late final TextDetector _textDetector;
   Size? _imageSize;
@@ -23,6 +24,11 @@ class _DetailScreenState extends State<DetailScreen> {
   //List<String>? listEmailStrings;
 
   String recognizedText = "Loading ...";
+
+  //static String expString = "Loading ...";
+
+ // static String mfdString = "Loading ...";
+
 
   // Fetching the image size from the image file
   Future<void> _getImageSize(File imageFile) async {
@@ -58,7 +64,7 @@ class _DetailScreenState extends State<DetailScreen> {
         r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$";
 */
     String pattern =
-        r"^[\d]{2}([\W])[\d]{2}([\W])[\d]{4}";
+        r"^[\d]{2}([\W])[\d]{2}([\W])[\d]{4}|^[\d]{4}([\W])[\d]{2}([\W])[\d]{2}";
 
     RegExp regEx = RegExp(pattern);
 
@@ -105,18 +111,38 @@ class _DetailScreenState extends State<DetailScreen> {
     print(arr);
     List formatdate = [];
     List dateformat = [];
-    DateTime Mfd = DateTime.now();
-    DateTime Exp = DateTime.now();
+
+    List ddformatdate= [];
+    List yyyyformatdate=[];
+
     for (var age in arr) {
+      final dayFormat = RegExp(r'^[\d]{2}([\W])[\d]{2}([\W])[\d]{4}');
+      final yearFormat = RegExp(r'^[\d]{4}([\W])[\d]{2}([\W])[\d]{2}');
+
       String newdate = age.replaceAll(RegExp(r'\W'), '-');
+
+      if(dayFormat.hasMatch(newdate)){
+        ddformatdate.add(newdate);
+      }else if(yearFormat.hasMatch(newdate)){
+        yyyyformatdate.add(newdate);
+      }
       formatdate.add(newdate);
       print(formatdate);
     }
 
+    final  DateFormat format = new DateFormat("dd-MM-yyyy");
 
-    for (var date in formatdate) {
+    for (var date in ddformatdate) {
       var dateString = date;
       DateFormat format = new DateFormat("dd-MM-yyyy");
+      var foDate = format.parse(dateString);
+      print(foDate);
+      dateformat.add(foDate);
+    }
+
+    for (var date in yyyyformatdate) {
+      var dateString = date;
+      DateFormat format = new DateFormat("yyyy-MM-dd");
       var foDate = format.parse(dateString);
       print(foDate);
       dateformat.add(foDate);
@@ -126,23 +152,37 @@ class _DetailScreenState extends State<DetailScreen> {
     print(dateformat[1]);
 
     if (dateformat.length == 2) {
+      DateTime mfd;
+      DateTime exp;
       if (dateformat[0].isBefore(dateformat[1])) {
-        Mfd = dateformat[0];
-        Exp = dateformat[1];
+        mfd = dateformat[0];
+        exp = dateformat[1];
       } else{
-        Mfd = dateformat[1];
-        Exp = dateformat[0];
+        mfd = dateformat[1];
+        exp = dateformat[0];
       }
+
+
+      setState(() {
+        Globaldata.mfdString = format.format(mfd);
+        Globaldata.expString = format.format(exp);
+      });
+
+      print("Mfd "+mfd.toString());
+      print("Exp "+exp.toString());
     }
 
-    print("Mfd "+Mfd.toString());
-    print("Exp "+Exp.toString());
+
 
 
   }
 
   @override
   void initState() {
+
+    Globaldata.mfdString = "loading";
+    Globaldata.expString = "loading";
+
     _imagePath = widget.imagePath;
     // Initializing the text detector
     _textDetector = GoogleMlKit.vision.textDetector();
@@ -161,7 +201,7 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Image Details"),
+        title: Text("Scanned Dates"),
       ),
       body: _imageSize != null
           ? Stack(
@@ -196,7 +236,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           Padding(
                             padding: const EdgeInsets.only(bottom: 8.0),
                             child: Text(
-                              "Identified emails",
+                              "Identified Dates",
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -209,6 +249,32 @@ class _DetailScreenState extends State<DetailScreen> {
                               child: Text(
                                 recognizedText,
                               ),
+                            ),
+                          ),
+                          Container(
+                            height: 60,
+                            child: SingleChildScrollView(
+                              child: Text(
+                                "mfdString  "+ Globaldata.mfdString!,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            height: 60,
+                            child: SingleChildScrollView(
+                              child: Text(
+                                "expString "+Globaldata.expString!,
+                              ),
+                            ),
+                          ),
+                          Center(
+                            child: ElevatedButton(
+                              child: Text('Dates are correct'),
+                              onPressed: () async {
+                                int count = 0;
+                                Navigator.of(context).popUntil((_) => count++ >= 2);
+
+                              },
                             ),
                           ),
                         ],

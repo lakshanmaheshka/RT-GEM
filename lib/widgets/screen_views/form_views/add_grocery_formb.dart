@@ -1,10 +1,15 @@
+import 'dart:io';
 import 'dart:math';
 
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:rt_gem/utils/constants_categories.dart';
 import 'package:rt_gem/utils/database.dart';
+import 'package:rt_gem/utils/receipt_models/global_data.dart';
+import 'package:rt_gem/widgets/isApp/views/add_grocery.dart';
+import 'package:rt_gem/widgets/isApp/views/scan_date_camera_screen.dart';
 import 'package:rt_gem/widgets/number_input.dart';
 import 'package:rt_gem/widgets/responsive.dart';
 import 'dart:async';
@@ -33,6 +38,8 @@ class _AddGroceryFormState extends State<AddGroceryForm>
   final TextEditingController _controllerQuantity  = new TextEditingController();
   final TextEditingController _titleController = TextEditingController();
 
+
+
   late Animation _arrowAnimation;
   late AnimationController _arrowAnimationController;
   late AnimationController _animationController;
@@ -42,6 +49,7 @@ class _AddGroceryFormState extends State<AddGroceryForm>
   // TextEditingController _controllerone = TextEditingController();
   final FocusNode _titleFocusNode = FocusNode();
   final FocusNode _descriptionFocusNode = FocusNode();
+  final  DateFormat dateFormatS = new DateFormat("dd-MM-yyyy");
 
   Future<Null> _chooseDateManufacture(
       BuildContext context, String initialDateString) async {
@@ -60,7 +68,7 @@ class _AddGroceryFormState extends State<AddGroceryForm>
     if (result == null) return;
 
     setState(() {
-      _controllerManufacture.text = new DateFormat.yMd().format(result);
+      _controllerManufacture.text = dateFormatS.format(result);
     });
   }
 
@@ -81,7 +89,7 @@ class _AddGroceryFormState extends State<AddGroceryForm>
     if (result == null) return;
 
     setState(() {
-      _controllerExpiration.text = new DateFormat.yMd().format(result);
+      _controllerExpiration.text = dateFormatS.format(result);
     });
   }
 
@@ -116,6 +124,14 @@ class _AddGroceryFormState extends State<AddGroceryForm>
 
   @override
   void initState() {
+
+    // if(Globaldata.expString != null && Globaldata.mfdString!= null){
+    //   _controllerExpiration.text = Globaldata.expString!;
+    //   _controllerManufacture.text = Globaldata.mfdString!;
+    // }
+
+
+
     super.initState();
     _animationController =
         AnimationController(duration: Duration(seconds: 2), vsync: this);
@@ -221,6 +237,76 @@ class _AddGroceryFormState extends State<AddGroceryForm>
                     ),
                   ],
                 ),
+
+                Platform.isAndroid ?
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 7.5, 15, 7.5),
+                  child: InkWell(
+                    onTap:  () async {
+
+
+                      try {
+                        WidgetsFlutterBinding.ensureInitialized();
+                        cameras = await availableCameras();
+                      } on CameraException catch (e) {
+                        print(e);
+                      }
+                      final value = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ScanDateCameraScreen()),
+                      );
+
+                      setState(() {
+                        _controllerManufacture.text = Globaldata.mfdString!;
+                        _controllerExpiration.text = Globaldata.expString!;
+                      });
+
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(8.0),
+                      height: Responsive.deviceHeight(7, context),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.teal,
+                            Colors.blue,
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12,
+                            offset: Offset(5, 5),
+                            blurRadius: 10,
+                          )
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: Icon(Icons.camera_alt, color: Colors.white,),
+                          ),
+
+                          Text(
+                            'Scan Dates',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ) : Container(),
+
                 Padding(
                   padding: const EdgeInsets.fromLTRB(15, 7.5, 15, 7.5),
                   child: new Expanded(
