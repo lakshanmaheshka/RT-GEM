@@ -2,11 +2,37 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:rt_gem/utils/commons.dart';
 import 'package:rt_gem/utils/custom_colors.dart';
 import 'package:rt_gem/utils/database.dart';
 import 'dart:math' as math;
 
 import '../../utils/app_theme.dart';
+
+class Grocery {
+  final String? productName;
+  final String? quantity;
+  final DateTime? expiryDate;
+  final DateTime? manufacturedDate;
+  final String? category;
+  final bool? isConsumed;
+
+  const Grocery(
+      {this.productName, this.quantity, this.expiryDate, this.manufacturedDate, this.category, this.isConsumed});
+
+  Map<String, dynamic> toMap(Grocery t) {
+    return {
+      'productName': t.productName,
+      'quantity': t.quantity,
+      'expiryDate': t.expiryDate,
+      'manufacturedDate': t.manufacturedDate,
+      'category': t.category,
+      'isConsumed': t.isConsumed,
+
+    };
+  }
+}
+
 
 class SummaryView extends StatefulWidget {
   final AnimationController? animationController;
@@ -35,9 +61,87 @@ class _SummaryViewState extends State<SummaryView> {
   late double citemformonth = 50.0;
 
   int filter = 0;
+  List<Grocery> _transactions = [];
+
+  List<Grocery> _transactionsFalse = [];
+
+  List<Grocery> _transactionsWeek = [];
+
+  List<Grocery> _transactionsMonth = [];
+
+
+  void getProducts () async {
+    final fetchedData = await Database.getDataGrocery();
+    //var date = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+    DateTime date = DateTime.now();
+
+    _transactions = fetchedData
+        .map(
+          (item) => Grocery(
+            productName: item['productName'],
+            quantity: item['quantity'],
+            category: item['category'],
+            manufacturedDate: item['manufacturedDate'].toDate(),
+            expiryDate: item['expiryDate'].toDate(),
+            isConsumed: item['isConsumed'],
+      ),
+    )
+        .toList();
+
+
+    print(_transactions);
+
+    _transactions.forEach((element) {
+      if(element.isConsumed != null && element.isConsumed == true ){
+        _transactionsFalse.add(element);
+        print(_transactionsFalse);
+      }
+    });
+
+    _transactions.forEach((element) {
+      DateTime a = element.expiryDate!;
+
+
+      if((element.expiryDate!.isAfter(findFirstDateOfTheWeek(date)) || element.expiryDate!.isAtSameMomentAs(findFirstDateOfTheWeek(date))  )
+          && (element.expiryDate!.isBefore(findLastDateOfTheWeek(date)) || element.expiryDate!.isAtSameMomentAs(findLastDateOfTheWeek(date)) ) ){
+        _transactionsWeek.add(element);
+        print(_transactionsWeek);
+      }
+    });
+
+
+    _transactions.forEach((element) {
+      if((element.expiryDate!.isAfter(findFirstDateOfTheWeek(date)) || element.expiryDate!.isAtSameMomentAs(findFirstDateOfTheWeek(date))  )
+          && (element.expiryDate!.isBefore(findLastDateOfTheWeek(date)) || element.expiryDate!.isAtSameMomentAs(findLastDateOfTheWeek(date)) ) ){
+        _transactionsWeek.add(element);
+        print(_transactionsWeek);
+      }
+    });
+
+    _transactions.forEach((element) {
+      if((element.expiryDate!.isAfter(findFirstDateOfTheMonth(date)) || element.expiryDate!.isAtSameMomentAs(findFirstDateOfTheMonth(date))  )
+          && (element.expiryDate!.isBefore(findLastDateOfTheMonth(date)) || element.expiryDate!.isAtSameMomentAs(findLastDateOfTheMonth(date)) ) ){
+        _transactionsMonth.add(element);
+        print(_transactionsMonth);
+      }
+    });
+
+
+    print(_transactionsWeek);
+    print(_transactionsWeek.length);
+
+    print(_transactionsFalse);
+    print(_transactionsFalse.length);
+
+    print(fetchedData.length);
+  }
+
+
 
   @override
   void initState() {
+
+    getProducts();
     super.initState();
     //expires = "this week";
     itemsleft = itemformonth - itemsused;

@@ -136,6 +136,20 @@ class Database {
     return allData;
   }
 
+  static Future<List> getDataGrocery() async {
+    CollectionReference rtGemGroceriesCollection =
+    _mainCollection.doc(userUid).collection('groceries');
+    // Get docs from collection reference
+    QuerySnapshot querySnapshot = await rtGemGroceriesCollection.get();
+
+    // Get data from docs and convert map to List
+    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+
+    print(allData);
+
+    return allData;
+  }
+
   static Future<void> updateGroceries({
     required String docId,
     required String productName,
