@@ -49,7 +49,7 @@ class TransactionsProvider with ChangeNotifier {
   void addTransactions(Receipt transaction) {
     _transactions.add(transaction);
     notifyListeners();
-    print("data");
+   // print("data");
     Database.addReceipt(
       id: transaction.id!,
       receiptName: transaction.title!,

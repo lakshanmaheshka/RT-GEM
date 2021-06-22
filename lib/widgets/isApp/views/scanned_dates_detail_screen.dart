@@ -108,7 +108,7 @@ class _ScannedDateDetailsScreenState extends State<ScannedDateDetailsScreen> {
     String newrecognizedText = recognizedText.replaceAll(RegExp(r'\n$'), '');
     var arr = newrecognizedText.split('\n');
 
-    print(arr);
+   // print(arr);
     List formatdate = [];
     List dateformat = [];
 
@@ -127,7 +127,7 @@ class _ScannedDateDetailsScreenState extends State<ScannedDateDetailsScreen> {
         yyyyformatdate.add(newdate);
       }
       formatdate.add(newdate);
-      print(formatdate);
+      //print(formatdate);
     }
 
     final  DateFormat format = new DateFormat("dd-MM-yyyy");
@@ -136,7 +136,7 @@ class _ScannedDateDetailsScreenState extends State<ScannedDateDetailsScreen> {
       var dateString = date;
       DateFormat format = new DateFormat("dd-MM-yyyy");
       var foDate = format.parse(dateString);
-      print(foDate);
+      //print(foDate);
       dateformat.add(foDate);
     }
 
@@ -144,12 +144,8 @@ class _ScannedDateDetailsScreenState extends State<ScannedDateDetailsScreen> {
       var dateString = date;
       DateFormat format = new DateFormat("yyyy-MM-dd");
       var foDate = format.parse(dateString);
-      print(foDate);
       dateformat.add(foDate);
     }
-
-    print(dateformat[0]);
-    print(dateformat[1]);
 
     if (dateformat.length == 2) {
       DateTime mfd;
@@ -168,8 +164,6 @@ class _ScannedDateDetailsScreenState extends State<ScannedDateDetailsScreen> {
         Globaldata.expString = format.format(exp);
       });
 
-      print("Mfd "+mfd.toString());
-      print("Exp "+exp.toString());
     }
 
 

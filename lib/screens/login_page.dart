@@ -37,7 +37,7 @@ class _LoginPageState extends State<LoginPage>
     final provider = Provider.of<EmailSignInProvider>(context);
     return Scaffold(
         body: SingleChildScrollView(
-      physics: const ClampingScrollPhysics(),
+      //physics: const ClampingScrollPhysics(),
       child: GestureDetector(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());

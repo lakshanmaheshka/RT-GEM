@@ -70,11 +70,6 @@ class EmailSignInProvider extends ChangeNotifier {
   Future<bool> login() async {
     try {
       isLoading = true;
-
-      print(userEmail);
-      print(userPassword);
-
-
         await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: userEmail!,
           password: userPassword!,
@@ -93,10 +88,6 @@ class EmailSignInProvider extends ChangeNotifier {
   Future<bool> signup() async {
     try {
       isLoading = true;
-
-      print(newUserEmail);
-      print(newUserPassword);
-
 
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: newUserEmail!,

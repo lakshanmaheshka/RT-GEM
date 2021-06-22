@@ -317,31 +317,30 @@ class _AddGroceryFormState extends State<AddGroceryForm>
 
                 Padding(
                   padding: const EdgeInsets.fromLTRB(15, 7.5, 15, 7.5),
-                  child: new Expanded(
-                      child: new TextFormField(
+                  child: new TextFormField(
                     onTap: () {
-                      // Below line stops keyboard from appearing
-                      FocusScope.of(context).requestFocus(new FocusNode());
-                      _chooseDateManufacture(
-                          context, _controllerManufacture.text);
-                      // Show Date Picker Here
+                  // Below line stops keyboard from appearing
+                  FocusScope.of(context).requestFocus(new FocusNode());
+                  _chooseDateManufacture(
+                      context, _controllerManufacture.text);
+                  // Show Date Picker Here
                     },
                     decoration: new InputDecoration(
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue),
-                        ),
-                        //icon: const Icon(Icons.calendar_today),
-                        hintText: 'Select Manufactured Date',
-                        labelText: 'Manufactured Date',
-                        suffixIcon: Icon(Icons.calendar_today_outlined)),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue),
+                    ),
+                    //icon: const Icon(Icons.calendar_today),
+                    hintText: 'Select Manufactured Date',
+                    labelText: 'Manufactured Date',
+                    suffixIcon: Icon(Icons.calendar_today_outlined)),
                     controller: _controllerManufacture,
                     keyboardType: TextInputType.datetime,
                     validator: (val) =>
-                        val!.isEmpty ? 'Manufactured Date is required' : null,
+                    val!.isEmpty ? 'Manufactured Date is required' : null,
                     //validator: (val) =>
                     //isValidDob(val!) ? null : 'Not a valid date',
                     //onSaved: (val) => newContact.dob = convertToDate(val!),
-                  )),
+                  ),
                 ),
                 Row(
                   children: [
@@ -424,11 +423,18 @@ class _AddGroceryFormState extends State<AddGroceryForm>
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(8.0,30,8,8),
+                  padding: const EdgeInsets.fromLTRB(15,45,15,8),
                   child: InkWell(
-                    onTap: () async {
+                    onTap: ()  {
                       ///ToDo: add form validations
                       //_submitForm();
+
+                      setState(() {
+                        Globaldata.stateChanged.value =  !Globaldata.stateChanged.value;
+                      });
+
+
+
                       DateTime convertDate;
                       if(isExpirationTypeBestBefore == true){
                         convertDate = convertToDate(_controllerManufacture.text)!;
@@ -438,7 +444,7 @@ class _AddGroceryFormState extends State<AddGroceryForm>
 
                         Database.addGrocery(
                             productName: _titleController.text,
-                            quantity: _controllerQuantity.text,
+                            quantity: int.parse(_controllerQuantity.text),
                             category: dropdownValue,
                             manufacturedDate: convertToDate(_controllerManufacture.text)!,
                             expiryDate: convertToDate(bestBeforeDate)! );
@@ -446,7 +452,7 @@ class _AddGroceryFormState extends State<AddGroceryForm>
                       } else {
                         Database.addGrocery(
                             productName: _titleController.text,
-                            quantity: _controllerQuantity.text,
+                            quantity: int.parse(_controllerQuantity.text),
                             category: dropdownValue,
                             manufacturedDate: convertToDate(_controllerManufacture.text)!,
                             expiryDate: convertToDate(_controllerExpiration.text)! );
@@ -479,7 +485,7 @@ class _AddGroceryFormState extends State<AddGroceryForm>
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(6),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black12,

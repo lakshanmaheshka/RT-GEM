@@ -67,15 +67,17 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
       if (message != null) {
         final title = message.notification!.title;
         final body = message.notification!.body;
-        showDialog(context: context, builder: (context){
-          return SimpleDialog(
-            children: [
-              Text('Title: $title'),
-              Text('Body: $body')
-            ],
-          );
-        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Title :$title, Body :$body"))
+        );
       }
+    });
+  }
+
+  void onFirebaseOpenedApp(){
+    FirebaseMessaging.onMessage.listen((event) {
+      print('onMessageOpenedApp occured. Message is: ');
+      print(event.notification!.title);
     });
   }
 
@@ -143,16 +145,8 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
                     _selectedIndex = index;
                     if(index == 2){
                       isInReceipt = true;
-                      print("index" + index.toString());
-                      print("seledindex" + _selectedIndex.toString());
-
-                      print("isInRecipt" + isInReceipt.toString());
                     } else {
                       isInReceipt = false;
-                      print("index" + index.toString());
-                      print("seledindex" + _selectedIndex.toString());
-
-                      print("isInRecipt" + isInReceipt.toString());
                     }
                   }),
                 ),

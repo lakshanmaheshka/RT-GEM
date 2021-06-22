@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -141,190 +142,189 @@ class _AddReceiptState extends State<AddReceipt> {
       appBar: AppBar(
         title: Text("Add Receipts"),
       ),
-      body:  Container(
-        child: SingleChildScrollView(
-          child: Form(
-            key: _addReceiptFormKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 15, 15, 7.5),
-                  child: TextFormField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue),
-                      ),
-                      //icon: const Icon(Icons.person),
-                      hintText: 'Enter Receipt Name',
-                      labelText: 'Receipt Name',
-                    ),
-                    inputFormatters: [new LengthLimitingTextInputFormatter(30)],
-                    validator: (val) =>
-                    val!.isEmpty ? 'Name is required' : null,
-                    controller: _titleController,
-                    focusNode: _titleFocusNode,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 15, 15, 7.5),
-                  child: TextFormField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue),
-                      ),
-                      //icon: const Icon(Icons.person),
-                      hintText: 'Enter Amount',
-                      labelText: 'Amount',
-                    ),
-                    inputFormatters: [new LengthLimitingTextInputFormatter(30)],
-                    validator: (val) =>
-                    val!.isEmpty ? 'Amount is required' : null,
-                    controller: _amountController,
-                    keyboardType: TextInputType.number,
-                    //focusNode: _titleFocusNode,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 7.5, 15, 7.5),
-                  child: DropdownButtonFormField<String>(
-                    //key: _formKey,
-                    value: dropdownValue,
-                    decoration: InputDecoration(
-                        filled: false,
-                        labelText: 'Category',
-                        labelStyle: new TextStyle(color: Colors.green),
-                        enabledBorder: new OutlineInputBorder(
-                          //borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                        focusedBorder: new OutlineInputBorder(
-                          //borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(color: Colors.cyan),
-                        ),
+      body:  Align(
+        alignment: Alignment.topCenter,
+        child: Container(
+          width: 800 ,
+          child: SingleChildScrollView(
+            child: Form(
+              key: _addReceiptFormKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 15, 15, 7.5),
+                    child: TextFormField(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.blue),
-                        )),
-                    items: receiptCategories.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    // items: _countries.map((country) => DropdownMenuItem<String>(value: country.countryCode, child: Text(country.name))).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        dropdownValue = newValue;
-                      });
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 7.5, 15, 7.5),
-                  child: new Expanded(
-                      child: new TextFormField(
-                        onTap: () {
-                          // Below line stops keyboard from appearing
-                          FocusScope.of(context).requestFocus(new FocusNode());
-                          _chooseDate(
-                              context, _controllerDate.text);
-                          // Show Date Picker Here
-                        },
-                        decoration: new InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue),
-                            ),
-                            //icon: const Icon(Icons.calendar_today),
-                            hintText: 'Select Date',
-                            labelText: 'Date',
-                            suffixIcon: Icon(Icons.calendar_today_outlined)),
-                        controller: _controllerDate,
-                        keyboardType: TextInputType.datetime,
-                        validator: (val) =>
-                        val!.isEmpty ? 'Date is required' : null,
-                        //validator: (val) =>
-                        //isValidDob(val!) ? null : 'Not a valid date',
-                        //onSaved: (val) => newContact.dob = convertToDate(val!),
-                      )),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8.0,30,8,8),
-                  child: InkWell(
-                    onTap: () async {
-                      ///ToDo: add form validations
-                      _submitForm();
-                      // Database.addReceipt(
-                      //   id: DateTime.now().toString(),
-                      //   receiptName: _titleController.text,
-                      //   amount: int.parse(_amountController.text),
-                      //   category: dropdownValue,
-                      //   addedDate: _controllerDate.text,
-                      // );
-
-                      DateFormat dateForm = DateFormat("dd/MM/yyyy");
-                      print("Date"+_controllerDate.text);
-
-
-                      print("dateform"+ convertToDate(_controllerDate.text).toString());
-                      convertToDate(_controllerDate.text);
-
-                      print(dateForm.parse(_controllerDate.text));
-                      //
-                      transactions.addTransactions(
-                        Receipt(
-                          id: DateTime.now().toString(),
-                          title: _titleController.text,
-                          amount: int.parse(_amountController.text),
-                          date: convertToDate(_controllerDate.text),
-                          category: dropdownValue,
                         ),
-                      );
-
-                      _addReceiptFormKey.currentState!.reset();
-                      _titleController.clear();
-                      _controllerDate.clear();
-
-                      setState(() {
-                        dropdownValue = null;
-                      });
-
-                      CustomSnackBar(context, const Text('Receipt Added'));
-                    },
-                    child: Container(
-                      width: Responsive.deviceWidth(65, context),
-                      height: Responsive.deviceHeight(7, context),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.teal,
-                            Colors.blue,
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black12,
-                            offset: Offset(5, 5),
-                            blurRadius: 10,
-                          )
-                        ],
+                        //icon: const Icon(Icons.person),
+                        hintText: 'Enter Receipt Name',
+                        labelText: 'Receipt Name',
                       ),
-                      child: Center(
-                        child: Text(
-                          'Add Item',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 25,
-                            fontWeight: FontWeight.w500,
+                      inputFormatters: [new LengthLimitingTextInputFormatter(30)],
+                      validator: (val) =>
+                      val!.isEmpty ? 'Name is required' : null,
+                      controller: _titleController,
+                      focusNode: _titleFocusNode,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 15, 15, 7.5),
+                    child: TextFormField(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        //icon: const Icon(Icons.person),
+                        hintText: 'Enter Amount',
+                        labelText: 'Amount',
+                      ),
+                      inputFormatters: [new LengthLimitingTextInputFormatter(30)],
+                      validator: (val) =>
+                      val!.isEmpty ? 'Amount is required' : null,
+                      controller: _amountController,
+                      keyboardType: TextInputType.number,
+                      //focusNode: _titleFocusNode,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 7.5, 15, 7.5),
+                    child: DropdownButtonFormField<String>(
+                      //key: _formKey,
+                      value: dropdownValue,
+                      decoration: InputDecoration(
+                          filled: false,
+                          labelText: 'Category',
+                          labelStyle: new TextStyle(color: Colors.green),
+                          enabledBorder: new OutlineInputBorder(
+                            //borderRadius: new BorderRadius.circular(25.0),
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                          focusedBorder: new OutlineInputBorder(
+                            //borderRadius: new BorderRadius.circular(25.0),
+                            borderSide: BorderSide(color: Colors.cyan),
+                          ),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue),
+                          )),
+                      items: receiptCategories.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      // items: _countries.map((country) => DropdownMenuItem<String>(value: country.countryCode, child: Text(country.name))).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          dropdownValue = newValue;
+                        });
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 7.5, 15, 7.5),
+                    child: new TextFormField(
+                      onTap: () {
+                        // Below line stops keyboard from appearing
+                        FocusScope.of(context).requestFocus(new FocusNode());
+                        _chooseDate(
+                            context, _controllerDate.text);
+                        // Show Date Picker Here
+                      },
+                      decoration: new InputDecoration(
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue),
+                          ),
+                          //icon: const Icon(Icons.calendar_today),
+                          hintText: 'Select Date',
+                          labelText: 'Date',
+                          suffixIcon: Icon(Icons.calendar_today_outlined)),
+                      controller: _controllerDate,
+                      keyboardType: TextInputType.datetime,
+                      validator: (val) =>
+                      val!.isEmpty ? 'Date is required' : null,
+                      //validator: (val) =>
+                      //isValidDob(val!) ? null : 'Not a valid date',
+                      //onSaved: (val) => newContact.dob = convertToDate(val!),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8.0,30,8,8),
+                    child: InkWell(
+                      onTap: () async {
+                        ///ToDo: add form validations
+                        _submitForm();
+                        // Database.addReceipt(
+                        //   id: DateTime.now().toString(),
+                        //   receiptName: _titleController.text,
+                        //   amount: int.parse(_amountController.text),
+                        //   category: dropdownValue,
+                        //   addedDate: _controllerDate.text,
+                        // );
+
+                        DateFormat dateForm = DateFormat("dd/MM/yyyy");
+                        convertToDate(_controllerDate.text);
+
+
+                        //
+                        transactions.addTransactions(
+                          Receipt(
+                            id: DateTime.now().toString(),
+                            title: _titleController.text,
+                            amount: int.parse(_amountController.text),
+                            date: convertToDate(_controllerDate.text),
+                            category: dropdownValue,
+                          ),
+                        );
+
+                        _addReceiptFormKey.currentState!.reset();
+                        _titleController.clear();
+                        _controllerDate.clear();
+
+                        setState(() {
+                          dropdownValue = null;
+                        });
+
+                        CustomSnackBar(context, const Text('Receipt Added'));
+                      },
+                      child: Container(
+                        width: Responsive.deviceWidth(65, context),
+                        height: Responsive.deviceHeight(7, context),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.teal,
+                              Colors.blue,
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black12,
+                              offset: Offset(5, 5),
+                              blurRadius: 10,
+                            )
+                          ],
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Add Item',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 25,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
         ),

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:rt_gem/utils/commons.dart';
 import 'package:rt_gem/utils/custom_colors.dart';
 import 'package:rt_gem/utils/database.dart';
+import 'package:rt_gem/utils/receipt_models/global_data.dart';
 import 'package:rt_gem/widgets/custom_dialog/edit_dialog/edit_dialog.dart';
 import 'package:rt_gem/widgets/isApp/views/edit_grocery.dart';
 import '../../utils/app_theme.dart';
@@ -53,67 +54,85 @@ class _GroceryListViewState extends State<GroceryListView>
           child: Transform(
             transform: Matrix4.translationValues(
                 0.0, 30 * (1.0 - widget.mainScreenAnimation!.value), 0.0),
-            child: Container(
-              height: 216,
-              width: double.infinity,
-              child: StreamBuilder<QuerySnapshot>(
-                stream: Database.readGroceriesByWeek(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return Text('Something went wrong');
-                  } else if (snapshot.hasData || snapshot.data != null) {
-                    return ListView.builder(
-                      padding: const EdgeInsets.only(
-                          top: 0, bottom: 0, right: 16, left: 16),
-                      itemCount: snapshot.data!.docs.length,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        final int count =
-                        snapshot.data!.docs.length > 10 ? 10 : snapshot.data!.docs.length;
-                        final Animation<double> animation =
-                        Tween<double>(begin: 0.0, end: 1.0).animate(
-                            CurvedAnimation(
-                                parent: animationController!,
-                                curve: Interval((1 / count) * index, 1.0,
-                                    curve: Curves.fastOutSlowIn)));
-                        animationController!.forward();
+            child: ValueListenableBuilder(
+              valueListenable: Globaldata.filter,
+              builder: (BuildContext context, int value, Widget? child) {
+                return Container(
+                  height: 216,
+                  width: double.infinity,
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: Globaldata.filter.value == 0 ?
+                    Database.readGroceries() :
+                    Globaldata.filter.value == 1 ?
+                    Database.readGroceriesByDay() :
+                    Globaldata.filter.value == 2 ?
+                    Database.readGroceriesByNextDay() :
+                    Globaldata.filter.value == 3 ?
+                    Database.readGroceriesByWeek() :
+                    Globaldata.filter.value == 4 ?
+                    Database.readGroceriesByMonth() :  Database.readGroceries(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        print(snapshot.error);
+                        return Text('Something went wrong');
+                      } else if (snapshot.hasData || snapshot.data != null) {
+                        return ListView.builder(
+                          padding: const EdgeInsets.only(
+                              top: 0, bottom: 0, right: 16, left: 16),
+                          itemCount: snapshot.data!.docs.length,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            final int count =
+                            snapshot.data!.docs.length > 10 ? 10 : snapshot.data!.docs.length;
+                            final Animation<double> animation =
+                            Tween<double>(begin: 0.0, end: 1.0).animate(
+                                CurvedAnimation(
+                                    parent: animationController!,
+                                    curve: Interval((1 / count) * index, 1.0,
+                                        curve: Curves.fastOutSlowIn)));
+                            animationController!.forward();
 
-                        var groceries = snapshot.data!.docs[index].data();
-                        String docID = snapshot.data!.docs[index].id;
-                        String productName = groceries['productName'];
-                        String category = groceries['category'];
-                        String manufactureDate = dateFormatS.format(groceries['manufacturedDate'].toDate());
-                        String expiryDate = dateFormatS.format(groceries['expiryDate'].toDate());
-                        String quantity = groceries['quantity'];
+                            var groceries = snapshot.data!.docs[index].data();
+                            String docID = snapshot.data!.docs[index].id;
+                            String productName = groceries['productName'];
+                            String category = groceries['category'];
+                            String manufactureDate = dateFormatS.format(groceries['manufacturedDate'].toDate());
+                            String expiryDate = dateFormatS.format(groceries['expiryDate'].toDate());
+                            String quantity = groceries['quantity'].toString();
 
-                        return ItemsView(
-                          animation: animation,
-                          animationController: animationController,
-                          productName: productName,
+                            return ItemsView(
+                                animation: animation,
+                                animationController: animationController,
+                                productName: productName,
 
-                          docID: docID,
-                          currentCategory: category,
-                          currentItemMfg: manufactureDate,
-                          currentItemExp: expiryDate,
-                          currentQuantity: quantity
+                                docID: docID,
+                                currentCategory: category,
+                                currentItemMfg: manufactureDate,
+                                currentItemExp: expiryDate,
+                                currentQuantity: quantity
+                            );
+                          },
                         );
-                      },
-                    );
-                  }
+                      }
 
-                  return Center(
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        CustomColors.firebaseOrange,
-                      ),
-                    ),
-                  );
-                },
-              ),
+                      return Center(
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            CustomColors.firebaseOrange,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
 
 
 
 
+
+                );
+
+
+              },
 
             ),
           ),
@@ -328,7 +347,7 @@ class ItemsView extends StatelessWidget {
                             context: context,
                             builder: (BuildContext context) {
                               return EditDialog(
-                                  currentProductName: productName,
+                                currentProductName: productName,
                                 currentCategory: currentCategory,
                                 currentItemMfg: currentItemMfg,
                                 currentItemExp: currentItemExp,
@@ -391,13 +410,13 @@ class ItemsView extends StatelessWidget {
                               Expanded(
                                 child: Padding(
                                   padding:
-                                      const EdgeInsets.only(top: 8, bottom: 8),
+                                  const EdgeInsets.only(top: 8, bottom: 8),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
-                                        <String>[currentCategory, currentItemMfg, currentItemExp].join('\n'),
+                                        <String>[currentCategory, currentItemMfg, currentItemExp, currentQuantity].join('\n'),
                                         style: TextStyle(
                                           fontFamily: AppTheme.fontName,
                                           fontWeight: FontWeight.w500,

@@ -1,6 +1,6 @@
 
-importScripts("https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js");
-importScripts("https://www.gstatic.com/firebasejs/7.5.0/firebase-messaging.js");
+importScripts("https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js");
+importScripts("https://www.gstatic.com/firebasejs/8.6.1/firebase-messaging.js");
 firebase.initializeApp({
     apiKey: "AIzaSyCE6b1ZtgY3ZdCdm_kIFxeyYzhgLnEz7fs",
     authDomain: "rt-gem.firebaseapp.com",

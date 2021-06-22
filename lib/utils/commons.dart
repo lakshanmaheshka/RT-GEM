@@ -71,4 +71,13 @@ DateTime findLastDateOfTheMonth(DateTime dateTime) {
 }
 
 
+bool sameDate(DateTime dateOne, DateTime dateTwo ){
+  return dateOne.day == dateTwo.day && dateOne.month == dateTwo.month && dateOne.year ==dateTwo.year;
+}
+
+bool isNextDate(DateTime dateOne, DateTime dateTwo ){
+  return dateOne.day == dateTwo.day + 1 && dateOne.month == dateTwo.month && dateOne.year ==dateTwo.year;
+}
+
+
 

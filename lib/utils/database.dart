@@ -10,7 +10,7 @@ class Database {
 
   static Future<void> addGrocery({
     required String productName,
-    required String quantity,
+    required int quantity,
     required String category,
     required DateTime manufacturedDate,
     required DateTime expiryDate,
@@ -58,11 +58,22 @@ class Database {
         .catchError((e) => print(e));
   }
 
+  // static Stream<QuerySnapshot> readGroceries() {
+  //   CollectionReference rtGemGroceriesCollection =
+  //       _mainCollection.doc(userUid).collection('groceries');
+  //
+  //   return rtGemGroceriesCollection.snapshots();
+  // }
+
   static Stream<QuerySnapshot> readGroceries() {
     CollectionReference rtGemGroceriesCollection =
-        _mainCollection.doc(userUid).collection('groceries');
+    _mainCollection.doc(userUid).collection('groceries');
 
-    return rtGemGroceriesCollection.snapshots();
+    final Query readAll = rtGemGroceriesCollection
+        .where("isConsumed", isEqualTo: false)
+        .orderBy("expiryDate");
+
+    return readAll.snapshots();
   }
 
   static Stream<QuerySnapshot> readGroceriesByDay() {
@@ -73,8 +84,25 @@ class Database {
     _mainCollection.doc(userUid).collection('groceries');
 
     final Query byWeek = rtGemGroceriesCollection
+        .where("isConsumed", isEqualTo: false)
         .where("expiryDate", isLessThanOrEqualTo: DateTime(date.year, date.month, date.day))
         .where("expiryDate", isGreaterThanOrEqualTo: DateTime(date.year, date.month, date.day));
+
+
+    return byWeek.snapshots();
+  }
+
+  static Stream<QuerySnapshot> readGroceriesByNextDay() {
+    DateTime date = DateTime.now();
+
+
+    CollectionReference rtGemGroceriesCollection =
+    _mainCollection.doc(userUid).collection('groceries');
+
+    final Query byWeek = rtGemGroceriesCollection
+        .where("isConsumed", isEqualTo: false)
+        .where("expiryDate", isLessThanOrEqualTo: DateTime(date.year, date.month, date.day+1))
+        .where("expiryDate", isGreaterThanOrEqualTo: DateTime(date.year, date.month, date.day+1));
 
 
     return byWeek.snapshots();
@@ -88,6 +116,7 @@ class Database {
     _mainCollection.doc(userUid).collection('groceries');
 
     final Query byWeek = rtGemGroceriesCollection
+    .where("isConsumed", isEqualTo: false)
     .where("expiryDate", isLessThanOrEqualTo: findLastDateOfTheWeek(date))
     .where("expiryDate", isGreaterThanOrEqualTo: findFirstDateOfTheWeek(date));
 
@@ -103,6 +132,7 @@ class Database {
     _mainCollection.doc(userUid).collection('groceries');
 
     final Query byWeek = rtGemGroceriesCollection
+        .where("isConsumed", isEqualTo: false)
         .where("expiryDate", isLessThanOrEqualTo: findLastDateOfTheMonth(date))
         .where("expiryDate", isGreaterThanOrEqualTo: findFirstDateOfTheMonth(date));
 
@@ -131,7 +161,7 @@ class Database {
     // Get data from docs and convert map to List
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
 
-    print(allData);
+    //print(allData);
 
     return allData;
   }
@@ -145,7 +175,7 @@ class Database {
     // Get data from docs and convert map to List
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
 
-    print(allData);
+    //print(allData);
 
     return allData;
   }
@@ -153,10 +183,10 @@ class Database {
   static Future<void> updateGroceries({
     required String docId,
     required String productName,
-    required String quantity,
+    required int quantity,
     required String category,
-    required String manufacturedDate,
-    required String expiryDate,
+    required DateTime manufacturedDate,
+    required DateTime expiryDate,
   }) async {
     DocumentReference documentReferencer =
     _mainCollection.doc(userUid).collection('groceries').doc(docId);
@@ -205,13 +235,15 @@ class Database {
 
   static Future<void> markConsumedGroceries({
     required String docId,
-    //required bool isConsumed
+    required int quantity,
+    required bool isConsumed
   }) async {
     DocumentReference documentReferencer =
     _mainCollection.doc(userUid).collection('groceries').doc(docId);
 
     Map<String, dynamic> data = <String, dynamic>{
-      "isConsumed": true
+      "quantity" : quantity,
+      "isConsumed": isConsumed
     };
 
     await documentReferencer

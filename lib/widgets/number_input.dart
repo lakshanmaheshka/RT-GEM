@@ -173,7 +173,7 @@ class NumberInputWithIncrementDecrement extends StatefulWidget {
     this.key,
     this.enabled = true,
     this.buttonArrangement = ButtonArrangement.rightEnd,
-    this.min = 1,
+    this.min = 0,
     this.max = double.infinity,
     this.initialValue = 1,
     this.incDecFactor = 1,
