@@ -7,13 +7,6 @@ class NoTransactions extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Container(
-          // height: MediaQuery.of(context).size.height * 0.5,
-          child: Image.asset(
-            'assets/images/waiting.png',
-            fit: BoxFit.cover,
-          ),
-        ),
         SizedBox(
           height: 10,
         ),

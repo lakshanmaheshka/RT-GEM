@@ -1,4 +1,3 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,14 +19,8 @@ Future main() async {
   await Firebase.initializeApp();
 
   runApp(MyApp());
-  print("tokenf ");
-  kIsWeb ? FirebaseMessaging.instance.getToken().then(print) : print("not web");
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 }
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print("Handling a background message ${message.notification!.title}");
-}
 
 class MyApp extends StatelessWidget {
   static final String title = 'RT GEM';

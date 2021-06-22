@@ -1,4 +1,3 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rt_gem/screens/calender_screen.dart';
@@ -53,32 +52,12 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
         duration: const Duration(milliseconds: 600), vsync: this);
     tabBody = HomeScreen(animationController: animationController);
     super.initState();
-    firebaseOnMessage();
   }
 
   @override
   void dispose() {
     animationController!.dispose();
     super.dispose();
-  }
-
-  void firebaseOnMessage(){
-    FirebaseMessaging.onMessage.listen((message){
-      if (message != null) {
-        final title = message.notification!.title;
-        final body = message.notification!.body;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Title :$title, Body :$body"))
-        );
-      }
-    });
-  }
-
-  void onFirebaseOpenedApp(){
-    FirebaseMessaging.onMessage.listen((event) {
-      print('onMessageOpenedApp occured. Message is: ');
-      print(event.notification!.title);
-    });
   }
 
   @override
@@ -129,7 +108,7 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
           index: _selectedIndex,
           children: <Widget>[
             HomeScreen(animationController: animationController),
-            CalenderScreen(animationController: animationController),
+            CalenderScreen(),
             ReceiptScreen(),
             ProfileScreen(),
           ],
@@ -231,7 +210,7 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
                   setState(() {
                     isInReceipt = false;
                     tabBody =
-                        CalenderScreen(animationController: animationController);
+                        CalenderScreen();
                   });
                 });
                 break;

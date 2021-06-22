@@ -89,9 +89,11 @@ class _SummaryViewState extends State<SummaryView> {
     switch (Globaldata.filter.value) {
       case 0:
 
-        setState(() {
-          expires = "All";
-        });
+        if (this.mounted) {
+          setState(() {
+            expires = "All";
+          });
+        }
 
         List<Grocery> _filteredGroceries = [];
 
@@ -99,9 +101,11 @@ class _SummaryViewState extends State<SummaryView> {
             _filteredGroceries.add(element);
         });
 
-        setState(() {
-          itemsAdded = _filteredGroceries.length;
-        });
+        if (this.mounted) {
+          setState(() {
+            itemsAdded = _filteredGroceries.length;
+          });
+        }
 
         _filteredGroceries = [];
 
@@ -111,9 +115,11 @@ class _SummaryViewState extends State<SummaryView> {
           }
         });
 
+        if (this.mounted) {
         setState(() {
           itemsUsed = _filteredGroceries.length;
         });
+        }
 
         _filteredGroceries = [];
 
@@ -122,10 +128,11 @@ class _SummaryViewState extends State<SummaryView> {
             _filteredGroceries.add(element);
           }
         });
-
+        if (this.mounted) {
         setState(() {
           itemsUsed = _filteredGroceries.length;
         });
+        }
 
         _filteredGroceries = [];
 
@@ -161,7 +168,7 @@ class _SummaryViewState extends State<SummaryView> {
                 _filteredOthers.add(element);
             }
         });
-
+        if (this.mounted) {
         setState(() {
           itemsTotalBeverages = _filteredBeverages.length.toDouble() == 0.0 ? 0.1 : _filteredBeverages.length.toDouble();
           itemsTotalBread = _filteredBread.length.toDouble() == 0.0 ? 0.1 : _filteredBread.length.toDouble();
@@ -173,6 +180,7 @@ class _SummaryViewState extends State<SummaryView> {
           itemsTotalOthers = _filteredOthers.length.toDouble() == 0.0 ? 0.1 : _filteredOthers.length.toDouble();
 
         });
+        }
 
         _filteredBeverages = [];
         _filteredBread = [];
@@ -220,17 +228,18 @@ class _SummaryViewState extends State<SummaryView> {
 
           }
         });
-
-        setState(() {
-          itemsLeftBeverages = _filteredBeverages.length.toDouble();
-          itemsLeftBread = _filteredBread.length.toDouble();
-          itemsLeftDairy = _filteredDairy.length.toDouble();
-          itemsLeftCereals = _filteredCereals.length.toDouble();
-          itemsLeftCanned = _filteredCanned.length.toDouble();
-          itemsLeftFrozen = _filteredFrozen.length.toDouble();
-          itemsLeftSnack = _filteredSnack.length.toDouble();
-          itemsLeftOthers = _filteredOthers.length.toDouble();
-        });
+        if (this.mounted) {
+          setState(() {
+            itemsLeftBeverages = _filteredBeverages.length.toDouble();
+            itemsLeftBread = _filteredBread.length.toDouble();
+            itemsLeftDairy = _filteredDairy.length.toDouble();
+            itemsLeftCereals = _filteredCereals.length.toDouble();
+            itemsLeftCanned = _filteredCanned.length.toDouble();
+            itemsLeftFrozen = _filteredFrozen.length.toDouble();
+            itemsLeftSnack = _filteredSnack.length.toDouble();
+            itemsLeftOthers = _filteredOthers.length.toDouble();
+          });
+        }
 
         _filteredBeverages = [];
         _filteredBread = [];
@@ -243,10 +252,11 @@ class _SummaryViewState extends State<SummaryView> {
 
         break;
       case 1:
-
+        if (this.mounted) {
         setState(() {
           expires = "This Day";
         });
+        }
 
         List<Grocery> _filteredGroceries = [];
 
@@ -256,9 +266,11 @@ class _SummaryViewState extends State<SummaryView> {
           }
         });
 
-        setState(() {
-          itemsAdded = _filteredGroceries.length;
-        });
+        if (this.mounted) {
+          setState(() {
+            itemsAdded = _filteredGroceries.length;
+          });
+        }
 
         _filteredGroceries = [];
 
@@ -299,7 +311,7 @@ class _SummaryViewState extends State<SummaryView> {
 
 
         });
-
+        if (this.mounted) {
         setState(() {
           itemsTotalBeverages = _filteredBeverages.length.toDouble() == 0.0 ? 0.1 : _filteredBeverages.length.toDouble();
           itemsTotalBread = _filteredBread.length.toDouble() == 0.0 ? 0.1 : _filteredBread.length.toDouble();
@@ -311,6 +323,7 @@ class _SummaryViewState extends State<SummaryView> {
           itemsTotalOthers = _filteredOthers.length.toDouble() == 0.0 ? 0.1 : _filteredOthers.length.toDouble();
 
         });
+        }
 
         _filteredBeverages = [];
         _filteredBread = [];
@@ -358,7 +371,7 @@ class _SummaryViewState extends State<SummaryView> {
 
           }
         });
-
+        if (this.mounted) {
         setState(() {
           itemsLeftBeverages = _filteredBeverages.length.toDouble();
           itemsLeftBread = _filteredBread.length.toDouble();
@@ -369,6 +382,7 @@ class _SummaryViewState extends State<SummaryView> {
           itemsLeftSnack = _filteredSnack.length.toDouble();
           itemsLeftOthers = _filteredOthers.length.toDouble();
         });
+        }
 
         _filteredBeverages = [];
         _filteredBread = [];
@@ -382,10 +396,10 @@ class _SummaryViewState extends State<SummaryView> {
 
         break;
       case 2:
-
+        if (this.mounted) {
         setState(() {
           expires = "Tomorrow";
-        });
+        });}
 
         List<Grocery> _filteredGroceries = [];
 
@@ -394,10 +408,10 @@ class _SummaryViewState extends State<SummaryView> {
             _filteredGroceries.add(element);
           }
         });
-
+        if (this.mounted) {
         setState(() {
           itemsAdded = _filteredGroceries.length;
-        });
+        });}
 
         _filteredGroceries = [];
 
@@ -406,10 +420,10 @@ class _SummaryViewState extends State<SummaryView> {
             _filteredGroceries.add(element);
           }
         });
-
+        if (this.mounted) {
         setState(() {
           itemsUsed = _filteredGroceries.length;
-        });
+        });}
 
         _filteredGroceries = [];
 
@@ -451,7 +465,7 @@ class _SummaryViewState extends State<SummaryView> {
 
 
         });
-
+        if (this.mounted) {
         setState(() {
           itemsTotalBeverages = _filteredBeverages.length.toDouble() == 0.0 ? 0.1 : _filteredBeverages.length.toDouble();
           itemsTotalBread = _filteredBread.length.toDouble() == 0.0 ? 0.1 : _filteredBread.length.toDouble();
@@ -462,7 +476,7 @@ class _SummaryViewState extends State<SummaryView> {
           itemsTotalSnack = _filteredSnack.length.toDouble() == 0.0 ? 0.1 : _filteredSnack.length.toDouble();
           itemsTotalOthers = _filteredOthers.length.toDouble() == 0.0 ? 0.1 : _filteredOthers.length.toDouble();
 
-        });
+        });}
 
         _filteredBeverages = [];
         _filteredBread = [];
@@ -510,7 +524,7 @@ class _SummaryViewState extends State<SummaryView> {
 
           }
         });
-
+        if (this.mounted) {
         setState(() {
           itemsLeftBeverages = _filteredBeverages.length.toDouble();
           itemsLeftBread = _filteredBread.length.toDouble();
@@ -520,7 +534,7 @@ class _SummaryViewState extends State<SummaryView> {
           itemsLeftFrozen = _filteredFrozen.length.toDouble();
           itemsLeftSnack = _filteredSnack.length.toDouble();
           itemsLeftOthers = _filteredOthers.length.toDouble();
-        });
+        });}
 
         _filteredBeverages = [];
         _filteredBread = [];
@@ -535,10 +549,10 @@ class _SummaryViewState extends State<SummaryView> {
         break;
 
       case 3:
-
+        if (this.mounted) {
         setState(() {
           expires = "This Week";
-        });
+        });}
 
         List<Grocery> _filteredGroceries = [];
 
@@ -548,10 +562,10 @@ class _SummaryViewState extends State<SummaryView> {
             _filteredGroceries.add(element);
           }
         });
-
+        if (this.mounted) {
         setState(() {
           itemsAdded = _filteredGroceries.length;
-        });
+        });}
 
         _filteredGroceries = [];
 
@@ -562,10 +576,10 @@ class _SummaryViewState extends State<SummaryView> {
             _filteredGroceries.add(element);
           }
         });
-
+        if (this.mounted) {
         setState(() {
           itemsUsed = _filteredGroceries.length;
-        });
+        });}
 
         _filteredGroceries = [];
 
@@ -607,7 +621,7 @@ class _SummaryViewState extends State<SummaryView> {
 
 
         });
-
+        if (this.mounted) {
         setState(() {
           itemsTotalBeverages = _filteredBeverages.length.toDouble() == 0.0 ? 0.1 : _filteredBeverages.length.toDouble();
           itemsTotalBread = _filteredBread.length.toDouble() == 0.0 ? 0.1 : _filteredBread.length.toDouble();
@@ -618,7 +632,7 @@ class _SummaryViewState extends State<SummaryView> {
           itemsTotalSnack = _filteredSnack.length.toDouble() == 0.0 ? 0.1 : _filteredSnack.length.toDouble();
           itemsTotalOthers = _filteredOthers.length.toDouble() == 0.0 ? 0.1 : _filteredOthers.length.toDouble();
 
-        });
+        });}
 
         _filteredBeverages = [];
         _filteredBread = [];
@@ -669,7 +683,7 @@ class _SummaryViewState extends State<SummaryView> {
 
           }
         });
-
+        if (this.mounted) {
         setState(() {
           itemsLeftBeverages = _filteredBeverages.length.toDouble();
           itemsLeftBread = _filteredBread.length.toDouble();
@@ -679,7 +693,7 @@ class _SummaryViewState extends State<SummaryView> {
           itemsLeftFrozen = _filteredFrozen.length.toDouble();
           itemsLeftSnack = _filteredSnack.length.toDouble();
           itemsLeftOthers = _filteredOthers.length.toDouble();
-        });
+        });}
 
         _filteredBeverages = [];
         _filteredBread = [];
@@ -693,10 +707,10 @@ class _SummaryViewState extends State<SummaryView> {
 
         break;
       case 4:
-
+        if (this.mounted) {
         setState(() {
           expires = "This Month";
-        });
+        });}
 
 
         List<Grocery> _filteredGroceries = [];
@@ -707,10 +721,10 @@ class _SummaryViewState extends State<SummaryView> {
             _filteredGroceries.add(element);
           }
         });
-
+        if (this.mounted) {
         setState(() {
           itemsAdded = _filteredGroceries.length;
-        });
+        });}
 
         _filteredGroceries = [];
 
@@ -721,10 +735,10 @@ class _SummaryViewState extends State<SummaryView> {
             _filteredGroceries.add(element);
           }
         });
-
+        if (this.mounted) {
         setState(() {
           itemsUsed = _filteredGroceries.length;
-        });
+        });}
 
         _filteredGroceries = [];
 
@@ -766,7 +780,7 @@ class _SummaryViewState extends State<SummaryView> {
 
 
         });
-
+        if (this.mounted) {
         setState(() {
           itemsTotalBeverages = _filteredBeverages.length.toDouble() == 0.0 ? 0.1 : _filteredBeverages.length.toDouble();
           itemsTotalBread = _filteredBread.length.toDouble() == 0.0 ? 0.1 : _filteredBread.length.toDouble();
@@ -777,7 +791,7 @@ class _SummaryViewState extends State<SummaryView> {
           itemsTotalSnack = _filteredSnack.length.toDouble() == 0.0 ? 0.1 : _filteredSnack.length.toDouble();
           itemsTotalOthers = _filteredOthers.length.toDouble() == 0.0 ? 0.1 : _filteredOthers.length.toDouble();
 
-        });
+        });}
 
         _filteredBeverages = [];
         _filteredBread = [];
@@ -828,7 +842,7 @@ class _SummaryViewState extends State<SummaryView> {
 
           }
         });
-
+        if (this.mounted) {
         setState(() {
           itemsLeftBeverages = _filteredBeverages.length.toDouble();
           itemsLeftBread = _filteredBread.length.toDouble();
@@ -838,7 +852,7 @@ class _SummaryViewState extends State<SummaryView> {
           itemsLeftFrozen = _filteredFrozen.length.toDouble();
           itemsLeftSnack = _filteredSnack.length.toDouble();
           itemsLeftOthers = _filteredOthers.length.toDouble();
-        });
+        });}
 
         _filteredBeverages = [];
         _filteredBread = [];
@@ -859,16 +873,10 @@ class _SummaryViewState extends State<SummaryView> {
 
   @override
   void initState() {
-
-
     Globaldata.filter.value = 0;
     getProducts();
     super.initState();
-    //expires = "this week";
-    //itemsleft = totalItemsAdded - itemsused;
-    //citemleft = citemformonth - citemsused;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -889,13 +897,15 @@ class _SummaryViewState extends State<SummaryView> {
                   getProducts();
                   return InkWell(
                     onTap: (){
+                      if (this.mounted) {
                       setState(() {
                         Globaldata.filter.value++;
                         if(Globaldata.filter.value > 4){
                           Globaldata.filter.value = 0;
                         }
                         getProducts();
-                      });
+                      }
+                      );}
                     },
                     child: Container(
                       decoration: BoxDecoration(
