@@ -173,7 +173,7 @@ Widget getCategoryImage(String currentCategory) {
       return SizedBox(
           width: 60,
           height: 60,
-          child: Image.asset("assets/images/Cereals.png"));
+          child: Image.asset("assets/images/cereals.png"));
     }
     break;
 

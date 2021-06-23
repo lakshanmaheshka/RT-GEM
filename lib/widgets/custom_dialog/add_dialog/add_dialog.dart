@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rt_gem/widgets/screen_views/form_views/add_grocery_formb.dart';
-import 'package:rt_gem/widgets/responsive.dart';
+import 'package:rt_gem/utils/responsive.dart';
 
 class CustomDialog extends StatefulWidget {
   const CustomDialog({

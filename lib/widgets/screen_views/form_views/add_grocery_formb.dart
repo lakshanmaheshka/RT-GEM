@@ -12,7 +12,7 @@ import 'package:rt_gem/utils/receipt_models/global_data.dart';
 import 'package:rt_gem/widgets/isApp/views/add_grocery.dart';
 import 'package:rt_gem/widgets/isApp/views/scan_date_camera_screen.dart';
 import 'package:rt_gem/widgets/number_input.dart';
-import 'package:rt_gem/widgets/responsive.dart';
+import 'package:rt_gem/utils/responsive.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:rt_gem/widgets/snackbar.dart';

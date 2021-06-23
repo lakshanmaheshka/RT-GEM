@@ -7,7 +7,7 @@ import 'package:rt_gem/utils/commons.dart';
 import 'package:rt_gem/utils/database.dart';
 import 'package:rt_gem/utils/receipt_models/global_data.dart';
 import 'package:rt_gem/widgets/number_input.dart';
-import 'package:rt_gem/widgets/responsive.dart';
+import 'package:rt_gem/utils/responsive.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:rt_gem/widgets/snackbar.dart';

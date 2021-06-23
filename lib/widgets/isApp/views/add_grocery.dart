@@ -7,7 +7,7 @@ import 'package:rt_gem/utils/commons.dart';
 import 'package:rt_gem/utils/receipt_models/transaction.dart';
 import 'package:rt_gem/widgets/isApp/scan_provider/scan_provider.dart';
 import 'package:rt_gem/widgets/screen_views/form_views/add_grocery_formb.dart';
-import 'package:rt_gem/widgets/responsive.dart';
+import 'package:rt_gem/utils/responsive.dart';
 import 'package:rt_gem/widgets/snackbar.dart';
 
 import 'scan_date_camera_screen.dart';

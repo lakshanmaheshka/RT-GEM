@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rt_gem/utils/commons.dart';
 import 'package:rt_gem/utils/receipt_models/transaction.dart';
-import 'package:rt_gem/widgets/responsive.dart';
+import 'package:rt_gem/utils/responsive.dart';
 import 'package:rt_gem/widgets/snackbar.dart';
 
 class AddReceipt extends StatefulWidget {

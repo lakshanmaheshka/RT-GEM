@@ -12,7 +12,7 @@ import 'package:rt_gem/utils/receipt_models/transaction.dart';
 import 'package:rt_gem/widgets/receipt_widgets/views/statistics/pie_chart.dart';
 import 'package:rt_gem/widgets/receipt_widgets/widgets/no_trancaction.dart';
 import 'package:rt_gem/widgets/receipt_widgets/widgets/transaction_list_items.dart';
-import 'package:rt_gem/widgets/responsive.dart';
+import 'package:rt_gem/utils/responsive.dart';
 
 class DailySpendings extends StatefulWidget {
   @override

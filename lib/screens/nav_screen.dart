@@ -108,7 +108,7 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
           index: _selectedIndex,
           children: <Widget>[
             HomeScreen(animationController: animationController),
-            CalenderScreen(),
+            CalenderScreen(animationController: animationController),
             ReceiptScreen(),
             ProfileScreen(),
           ],
@@ -210,7 +210,7 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
                   setState(() {
                     isInReceipt = false;
                     tabBody =
-                        CalenderScreen();
+                        CalenderScreen(animationController: animationController);
                   });
                 });
                 break;

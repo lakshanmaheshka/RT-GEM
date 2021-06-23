@@ -7,11 +7,15 @@ import 'package:table_calendar/table_calendar.dart';
 
 /// Example event class.
 class Event {
-  final String title;
+  final String itemName;
 
-  final String subtitle;
+  final String category;
 
-  const Event(this.title, this.subtitle);
+  final bool isUsed;
+
+  final String expriationDate;
+
+  const Event(this.itemName, this.category, this.isUsed, this.expriationDate);
 
 }
 
@@ -27,7 +31,7 @@ class Event {
 //
 //
 //
-//
+
 // final _kEventSource = {
 //   _selectedDay: [Event('Today\'s Event 1', 'even 2'),],
 //   _selectedDay.add(Duration(days: 3)): [Event('Today\'s Event 1', 'even 2')],
