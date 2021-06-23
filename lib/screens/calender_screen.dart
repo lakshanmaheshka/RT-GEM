@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:rt_gem/utils/calendar_utils.dart';
 import 'package:rt_gem/utils/database.dart';
 import 'package:rt_gem/utils/grocery_models/grocery_model.dart';
+import 'package:rt_gem/utils/receipt_models/global_data.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 
@@ -25,14 +26,24 @@ class _CalenderScreenState extends State<CalenderScreen> {
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
 
-  late Map<DateTime, List<Event>> _kEventSource = {};
+  Map<DateTime, List<Event>> _kEventSource = {};
 
   @override
   void initState() {
     super.initState();
-    getProducts ();
+
+    // getProducts().whenComplete((){
+    //   setState(() {
+    //
+    //
+    //   });
+    // });
+
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
+
+
+
   }
 
   @override
@@ -43,7 +54,7 @@ class _CalenderScreenState extends State<CalenderScreen> {
 
 
 
-  void getProducts () async {
+   getProducts () async {
     final _selectedDay1 = DateTime.now();
 
     List<Grocery> _groceries = [];
@@ -69,6 +80,10 @@ class _CalenderScreenState extends State<CalenderScreen> {
     _groceries.forEach((element) {
       _kEventSource.putIfAbsent(element.expiryDate!, () => [Event(element.productName!, element.category!)]);
     });
+
+   // _getEventsForDay(date);
+
+
 
     //
     // _kEventSource = {
@@ -144,65 +159,82 @@ class _CalenderScreenState extends State<CalenderScreen> {
       appBar: AppBar(
         title: Text('TableCalendar - Events'),
       ),
-      body: Column(
-        children: [
-          TableCalendar<Event>(
-            firstDay: DateTime(1900),
-            lastDay: DateTime(2100),
-            focusedDay: _focusedDay,
-            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-            rangeStartDay: _rangeStart,
-            rangeEndDay: _rangeEnd,
-            calendarFormat: _calendarFormat,
-            rangeSelectionMode: _rangeSelectionMode,
-            eventLoader: _getEventsForDay,
-            startingDayOfWeek: StartingDayOfWeek.monday,
-            calendarStyle: CalendarStyle(
-              // Use `CalendarStyle` to customize the UI
-              outsideDaysVisible: false,
-            ),
-            onDaySelected: _onDaySelected,
-            onRangeSelected: _onRangeSelected,
-            onFormatChanged: (format) {
-              if (_calendarFormat != format) {
-                setState(() {
-                  _calendarFormat = format;
-                });
+      body: ValueListenableBuilder(
+        valueListenable: Globaldata.stateChanged,
+        builder: (BuildContext context, bool value, Widget? child) {
+
+          return  FutureBuilder(
+            future: getProducts(),
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              switch (snapshot.connectionState) {
+                default:
+                  if (snapshot.hasError)
+                    return Text('Error: ${snapshot.error}');
+                  else
+                    return Column(
+                      children: [
+                        TableCalendar<Event>(
+                          firstDay: DateTime(1900),
+                          lastDay: DateTime(2100),
+                          focusedDay: _focusedDay,
+                          selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                          rangeStartDay: _rangeStart,
+                          rangeEndDay: _rangeEnd,
+                          calendarFormat: _calendarFormat,
+                          rangeSelectionMode: _rangeSelectionMode,
+                          eventLoader: _getEventsForDay,
+                          startingDayOfWeek: StartingDayOfWeek.monday,
+                          calendarStyle: CalendarStyle(
+                            // Use `CalendarStyle` to customize the UI
+                            outsideDaysVisible: false,
+                          ),
+                          onDaySelected: _onDaySelected,
+                          onRangeSelected: _onRangeSelected,
+                          onFormatChanged: (format) {
+                            if (_calendarFormat != format) {
+                              setState(() {
+                                _calendarFormat = format;
+                              });
+                            }
+                          },
+                          onPageChanged: (focusedDay) {
+                            _focusedDay = focusedDay;
+                          },
+                        ),
+                        const SizedBox(height: 8.0),
+                        Expanded(
+                          child: ValueListenableBuilder<List<Event>>(
+                            valueListenable: _selectedEvents,
+                            builder: (context, value, _) {
+                              return ListView.builder(
+                                itemCount: value.length,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 12.0,
+                                      vertical: 4.0,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(),
+                                      borderRadius: BorderRadius.circular(12.0),
+                                    ),
+                                    child: ListTile(
+                                      onTap: () => print('${value[index]}'),
+                                      title: Text('${value[index].title}'),
+                                      subtitle: Text('${value[index].subtitle}'),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    );
               }
             },
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
-            },
-          ),
-          const SizedBox(height: 8.0),
-          Expanded(
-            child: ValueListenableBuilder<List<Event>>(
-              valueListenable: _selectedEvents,
-              builder: (context, value, _) {
-                return ListView.builder(
-                  itemCount: value.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 12.0,
-                        vertical: 4.0,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      child: ListTile(
-                        onTap: () => print('${value[index]}'),
-                        title: Text('${value[index].title}'),
-                        subtitle: Text('${value[index].subtitle}'),
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }
