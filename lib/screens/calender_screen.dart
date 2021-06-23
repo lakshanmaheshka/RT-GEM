@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:rt_gem/widgets/screen_views/calendar_list_view.dart';
 import 'package:rt_gem/widgets/screen_views/calendar_view.dart';
 import 'package:rt_gem/widgets/screen_views/title_view.dart';
 import '../utils/app_theme.dart';
@@ -78,27 +77,6 @@ class _CalenderScreenState extends State<CalenderScreen>
         animationController: widget.animationController,
       ),
     );
-    listViews.add(
-      TitleView(
-        titleTxt: 'Overview',
-        animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-            parent: widget.animationController!,
-            curve:
-            Interval((1 / count) * 0, 1.0, curve: Curves.fastOutSlowIn))),
-        animationController: widget.animationController,
-        isButtonEnabled: false,
-      ),
-    );
-    // listViews.add(
-    //   CalendarListView(
-    //     mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(
-    //         CurvedAnimation(
-    //             parent: widget.animationController!,
-    //             curve: Interval((1 / count) * 3, 1.0,
-    //                 curve: Curves.fastOutSlowIn))),
-    //     mainScreenAnimationController: widget.animationController,
-    //   ),
-    // );
   }
 
   Future<bool> getData() async {

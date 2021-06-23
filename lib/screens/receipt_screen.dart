@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:rt_gem/utils/receipt_models/transaction.dart';
 import 'package:provider/provider.dart';
 import 'package:rt_gem/utils/app_theme.dart';
-import 'package:rt_gem/widgets/custom_dialog/add_dialog/add_dialog.dart';
 import 'package:rt_gem/widgets/receipt_widgets/views/trasactions/daily_spendings.dart';
 import 'package:rt_gem/widgets/receipt_widgets/views/trasactions/monthly_spendings.dart';
 import 'package:rt_gem/widgets/receipt_widgets/views/trasactions/weekly_spendings.dart';
@@ -47,12 +45,6 @@ class _ReceiptScreenState extends State<ReceiptScreen> with SingleTickerProvider
             color: AppTheme.darkerText,
           ),
         ),
-        // actions: <Widget>[
-        //   IconButton(
-        //       icon: Icon(Icons.add),
-        //       onPressed: () {})
-        //           //Navigator.of(context).pushNamed(NewTransaction.routeName)),
-        // ],
         bottom: new TabBar(
           unselectedLabelColor: Colors.grey,
           labelColor: Colors.black,
@@ -95,11 +87,6 @@ class _ReceiptScreenState extends State<ReceiptScreen> with SingleTickerProvider
           ),
         ),
       ),
-      /*drawer: Consumer<Transactions>(
-        builder: (context, trx, child) {
-          return AppDrawer(total: trx.getTotal(trx.transactions));
-        },
-      ),*/
     );
   }
 }

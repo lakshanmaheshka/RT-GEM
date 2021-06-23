@@ -22,22 +22,12 @@ class WeeklySpendings extends StatefulWidget {
 class _WeeklySpendingsState extends State<WeeklySpendings> {
   bool _showChart = false;
   late TransactionsProvider trxData;
-  // List<Transaction> recentTransaction;
-  // List<PieData> recentData;
-  // Function deleteFn;
 
   @override
   void initState() {
     super.initState();
 
     trxData = Provider.of<TransactionsProvider>(context, listen: false);
-    // recentTransaction =
-    //     Provider.of<Transactions>(context, listen: false).rescentTransactions;
-
-    // deleteFn =
-    //     Provider.of<Transactions>(context, listen: false).deleteTransaction;
-
-    // recentData = PieData().pieChartData(recentTransaction);
   }
 
   @override
@@ -52,20 +42,18 @@ class _WeeklySpendingsState extends State<WeeklySpendings> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          // weaklyChart(context, recentTransaction, recentData),
-
 
           Padding(
             padding: const EdgeInsets.only(
-                left: 24, right: 24, top: 16, bottom: 18),
+                left: 24, right: 24, top: 16, bottom: 0),
             child: Container(
               decoration: BoxDecoration(
                 color: AppTheme.white,
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(8.0),
+                    topLeft: Radius.circular(68.0),
                     bottomLeft: Radius.circular(8.0),
-                    bottomRight: Radius.circular(8.0),
-                    topRight: Radius.circular(68.0)),
+                    bottomRight: Radius.circular(68.0),
+                    topRight: Radius.circular(8.0)),
                 boxShadow: <BoxShadow>[
                   BoxShadow(
                       color: AppTheme.grey.withOpacity(0.2),
@@ -114,55 +102,72 @@ class _WeeklySpendingsState extends State<WeeklySpendings> {
             ),
           ),
 
-          Container(
-              padding: const EdgeInsets.only(
-                  right: 15, top: 10, bottom: 10, left: 15),
-              color: Theme.of(context).primaryColorLight,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Total:",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
+          Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: Container(
+                decoration: BoxDecoration(
+                  color: AppTheme.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8.0),
+                      bottomLeft: Radius.circular(8.0),
+                      bottomRight: Radius.circular(8.0),
+                      topRight: Radius.circular(8.0)),
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                        color: AppTheme.grey.withOpacity(0.2),
+                        offset: Offset(1.1, 1.1),
+                        blurRadius: 10.0),
+                  ],
+                ),
+                padding: const EdgeInsets.only(
+                    right: 15, top: 10, bottom: 10, left: 15),
+                //color: Theme.of(context).primaryColorLight,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Total:",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
                         ),
-                      ),
-                      Text(
-                        "₹${trxData.getTotal(recentTransaction)}",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
+                        Text(
+                          "\$${trxData.getTotal(recentTransaction)}",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        'Show Chart',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          'Show Chart',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
                         ),
-                      ),
-                      Switch.adaptive(
-                        activeColor: Theme.of(context).accentColor,
-                        value: _showChart,
-                        onChanged: (val) {
-                          setState(() {
-                            _showChart = val;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              )),
+                        Switch.adaptive(
+                          activeColor: Theme.of(context).accentColor,
+                          value: _showChart,
+                          onChanged: (val) {
+                            setState(() {
+                              _showChart = val;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                )),
+          ),
           recentTransaction.isEmpty
               ? NoTransactions()
               : StreamBuilder<QuerySnapshot>(
@@ -171,23 +176,18 @@ class _WeeklySpendingsState extends State<WeeklySpendings> {
               if (snapshot.hasError) {
                 return Text('Something went wrong');
               } else if (snapshot.hasData || snapshot.data != null) {
-                return  ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (ctx, index) {
-                    var receipts = snapshot.data!.docs[index].data();
-                    String docID = snapshot.data!.docs[index].id;
-                    String id = receipts['id'];
-                    String receiptName = receipts['receiptName'];
-                    int amount = receipts['amount'];
-                    String expiryDate = receipts['category'];
-                    String addedDate = receipts['addedDate'];
-
-
-                    return TransactionListItems(
-                        trx: recentTransaction[index], dltTrxItem: deleteFn, documentId: docID);
-                  },
-                  itemCount: recentTransaction.length,
+                return  Padding(
+                  padding: const EdgeInsets.fromLTRB(20.0,3,20.0,0),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (ctx, index) {
+                      String docID = snapshot.data!.docs[index].id;
+                      return TransactionListItems(
+                          trx: recentTransaction[index], dltTrxItem: deleteFn, documentId: docID);
+                    },
+                    itemCount: recentTransaction.length,
+                  ),
                 );
 
               }
@@ -201,24 +201,7 @@ class _WeeklySpendingsState extends State<WeeklySpendings> {
               );
             },
           ),
-
-
           kIsWeb ? SizedBox( ) : SizedBox( height: 80),
-
-          /*
-
-          (_showChart
-                  ? //weaklyChart(context, recentTransaction, recentData)
-                  : ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemBuilder: (ctx, index) {
-                        return TransactionListItems(
-                            trx: recentTransaction[index],
-                            dltTrxItem: deleteFn);
-                      },
-                      itemCount: recentTransaction.length,
-                    ))*/
         ],
       ),
     );

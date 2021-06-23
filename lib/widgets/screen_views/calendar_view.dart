@@ -272,10 +272,10 @@ class _CalendarViewState extends State<CalendarView> {
                                   decoration: BoxDecoration(
                                     color: AppTheme.white,
                                     borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(18.0),
-                                        bottomLeft: Radius.circular(18.0),
-                                        bottomRight: Radius.circular(18.0),
-                                        topRight: Radius.circular(18.0)),
+                                        topLeft: Radius.circular(30.0),
+                                        bottomLeft: Radius.circular(30.0),
+                                        bottomRight: Radius.circular(30.0),
+                                        topRight: Radius.circular(30.0)),
                                     boxShadow: <BoxShadow>[
                                       BoxShadow(
                                           color: AppTheme.grey.withOpacity(0.2),
@@ -283,36 +283,39 @@ class _CalendarViewState extends State<CalendarView> {
                                           blurRadius: 10.0),
                                     ],
                                   ),
-                                  child: TableCalendar<Event>(
-                                    firstDay: DateTime(1900),
-                                    lastDay: DateTime(2100),
-                                    focusedDay: _focusedDay,
-                                    selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-                                    rangeStartDay: _rangeStart,
-                                    rangeEndDay: _rangeEnd,
-                                    calendarFormat: _calendarFormat,
-                                    rangeSelectionMode: _rangeSelectionMode,
-                                    eventLoader: _getEventsForDay,
-                                    startingDayOfWeek: StartingDayOfWeek.monday,
-                                    calendarStyle: CalendarStyle(
-                                      // Use `CalendarStyle` to customize the UI
-                                      outsideDaysVisible: false,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: TableCalendar<Event>(
+                                      firstDay: DateTime(1900),
+                                      lastDay: DateTime(2100),
+                                      focusedDay: _focusedDay,
+                                      selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                                      rangeStartDay: _rangeStart,
+                                      rangeEndDay: _rangeEnd,
+                                      calendarFormat: _calendarFormat,
+                                      rangeSelectionMode: _rangeSelectionMode,
+                                      eventLoader: _getEventsForDay,
+                                      startingDayOfWeek: StartingDayOfWeek.monday,
+                                      calendarStyle: CalendarStyle(
+                                        // Use `CalendarStyle` to customize the UI
+                                        outsideDaysVisible: false,
+                                      ),
+                                      onDaySelected: _onDaySelected,
+                                      onRangeSelected: _onRangeSelected,
+                                      onFormatChanged: (format) {
+                                        if (_calendarFormat != format) {
+                                          setState(() {
+                                            _calendarFormat = format;
+                                          });
+                                        }
+                                      },
+                                      onPageChanged: (focusedDay) {
+                                        _focusedDay = focusedDay;
+                                      },
                                     ),
-                                    onDaySelected: _onDaySelected,
-                                    onRangeSelected: _onRangeSelected,
-                                    onFormatChanged: (format) {
-                                      if (_calendarFormat != format) {
-                                        setState(() {
-                                          _calendarFormat = format;
-                                        });
-                                      }
-                                    },
-                                    onPageChanged: (focusedDay) {
-                                      _focusedDay = focusedDay;
-                                    },
                                   ),
                                 ),
-                                const SizedBox(height: 8.0),
+                                const SizedBox(height: 25.0),
                                 Container(
                                   height: Responsive.deviceHeight(100, context),
                                   child: ValueListenableBuilder<List<Event>>(
@@ -335,64 +338,66 @@ class _CalendarViewState extends State<CalendarView> {
                                                 Padding(
                                                   padding: const EdgeInsets.only(
                                                       top: 32, left: 8, right: 8, bottom: 16),
-                                                  child: Container(
-                                                    width: Responsive.deviceHeight(60, context),
-                                                    decoration: BoxDecoration(
-                                                      boxShadow: <BoxShadow>[
-                                                        BoxShadow(
-                                                            color: HexColor('#FFB295')
-                                                                .withOpacity(0.6),
-                                                            offset: const Offset(1.1, 4.0),
-                                                            blurRadius: 8.0),
-                                                      ],
-                                                      gradient: LinearGradient(
-                                                        colors: getCategoryColor(value[index].category),
-                                                        begin: Alignment.topLeft,
-                                                        end: Alignment.bottomRight,
-                                                      ),
-                                                      borderRadius: const BorderRadius.only(
-                                                        bottomRight: Radius.circular(8.0),
-                                                        bottomLeft: Radius.circular(8.0),
-                                                        topLeft: Radius.circular(8.0),
-                                                        topRight: Radius.circular(8.0),
-                                                      ),
-                                                    ),
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.only(
-                                                          top: 30, left: 16, right: 16, bottom: 30),
-                                                      child: Row(
-                                                        mainAxisAlignment: MainAxisAlignment.center,
-                                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                                        children: <Widget>[
-                                                          Column(
-                                                            mainAxisAlignment: MainAxisAlignment.center,
-                                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                                            children: [
-                                                              Text(
-                                                                value[index].itemName,
-                                                                textAlign: TextAlign.center,
-                                                                style: TextStyle(
-                                                                  fontFamily: AppTheme.fontName,
-                                                                  fontWeight: FontWeight.bold,
-                                                                  fontSize: 16,
-                                                                  letterSpacing: 0.2,
-                                                                  color: AppTheme.white,
-                                                                ),
-                                                              ),
-                                                              Text(
-                                                                value[index].expriationDate,
-                                                                textAlign: TextAlign.center,
-                                                                style: TextStyle(
-                                                                  fontFamily: AppTheme.fontName,
-                                                                  fontWeight: FontWeight.bold,
-                                                                  fontSize: 16,
-                                                                  letterSpacing: 0.2,
-                                                                  color: AppTheme.white,
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
+                                                  child: Center(
+                                                    child: Container(
+                                                      width: Responsive.deviceHeight(90, context),
+                                                      decoration: BoxDecoration(
+                                                        boxShadow: <BoxShadow>[
+                                                          BoxShadow(
+                                                              color: HexColor('#FFB295')
+                                                                  .withOpacity(0.6),
+                                                              offset: const Offset(1.1, 4.0),
+                                                              blurRadius: 8.0),
                                                         ],
+                                                        gradient: LinearGradient(
+                                                          colors: getCategoryColor(value[index].category),
+                                                          begin: Alignment.topLeft,
+                                                          end: Alignment.bottomRight,
+                                                        ),
+                                                        borderRadius: const BorderRadius.only(
+                                                          bottomRight: Radius.circular(8.0),
+                                                          bottomLeft: Radius.circular(8.0),
+                                                          topLeft: Radius.circular(8.0),
+                                                          topRight: Radius.circular(8.0),
+                                                        ),
+                                                      ),
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.only(
+                                                            top: 30, left: 16, right: 16, bottom: 30),
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          children: <Widget>[
+                                                            Column(
+                                                              mainAxisAlignment: MainAxisAlignment.center,
+                                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                                              children: [
+                                                                Text(
+                                                                  value[index].itemName,
+                                                                  textAlign: TextAlign.center,
+                                                                  style: TextStyle(
+                                                                    fontFamily: AppTheme.fontName,
+                                                                    fontWeight: FontWeight.bold,
+                                                                    fontSize: 16,
+                                                                    letterSpacing: 0.2,
+                                                                    color: AppTheme.white,
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  value[index].expriationDate,
+                                                                  textAlign: TextAlign.center,
+                                                                  style: TextStyle(
+                                                                    fontFamily: AppTheme.fontName,
+                                                                    fontWeight: FontWeight.bold,
+                                                                    fontSize: 16,
+                                                                    letterSpacing: 0.2,
+                                                                    color: AppTheme.white,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
                                                   ),

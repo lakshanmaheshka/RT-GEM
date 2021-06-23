@@ -72,7 +72,7 @@
 //               child: Row(
 //                 children: [
 //                   Text(
-//                     'Total: ₹$total',
+//                     'Total: \$$total',
 //                     style: TextStyle(
 //                       fontWeight: FontWeight.bold,
 //                       fontSize: 18,
