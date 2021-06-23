@@ -112,7 +112,7 @@ class _AddGroceryFormState extends State<AddGroceryForm>
   }
 
   void showMessage(String message, [MaterialColor color = Colors.red]) {
-    CustomSnackBar(context, Text(message));
+    CustomSnackBar(context, Text(message),Colors.green);
   }
 
   void _submitForm() {
@@ -156,15 +156,15 @@ class _AddGroceryFormState extends State<AddGroceryForm>
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: GestureDetector(
-        onTap: () {
-          _titleFocusNode.unfocus();
-          _descriptionFocusNode.unfocus();
-        },
-        child: Container(
-          child: Form(
-            key: _addGroceryFormKey,
+    return GestureDetector(
+      onTap: () {
+        _titleFocusNode.unfocus();
+        _descriptionFocusNode.unfocus();
+      },
+      child: Container(
+        child: Form(
+          key: _addGroceryFormKey,
+          child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -433,30 +433,38 @@ class _AddGroceryFormState extends State<AddGroceryForm>
                         Globaldata.stateChanged.value =  !Globaldata.stateChanged.value;
                       });
 
+                      try {
+                        DateTime convertDate;
+                        if(isExpirationTypeBestBefore == true){
+                          convertDate = convertToDate(_controllerManufacture.text)!;
+                          int i = int.parse(_controllerBestBefore.text);
+                          DateTime d = Jiffy(convertDate).add(months: i).dateTime;
+                          String bestBeforeDate = dateFormatS.format(d);
 
+                          Database.addGrocery(
+                              productName: _titleController.text,
+                              quantity: int.parse(_controllerQuantity.text),
+                              category: dropdownValue,
+                              manufacturedDate: convertToDate(_controllerManufacture.text)!,
+                              expiryDate: convertToDate(bestBeforeDate)! );
 
-                      DateTime convertDate;
-                      if(isExpirationTypeBestBefore == true){
-                        convertDate = convertToDate(_controllerManufacture.text)!;
-                        int i = int.parse(_controllerBestBefore.text);
-                        DateTime d = Jiffy(convertDate).add(months: i).dateTime;
-                        String bestBeforeDate = dateFormatS.format(d);
+                        } else {
+                          Database.addGrocery(
+                              productName: _titleController.text,
+                              quantity: int.parse(_controllerQuantity.text),
+                              category: dropdownValue,
+                              manufacturedDate: convertToDate(_controllerManufacture.text)!,
+                              expiryDate: convertToDate(_controllerExpiration.text)! );
+                        }
+                        CustomSnackBar(context, const Text('Grocery Added'),Colors.green);
 
-                        Database.addGrocery(
-                            productName: _titleController.text,
-                            quantity: int.parse(_controllerQuantity.text),
-                            category: dropdownValue,
-                            manufacturedDate: convertToDate(_controllerManufacture.text)!,
-                            expiryDate: convertToDate(bestBeforeDate)! );
-
-                      } else {
-                        Database.addGrocery(
-                            productName: _titleController.text,
-                            quantity: int.parse(_controllerQuantity.text),
-                            category: dropdownValue,
-                            manufacturedDate: convertToDate(_controllerManufacture.text)!,
-                            expiryDate: convertToDate(_controllerExpiration.text)! );
+                      } on Exception catch (exception) {
+                        CustomSnackBar(context, const Text('Theres an exception'),Colors.red);
+                      } catch (error) {
+                        CustomSnackBar(context, const Text('Error'),Colors.red);
                       }
+
+
 
 
 
@@ -471,7 +479,6 @@ class _AddGroceryFormState extends State<AddGroceryForm>
                         dropdownValue = null;
                       });
 
-                      CustomSnackBar(context, const Text('Grocery Added'));
                     },
                     child: Container(
                       width: Responsive.deviceWidth(65, context),

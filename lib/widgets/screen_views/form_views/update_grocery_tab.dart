@@ -118,7 +118,7 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm>
   }
 
   void showMessage(String message, [MaterialColor color = Colors.red]) {
-    CustomSnackBar(context, Text(message));
+    CustomSnackBar(context, Text(message),Colors.green);
   }
 
   void _submitForm() {
@@ -394,37 +394,50 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm>
                         padding: const EdgeInsets.fromLTRB(15, 7.5, 2, 0),
                         child: InkWell(
                           onTap: () async {
-                            DateTime convertDate;
-                            if(isExpirationTypeBestBefore == true){
-                              convertDate = convertToDate(_controllerManufacture.text)!;
-                              int i = int.parse(_controllerBestBefore.text);
-                              DateTime d = Jiffy(convertDate).add(months: i).dateTime;
-                              String bestBeforeDate = dateFormatS.format(d);
-                              Database.updateGroceries(
-                                  docId: widget.documentId,
-                                  productName: _titleController.text,
-                                  quantity: int.parse(_controllerQuantity.text),
-                                  category: dropdownValue,
-                                  manufacturedDate: convertToDate(_controllerManufacture.text)!,
-                                  expiryDate: convertToDate(bestBeforeDate)!
-                                //description: _descriptionController.text,
-                              );
-                            } else {
-                              Database.updateGroceries(
-                                  docId: widget.documentId,
-                                  productName: _titleController.text,
-                                  quantity: int.parse(_controllerQuantity.text),
-                                  category: dropdownValue,
-                                  manufacturedDate: convertToDate(_controllerManufacture.text)!,
-                                  expiryDate: convertToDate(_controllerExpiration.text)!
-                                //description: _descriptionController.text,
-                              );
+
+                            try {
+                              DateTime convertDate;
+                              if(isExpirationTypeBestBefore == true){
+                                convertDate = convertToDate(_controllerManufacture.text)!;
+                                int i = int.parse(_controllerBestBefore.text);
+                                DateTime d = Jiffy(convertDate).add(months: i).dateTime;
+                                String bestBeforeDate = dateFormatS.format(d);
+                                Database.updateGroceries(
+                                    docId: widget.documentId,
+                                    productName: _titleController.text,
+                                    quantity: int.parse(_controllerQuantity.text),
+                                    category: dropdownValue,
+                                    manufacturedDate: convertToDate(_controllerManufacture.text)!,
+                                    expiryDate: convertToDate(bestBeforeDate)!
+                                  //description: _descriptionController.text,
+                                );
+                              } else {
+                                Database.updateGroceries(
+                                    docId: widget.documentId,
+                                    productName: _titleController.text,
+                                    quantity: int.parse(_controllerQuantity.text),
+                                    category: dropdownValue,
+                                    manufacturedDate: convertToDate(_controllerManufacture.text)!,
+                                    expiryDate: convertToDate(_controllerExpiration.text)!
+                                  //description: _descriptionController.text,
+                                );
+                              }
+                              CustomSnackBar(
+                                  context, const Text('Item Updated Successfully!'),Colors.green);
+                            } on Exception catch (exception) {
+                              CustomSnackBar(
+                                  context, const Text('Exception!'),Colors.red);
+                            } catch (error) {
+                            CustomSnackBar(
+                            context, const Text('Error!'),Colors.red);
                             }
+
+
+
+
                             setState(() {
                               Globaldata.stateChanged.value =  !Globaldata.stateChanged.value;
                             });
-                            CustomSnackBar(
-                                context, const Text('Item Updated Successfully!'));
                           },
                           child: Container(
                             width: Responsive.deviceWidth(65, context),
@@ -477,7 +490,7 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm>
                             );
 
                             CustomSnackBar(
-                                context, const Text('Item Deleted'));
+                                context, const Text('Item Deleted'),Colors.green);
 
 
 
@@ -538,7 +551,7 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm>
 
 
                             CustomSnackBar(
-                                context, const Text('Item has been marked as Used'));
+                                context, const Text('Item has been marked as Used'),Colors.green);
                           },
                           child: Container(
                             width: Responsive.deviceWidth(65, context),
@@ -594,7 +607,7 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm>
                             Navigator.of(context).pop();
 
                             CustomSnackBar(
-                                context, const Text('Reduced Quantity by one'));
+                                context, const Text('Reduced Quantity by one'),Colors.green);
                           },
                           child: Container(
                             width: Responsive.deviceWidth(65, context),

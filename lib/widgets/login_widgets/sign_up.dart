@@ -326,7 +326,7 @@ class _SignUpState extends State<SignUp> {
 
 
   void _toggleSignUpButton() {
-    CustomSnackBar(context, const Text('SignUp button pressed'));
+    CustomSnackBar(context, const Text('SignUp button pressed'),Colors.green);
   }
 
   void _toggleSignup() {
@@ -353,9 +353,9 @@ class _SignUpState extends State<SignUp> {
       final isSuccess = await provider.signup();
 
       if (isSuccess) {
-        CustomSnackBar(context, const Text('Create User Success!'));
+        CustomSnackBar(context, const Text('Create User Success!'),Colors.green);
       } else {
-        CustomSnackBar(context, const Text('An error occurred, please check your credentials!'));
+        CustomSnackBar(context, const Text('An error occurred, please check your credentials!'),Colors.red);
       }
     }
   }

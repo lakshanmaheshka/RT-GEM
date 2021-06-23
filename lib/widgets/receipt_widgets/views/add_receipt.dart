@@ -98,7 +98,7 @@ class _AddReceiptState extends State<AddReceipt> {
   }
 
   void showMessage(String message, [MaterialColor color = Colors.red]) {
-    CustomSnackBar(context, Text(message));
+    CustomSnackBar(context, Text(message),Colors.green);
   }
 
   void _submitForm() {
@@ -267,27 +267,36 @@ class _AddReceiptState extends State<AddReceipt> {
                         DateFormat dateForm = DateFormat("dd/MM/yyyy");
                         convertToDate(_controllerDate.text);
 
+                        try {
+                          transactions.addTransactions(
+                            Receipt(
+                              id: DateTime.now().toString(),
+                              title: _titleController.text,
+                              amount: int.parse(_amountController.text),
+                              date: convertToDate(_controllerDate.text),
+                              category: dropdownValue,
+                            ),
+                          );
+
+                          _addReceiptFormKey.currentState!.reset();
+                          _titleController.clear();
+                          _controllerDate.clear();
+
+                          setState(() {
+                            dropdownValue = null;
+                          });
+
+                          CustomSnackBar(context, const Text('Receipt Added'),Colors.green);
+                        } on Exception catch (exception) {
+                          CustomSnackBar(context, const Text('Exception'),Colors.red);
+                        } catch (error) {
+                          CustomSnackBar(context, const Text('Error'),Colors.red);
+
+                        }
+
 
                         //
-                        transactions.addTransactions(
-                          Receipt(
-                            id: DateTime.now().toString(),
-                            title: _titleController.text,
-                            amount: int.parse(_amountController.text),
-                            date: convertToDate(_controllerDate.text),
-                            category: dropdownValue,
-                          ),
-                        );
 
-                        _addReceiptFormKey.currentState!.reset();
-                        _titleController.clear();
-                        _controllerDate.clear();
-
-                        setState(() {
-                          dropdownValue = null;
-                        });
-
-                        CustomSnackBar(context, const Text('Receipt Added'));
                       },
                       child: Container(
                         width: Responsive.deviceWidth(65, context),

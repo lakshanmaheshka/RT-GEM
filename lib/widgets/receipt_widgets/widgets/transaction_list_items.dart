@@ -89,7 +89,7 @@ class _TransactionListItemsState extends State<TransactionListItems> {
                                 Database.deleteReceipt(
                                   docId: widget.documentId,
                                 );
-                                CustomSnackBar(context, const Text('Receipt Deleted'));
+                                CustomSnackBar(context, const Text('Receipt Deleted'),Colors.green);
                                 Navigator.pop(context);
                               },
                               child: Text(

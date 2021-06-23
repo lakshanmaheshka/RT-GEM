@@ -26,31 +26,7 @@ class AddGrocery extends StatelessWidget {
       child: Scaffold( appBar: AppBar(
         title: Text("Add Items"),
       ),
-          body:  Container( child: Column(
-            children: [
-           /*   Center(
-                child: ElevatedButton(
-                  child: Text('Open route'),
-                  onPressed: () async {
-
-
-                    try {
-                      WidgetsFlutterBinding.ensureInitialized();
-                      cameras = await availableCameras();
-                    } on CameraException catch (e) {
-                      print(e);
-                    }
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => CameraScreen()),
-                    );
-
-                  },
-                ),
-              ),*/
-              AddGroceryForm(),
-            ],
-          ),)),
+          body:  Container( child: AddGroceryForm(),)),
     );
   }
 }

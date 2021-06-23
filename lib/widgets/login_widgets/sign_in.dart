@@ -111,7 +111,7 @@ class _SignInState extends State<SignIn> {
                       );*/
 
                       CustomSnackBar(
-                          context, const Text('Login button pressed'));
+                          context, const Text('Login button pressed'),Colors.green);
                       }
                   ),
                 )
@@ -185,7 +185,7 @@ class _SignInState extends State<SignIn> {
                   padding: const EdgeInsets.only(top: 10.0, right: 40.0),
                   child: GestureDetector(
                     onTap: () => CustomSnackBar(
-                        context, const Text('Facebook button pressed')),
+                        context, const Text('Facebook button pressed'),Colors.green),
                     child: Container(
                       padding: const EdgeInsets.all(15.0),
                       decoration: const BoxDecoration(
@@ -325,7 +325,7 @@ class _SignInState extends State<SignIn> {
   }
 
   void _toggleSignInButton() {
-    CustomSnackBar(context, const Text('Login button pressed'));
+    CustomSnackBar(context, const Text('Login button pressed'),Colors.green);
   }
 
   void _toggleLogin() {
@@ -346,9 +346,9 @@ class _SignInState extends State<SignIn> {
       final isSuccess = await provider.login();
 
       if (isSuccess) {
-        CustomSnackBar(context, const Text('Create User Success!'));
+        CustomSnackBar(context, const Text('Create User Success!'),Colors.green);
       } else {
-        CustomSnackBar(context, const Text('An error occurred, please check your credentials!'));
+        CustomSnackBar(context, const Text('An error occurred, please check your credentials!'),Colors.red);
       }
     }
   }

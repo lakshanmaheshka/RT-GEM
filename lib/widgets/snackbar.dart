@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CustomSnackBar {
-  CustomSnackBar(BuildContext context, Widget content,
-      {SnackBarAction? snackBarAction, Color backgroundColor = Colors.green}) {
+  CustomSnackBar(BuildContext context, Widget content,Color backgroundColor,
+      {SnackBarAction? snackBarAction,}) {
     final SnackBar snackBar = SnackBar(
         action: snackBarAction,
         backgroundColor: backgroundColor,
