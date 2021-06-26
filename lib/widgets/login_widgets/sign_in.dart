@@ -50,7 +50,7 @@ class _SignInState extends State<SignIn> {
                   ),
                   child: Container(
                     width: 300.0,
-                    height: 190.0,
+                    height: 190.0 ,
                     child: ListView(
                       children: <Widget>[
                         buildEmailField(),
@@ -106,29 +106,13 @@ class _SignInState extends State<SignIn> {
                     ),
                     onPressed: () {
                       submit();
-                     /* Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => AuthPage()),
-                      );*/
-
-                      CustomSnackBar(
-                          context, const Text('Login button pressed'),Colors.green);
+                      //
+                      // CustomSnackBar(
+                      //     context, const Text('Login button pressed'),Colors.green);
                       }
                   ),
                 )
               ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: TextButton(
-                  onPressed: () {},
-                  child: const Text(
-                    'Forgot Password?',
-                    style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        color: Colors.white,
-                        fontSize: 16.0,
-                        fontFamily: 'WorkSansMedium'),
-                  )),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10.0),
@@ -178,49 +162,41 @@ class _SignInState extends State<SignIn> {
                 ],
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 10.0, right: 40.0),
-                  child: GestureDetector(
-                    onTap: () => CustomSnackBar(
-                        context, const Text('Facebook button pressed'),Colors.green),
-                    child: Container(
-                      padding: const EdgeInsets.all(15.0),
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                      ),
-                      child: const Icon(
-                        FontAwesomeIcons.facebookF,
-                        color: Color(0xFF0084ff),
-                      ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: InkWell(
+                onTap: () {
+                  final provider =
+                      Provider.of<GoogleSignInProvider>(context, listen: false);
+                  provider.login();
+                },
+                child: Container(
+                  width: 300.0,
+                  padding: const EdgeInsets.all(15.0),
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.all(Radius.circular(20.0),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      final provider =
-                          Provider.of<GoogleSignInProvider>(context, listen: false);
-                      provider.login();
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(15.0),
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                      ),
-                      child: const Icon(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
                         FontAwesomeIcons.google,
                         color: Color(0xFF0084ff),
                       ),
-                    ),
+                      SizedBox(width: 10,),
+                      Text("Login with Google",
+                          style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 17.0,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'WorkSansBold'))
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
           ],
         ),
@@ -277,7 +253,7 @@ class _SignInState extends State<SignIn> {
 
     return Padding(
       padding: const EdgeInsets.only(
-          top: 20.0, bottom: 25.0, left: 25.0, right: 25.0),
+          top: 20.0, bottom: 0.0, left: 25.0, right: 25.0),
       child: TextFormField(
         autovalidateMode: AutovalidateMode.onUserInteraction,
         key: ValueKey('password'),
@@ -316,7 +292,6 @@ class _SignInState extends State<SignIn> {
             ),
           ),
         ),
-        onFieldSubmitted: (_) => _toggleSignInButton(),
         onSaved: (password) {
           provider.userPassword = password;
         },
@@ -324,9 +299,6 @@ class _SignInState extends State<SignIn> {
     );
   }
 
-  void _toggleSignInButton() {
-    CustomSnackBar(context, const Text('Login button pressed'),Colors.green);
-  }
 
   void _toggleLogin() {
     setState(() {
@@ -346,10 +318,13 @@ class _SignInState extends State<SignIn> {
       final isSuccess = await provider.login();
 
       if (isSuccess) {
-        CustomSnackBar(context, const Text('Create User Success!'),Colors.green);
+        CustomSnackBar(context, const Text('Login Success!'),Colors.green);
       } else {
         CustomSnackBar(context, const Text('An error occurred, please check your credentials!'),Colors.red);
       }
+    } else{
+      CustomSnackBar(context, const Text('Enter email and password!'),Colors.red);
+
     }
   }
 }

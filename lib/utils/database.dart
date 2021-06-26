@@ -58,7 +58,7 @@ class Database {
         .catchError((e) => print(e));
   }
 
-  // static Stream<QuerySnapshot> readGroceries() {
+  // static Stream<QuerySnapshot> readGrocery() {
   //   CollectionReference rtGemGroceriesCollection =
   //       _mainCollection.doc(userUid).collection('groceries');
   //
@@ -148,11 +148,11 @@ class Database {
     return rtGemGroceriesCollection.snapshots();
   }
 
+  //
+  // CollectionReference _collectionRef =
+  // FirebaseFirestore.instance.collection('collection');
 
-  CollectionReference _collectionRef =
-  FirebaseFirestore.instance.collection('collection');
-
-  static Future<List> getData() async {
+  static Future<List> getReceiptData() async {
     CollectionReference rtGemGroceriesCollection =
     _mainCollection.doc(userUid).collection('receipts');
     // Get docs from collection reference
@@ -166,7 +166,7 @@ class Database {
     return allData;
   }
 
-  static Future<List> getDataGrocery() async {
+  static Future<List> getGroceryData() async {
     CollectionReference rtGemGroceriesCollection =
     _mainCollection.doc(userUid).collection('groceries');
     // Get docs from collection reference

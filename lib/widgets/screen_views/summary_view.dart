@@ -25,7 +25,6 @@ class SummaryView extends StatefulWidget {
 
 class _SummaryViewState extends State<SummaryView> {
 
-
   late String expires ="All";
 
   late int itemsUsed = 0;
@@ -49,15 +48,8 @@ class _SummaryViewState extends State<SummaryView> {
   late double itemsTotalSnack = 0.1;
   late double itemsTotalOthers = 0.1;
 
-  //int Globaldata.filter.value = 0;
-
-
-
-
-
   void getProducts () async {
     List<Grocery> _groceries = [];
-
 
     List<Grocery> _filteredBeverages = [];
     List<Grocery> _filteredBread = [];
@@ -68,9 +60,7 @@ class _SummaryViewState extends State<SummaryView> {
     List<Grocery> _filteredSnack = [];
     List<Grocery> _filteredOthers = [];
 
-
-    final fetchedData = await Database.getDataGrocery();
-    //var date = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+    final fetchedData = await Database.getGroceryData();
     DateTime date = DateTime.now();
 
     _groceries = fetchedData
@@ -178,7 +168,6 @@ class _SummaryViewState extends State<SummaryView> {
           itemsTotalFrozen = _filteredFrozen.length.toDouble() == 0.0 ? 0.1 : _filteredFrozen.length.toDouble();
           itemsTotalSnack = _filteredSnack.length.toDouble() == 0.0 ? 0.1 : _filteredSnack.length.toDouble();
           itemsTotalOthers = _filteredOthers.length.toDouble() == 0.0 ? 0.1 : _filteredOthers.length.toDouble();
-
         });
         }
 

@@ -146,9 +146,12 @@ class _HomeScreenState extends State<HomeScreen>
           body: Stack(
             children: <Widget>[
               Center(
-                child: Container(
-                  width: 800,
-                    child: getMainListViewUI()
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0.0,20,0.0,0.0),
+                  child: Container(
+                    width: 800,
+                      child: getMainListViewUI()
+                  ),
                 ),
               ),
               getAppBarUI(),

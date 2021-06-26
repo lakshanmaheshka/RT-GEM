@@ -109,7 +109,7 @@ class TransactionsProvider with ChangeNotifier {
 
   Future<void> fetchTransactions() async {
 
-    final fetchedData = await Database.getData();
+    final fetchedData = await Database.getReceiptData();
 
     _transactions = fetchedData
         .map(

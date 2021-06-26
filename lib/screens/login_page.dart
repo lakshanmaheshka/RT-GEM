@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:rt_gem/provider/email_sign_in.dart';
 import 'package:rt_gem/theme.dart';
@@ -30,6 +31,10 @@ class _LoginPageState extends State<LoginPage>
   void initState() {
     super.initState();
     _pageController = PageController();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
   }
 
   @override
@@ -37,78 +42,76 @@ class _LoginPageState extends State<LoginPage>
     final provider = Provider.of<EmailSignInProvider>(context);
     return Scaffold(
         body: SingleChildScrollView(
-      //physics: const ClampingScrollPhysics(),
-      child: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                colors: <Color>[
-                  CustomTheme.loginGradientStart,
-                  CustomTheme.loginGradientEnd
+          child: GestureDetector(
+            onTap: () {
+              FocusScope.of(context).requestFocus(FocusNode());
+            },
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    colors: <Color>[
+                      CustomTheme.loginGradientStart,
+                      CustomTheme.loginGradientEnd
+                    ],
+                    begin: FractionalOffset(0.0, 0.0),
+                    end: FractionalOffset(1.0, 1.0),
+                    stops: <double>[0.0, 1.0],
+                    tileMode: TileMode.clamp),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 75.0),
+                    child: Image(
+                        height:
+                            MediaQuery.of(context).size.height > 800 ? 191.0 : 150,
+                        fit: BoxFit.fill,
+                        image: const AssetImage('assets/images/staticlogo.png')),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: _buildMenuBar(context),
+                  ),
+                  Expanded(
+                    child: PageView(
+                      controller: _pageController,
+                      physics: const ClampingScrollPhysics(),
+                      onPageChanged: (int i) {
+                        FocusScope.of(context).requestFocus(FocusNode());
+                        if (i == 0) {
+                          setState(() {
+                            right = Colors.white;
+                            left = Colors.black;
+                            provider.isLogin = true;
+                          });
+                        } else if (i == 1) {
+                          setState(() {
+                            right = Colors.black;
+                            left = Colors.white;
+                            provider.isLogin = false;
+                          });
+                        }
+                      },
+                      children: <Widget>[
+                        ConstrainedBox(
+                          constraints: const BoxConstraints.expand(),
+                          child: const SignIn(),
+                        ),
+                        ConstrainedBox(
+                          constraints: const BoxConstraints.expand(),
+                          child: const SignUp(),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
-                begin: FractionalOffset(0.0, 0.0),
-                end: FractionalOffset(1.0, 1.0),
-                stops: <double>[0.0, 1.0],
-                tileMode: TileMode.clamp),
+              ),
+            ),
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 75.0),
-                child: Image(
-                    height:
-                        MediaQuery.of(context).size.height > 800 ? 191.0 : 150,
-                    fit: BoxFit.fill,
-                    image: const AssetImage('assets/images/staticlogo.png')),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: _buildMenuBar(context),
-              ),
-              Expanded(
-                flex: 2,
-                child: PageView(
-                  controller: _pageController,
-                  physics: const ClampingScrollPhysics(),
-                  onPageChanged: (int i) {
-                    FocusScope.of(context).requestFocus(FocusNode());
-                    if (i == 0) {
-                      setState(() {
-                        right = Colors.white;
-                        left = Colors.black;
-                        provider.isLogin = true;
-                      });
-                    } else if (i == 1) {
-                      setState(() {
-                        right = Colors.black;
-                        left = Colors.white;
-                        provider.isLogin = false;
-                      });
-                    }
-                  },
-                  children: <Widget>[
-                    ConstrainedBox(
-                      constraints: const BoxConstraints.expand(),
-                      child: const SignIn(),
-                    ),
-                    ConstrainedBox(
-                      constraints: const BoxConstraints.expand(),
-                      child: const SignUp(),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    ));
+        ));
   }
 
   Widget _buildMenuBar(BuildContext context) {

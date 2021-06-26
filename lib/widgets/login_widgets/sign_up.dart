@@ -58,7 +58,7 @@ class _SignUpState extends State<SignUp> {
                   ),
                   child: Container(
                     width: 300.0,
-                    height: 360.0,
+                    height: 330.0,
                     child: ListView(
                       children: <Widget>[
                         buildUsernameField(),
@@ -89,7 +89,7 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ),
                 Container(
-                  margin: const EdgeInsets.only(top: 340.0),
+                  margin: const EdgeInsets.only(top: 310.0),
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(5.0)),
                     boxShadow: <BoxShadow>[
@@ -131,7 +131,6 @@ class _SignUpState extends State<SignUp> {
                     ),
                     onPressed: () {
                       submit();
-                      _toggleSignUpButton();
                     }
                   ),
                 )
@@ -148,7 +147,7 @@ class _SignUpState extends State<SignUp> {
 
     return Padding(
       padding: const EdgeInsets.only(
-          top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+          top: 15.0, bottom: 15.0, left: 25.0, right: 25.0),
       child: TextFormField(
         key: ValueKey('username'),
         focusNode: focusNodeName,
@@ -190,7 +189,7 @@ class _SignUpState extends State<SignUp> {
 
     return Padding(
       padding: const EdgeInsets.only(
-          top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+          top: 15.0, bottom: 15.0, left: 25.0, right: 25.0),
       child: TextFormField(
         key: ValueKey('email'),
         focusNode: focusNodeEmail,
@@ -234,7 +233,7 @@ class _SignUpState extends State<SignUp> {
 
     return Padding(
       padding: const EdgeInsets.only(
-          top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+          top: 15.0, bottom: 15.0, left: 25.0, right: 25.0),
       child: TextFormField(
         key: ValueKey('password'),
         focusNode: focusNodePassword,
@@ -281,16 +280,21 @@ class _SignUpState extends State<SignUp> {
   }
 
   Widget buildConfirmPasswordField(){
-    final provider = Provider.of<EmailSignInProvider>(context);
-
     return Padding(
       padding: const EdgeInsets.only(
-          top: 20.0, bottom: 25.0, left: 25.0, right: 25.0),
+          top: 15.0, bottom: 25.0, left: 25.0, right: 25.0),
       child: TextFormField(
         focusNode: focusNodeConfirmPassword,
         controller: signupConfirmPasswordController,
         obscureText: _obscureTextConfirmPassword,
         autocorrect: false,
+        validator: (value) {
+          if (signupConfirmPasswordController.text !=  signupPasswordController.text) {
+            return 'Passwords must match.';
+          } else {
+            return null;
+          }
+        },
         style: const TextStyle(
             fontFamily: 'WorkSansSemiBold',
             fontSize: 16.0,
@@ -315,18 +319,9 @@ class _SignUpState extends State<SignUp> {
             ),
           ),
         ),
-        onFieldSubmitted: (_) => _toggleSignUpButton(),
-        onSaved: (_) {
-          //_toggleSignUpButton();
-        },
         textInputAction: TextInputAction.go,
       ),
     );
-  }
-
-
-  void _toggleSignUpButton() {
-    CustomSnackBar(context, const Text('SignUp button pressed'),Colors.green);
   }
 
   void _toggleSignup() {
@@ -357,6 +352,8 @@ class _SignUpState extends State<SignUp> {
       } else {
         CustomSnackBar(context, const Text('An error occurred, please check your credentials!'),Colors.red);
       }
+    } else{
+      CustomSnackBar(context, const Text('Validation Error!'),Colors.red);
     }
   }
 

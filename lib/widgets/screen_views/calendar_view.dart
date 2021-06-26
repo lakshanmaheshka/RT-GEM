@@ -1,8 +1,8 @@
 
 import 'dart:collection';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:rt_gem/utils/commons.dart';
 import 'package:rt_gem/utils/custom_colors.dart';
 import 'package:rt_gem/utils/database.dart';
 import 'package:rt_gem/utils/calendar_utils.dart';
@@ -71,16 +71,10 @@ class _CalendarViewState extends State<CalendarView> {
 
 
   getProducts () async {
-    final _selectedDay1 = DateTime.now();
-
-
 
     List<Grocery> _groceries = [];
 
-
-    final fetchedData = await Database.getDataGrocery();
-    //var date = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
-    DateTime date = DateTime.now();
+    final fetchedData = await Database.getGroceryData();
 
     _groceries = fetchedData
         .map(
@@ -95,21 +89,7 @@ class _CalendarViewState extends State<CalendarView> {
     )
         .toList();
 
-    //fetchedData.map((item) => _kEventSource[item['expiryDate'].toDate()] = [Event(item['productName'].toString(), item['category'].toString(), item['isConsumed'], item['productName'].toString())] );
-    // _kEventSource = Map.fromIterable(List.generate(50, (index) => index),
-    //     key: (item) => DateTime.utc(2020, 10, item * 5),
-    //     value: (item) => List.generate(
-    //         item % 4 + 1, (index) => Event('Event $item | ${index + 1}',"Others",false,"1")))
-    //   ..addAll({
-    //     DateTime.now(): [
-    //       Event("1","Others",false,"1"),
-    //       Event("2","Others",false,"1"),
-    //     ],
-    //   });
-
     List<Event> event = [];
-    //
-    // List<DateTime> datee = [];
 
     _kEventSource = {};
 
@@ -119,7 +99,7 @@ class _CalendarViewState extends State<CalendarView> {
 
         event = _kEventSource[_groceries[i].expiryDate!]!;
         event.add(
-            Event(_groceries[i].productName!, _groceries[i].category!, _groceries[i].isConsumed!, _groceries[i].expiryDate!.toString())
+            Event(_groceries[i].productName!, _groceries[i].category!, _groceries[i].isConsumed!, dateFormatS.format(_groceries[i].manufacturedDate!),dateFormatS.format(_groceries[i].expiryDate!))
         );
 
         _kEventSource.remove(_groceries[i].expiryDate!);
@@ -130,11 +110,8 @@ class _CalendarViewState extends State<CalendarView> {
 
         event = [];
 
-
-
-
       } else {
-        event = [Event(_groceries[i].productName!, _groceries[i].category!, _groceries[i].isConsumed!, _groceries[i].expiryDate!.toString())] ;
+        event = [Event(_groceries[i].productName!, _groceries[i].category!, _groceries[i].isConsumed!, dateFormatS.format(_groceries[i].manufacturedDate!), dateFormatS.format(_groceries[i].expiryDate!))] ;
 
         _kEventSource.putIfAbsent(_groceries[i].expiryDate!, () {
           return event;
@@ -143,62 +120,21 @@ class _CalendarViewState extends State<CalendarView> {
         event = [];
       }
 
-
-
     }
-    //
-    //   datee.add(_groceries[i].expiryDate!);
-    //
-    //   for (var i = 0; i < datee.length; i++){
-    //    
-    //   }
-    //
-    //
-    //
-    //   _kEventSource[_groceries[i].expiryDate!] = [Event(element.productName!, element.category!, element.isConsumed!, element.expiryDate!.toString())];
-    // // }
-    //
-    // _groceries.forEach((element) {
-    //
-    //
-    //
-    //
-    //   _kEventSource.putIfAbsent(element.expiryDate!, () {
-    //     event.add(Event(element.productName!, element.category!, element.isConsumed!, element.expiryDate!.toString()));
-    //
-    //     return event;
-    //   }
-    //   );
-    //  // _kEventSource[element.expiryDate!] = [Event(element.productName!, element.category!, element.isConsumed!, element.expiryDate!.toString())];
-    //
-    // });
-
-    // _getEventsForDay(date);
-
-
-
-    //
-    // _kEventSource = {
-    //   _selectedDay1: [Event('Today\'s Event 1', 'even 2'),],
-    //   _selectedDay1.add(Duration(days: 3)): [Event('Today\'s Event 1', 'even 2')],
-    // };
   }
 
   List<Event> _getEventsForDay(DateTime day) {
-    // Implementation example
 
     final kEvents = LinkedHashMap<DateTime, List<Event>>(
       equals: isSameDay,
       hashCode: getHashCode,
     )..addAll(_kEventSource);
 
-    //print(kEvents);
     return kEvents[day] ?? [];
   }
 
 
   List<Event> _getEventsForRange(DateTime start, DateTime end) {
-    // Implementation example
     final days = daysInRange(start, end);
 
     return [
@@ -211,7 +147,7 @@ class _CalendarViewState extends State<CalendarView> {
       setState(() {
         _selectedDay = selectedDay;
         _focusedDay = focusedDay;
-        _rangeStart = null; // Important to clean those
+        _rangeStart = null;
         _rangeEnd = null;
         _rangeSelectionMode = RangeSelectionMode.toggledOff;
       });
@@ -229,7 +165,6 @@ class _CalendarViewState extends State<CalendarView> {
       _rangeSelectionMode = RangeSelectionMode.toggledOn;
     });
 
-    // `start` or `end` could be null
     if (start != null && end != null) {
       _selectedEvents.value = _getEventsForRange(start, end);
     } else if (start != null) {
@@ -297,7 +232,6 @@ class _CalendarViewState extends State<CalendarView> {
                                       eventLoader: _getEventsForDay,
                                       startingDayOfWeek: StartingDayOfWeek.monday,
                                       calendarStyle: CalendarStyle(
-                                        // Use `CalendarStyle` to customize the UI
                                         outsideDaysVisible: false,
                                       ),
                                       onDaySelected: _onDaySelected,
@@ -325,14 +259,6 @@ class _CalendarViewState extends State<CalendarView> {
                                         itemCount: value.length,
                                         itemBuilder: (context, index) {
                                           return Container(
-                                            // margin: const EdgeInsets.symmetric(
-                                            //   horizontal: 12.0,
-                                            //   vertical: 4.0,
-                                            // ),
-                                            // decoration: BoxDecoration(
-                                            //   border: Border.all(),
-                                            //   borderRadius: BorderRadius.circular(12.0),
-                                            // ),
                                             child:  Stack(
                                               children: <Widget>[
                                                 Padding(
@@ -373,7 +299,7 @@ class _CalendarViewState extends State<CalendarView> {
                                                               crossAxisAlignment: CrossAxisAlignment.center,
                                                               children: [
                                                                 Text(
-                                                                  value[index].itemName,
+                                                                  "Product Name :"+value[index].itemName,
                                                                   textAlign: TextAlign.center,
                                                                   style: TextStyle(
                                                                     fontFamily: AppTheme.fontName,
@@ -384,7 +310,18 @@ class _CalendarViewState extends State<CalendarView> {
                                                                   ),
                                                                 ),
                                                                 Text(
-                                                                  value[index].expriationDate,
+                                                                  "Manufactured Date :"+value[index].manufactureDate,
+                                                                  textAlign: TextAlign.center,
+                                                                  style: TextStyle(
+                                                                    fontFamily: AppTheme.fontName,
+                                                                    fontWeight: FontWeight.bold,
+                                                                    fontSize: 16,
+                                                                    letterSpacing: 0.2,
+                                                                    color: AppTheme.white,
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  "Expiration Date :"+value[index].expriationDate,
                                                                   textAlign: TextAlign.center,
                                                                   style: TextStyle(
                                                                     fontFamily: AppTheme.fontName,
@@ -445,16 +382,6 @@ class _CalendarViewState extends State<CalendarView> {
 
                                               ],
                                             ),
-
-
-
-
-
-                                            // ListTile(
-                                            //   onTap: () => print('${value[index]}'),
-                                            //   title: Text('${value[index].itemName}'),
-                                            //   subtitle: Text('${value[index].expriationDate}'),
-                                            // ),
                                           );
                                         },
                                       );
