@@ -60,10 +60,5 @@ class GoogleSignInProvider extends ChangeNotifier {
     } catch (e) {
       print("Error signing out : $e");
     }
-
-/*    if (await googleSignIn.isSignedIn()) {
-      await googleSignIn.disconnect();
-    }
-    FirebaseAuth.instance.signOut();*/
   }
 }

@@ -20,11 +20,19 @@ class ProfileScreen extends StatelessWidget {
             style: TextStyle(color: Colors.white),
           ),
           SizedBox(height: 8),
-          if (user.photoURL != null)
-            CircleAvatar(
-              maxRadius: 25,
-              backgroundImage: NetworkImage(user.photoURL!),
-            ),
+          user.photoURL != null ?
+            Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: ClipOval(
+                child: FadeInImage.assetNetwork(
+                    fit: BoxFit.cover,
+                    placeholder: 'assets/images/tab4s.png',
+                    image: user.photoURL!),
+              ),
+            ) : CircleAvatar(
+            maxRadius: 25,
+            backgroundImage: AssetImage('assets/images/tab4s.png'),
+          ),
           SizedBox(height: 8),
           if (user.displayName != null)
             Text(

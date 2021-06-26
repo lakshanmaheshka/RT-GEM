@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:rt_gem/screens/calender_screen.dart';
 import 'package:rt_gem/screens/receipt_screen.dart';
 import 'package:rt_gem/widgets/isApp/views/add_grocery.dart';
@@ -20,16 +21,11 @@ class NavScreen extends StatefulWidget {
   _NavScreenState createState() => _NavScreenState();
 }
 
-
-
-class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
+class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin {
   AnimationController? animationController;
-  final _formKey = GlobalKey<FormState>();
-  TabController? _tabController;
   List<TabIconData> tabIconsList = TabIconData.tabIconsList;
 
   bool isInReceipt = false;
-
 
   final List<IconData> _icons = const [
     Icons.home,
@@ -41,12 +37,14 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
 
   @override
   void initState() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     tabIconsList.forEach((TabIconData tab) {
       tab.isSelected = false;
     });
     tabIconsList[0].isSelected = true;
-
-    _tabController = new TabController(length: 2, vsync: this);
 
     animationController = AnimationController(
         duration: const Duration(milliseconds: 600), vsync: this);
@@ -65,132 +63,116 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
     final Size screenSize = MediaQuery.of(context).size;
     return DefaultTabController(
       length: _icons.length,
-      child: kIsWeb ?
-              Scaffold(
-        appBar: Responsive.isDesktop(context)
-            ? PreferredSize(
-                preferredSize: Size(screenSize.width, 100.0),
-                child: CustomAppBar(
-                  //currentUser: currentUser,
-                  icons: _icons,
-                  selectedIndex: _selectedIndex,
-                   onTap: (index) => setState(() {
-                     _selectedIndex = index;
-                     index == 2 ? isInReceipt = true : isInReceipt = false;
-                   }),
-                ),
-              )
-            : null,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            if(isInReceipt){
-
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AddReceipt()));
-
-            }  else {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return CustomDialog();
-                  });
-            }
-
-
-
-          },
-          tooltip: isInReceipt ? 'Add Receipt' : 'Add Items',
-          child: const Icon(Icons.add),
-        ),
-        floatingActionButtonLocation: Responsive.isDesktop(context) ? FloatingActionButtonLocation.centerTop : FloatingActionButtonLocation.endFloat,
-        body: AnimatedIndexedStack(
-          index: _selectedIndex,
-          children: <Widget>[
-            HomeScreen(animationController: animationController),
-            CalenderScreen(animationController: animationController),
-            ReceiptScreen(),
-            ProfileScreen(),
-          ],
-        ),
-        bottomNavigationBar: !Responsive.isDesktop(context)
-            ? Container(
-                padding: const EdgeInsets.only(bottom: 12.0),
-                color: Colors.white,
-                child: CustomTabBar(
-                  icons: _icons,
-                  selectedIndex: _selectedIndex,
-                  onTap: (index) => setState(() {
-                    _selectedIndex = index;
-                    if(index == 2){
-                      isInReceipt = true;
-                    } else {
-                      isInReceipt = false;
-                    }
-                  }),
-                ),
-              )
-            : const SizedBox.shrink(),
-      )
-          :
-              Stack(
+      child: kIsWeb
+          ? Scaffold(
+              appBar: Responsive.isDesktop(context)
+                  ? PreferredSize(
+                      preferredSize: Size(screenSize.width, 100.0),
+                      child: CustomAppBar(
+                        //currentUser: currentUser,
+                        icons: _icons,
+                        selectedIndex: _selectedIndex,
+                        onTap: (index) => setState(() {
+                          _selectedIndex = index;
+                          index == 2 ? isInReceipt = true : isInReceipt = false;
+                        }),
+                      ),
+                    )
+                  : null,
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  if (isInReceipt) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => AddReceipt()));
+                  } else {
+                    Responsive.isDesktop(context)
+                        ? showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return CustomDialog();
+                            })
+                        : Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AddGrocery()));
+                  }
+                },
+                tooltip: isInReceipt ? 'Add Receipt' : 'Add Items',
+                child: const Icon(Icons.add),
+              ),
+              floatingActionButtonLocation: Responsive.isDesktop(context)
+                  ? FloatingActionButtonLocation.centerTop
+                  : FloatingActionButtonLocation.endFloat,
+              body: AnimatedIndexedStack(
+                index: _selectedIndex,
                 children: <Widget>[
-                  tabBody,
-                  bottomBar(),
+                  HomeScreen(animationController: animationController),
+                  CalenderScreen(animationController: animationController),
+                  ReceiptScreen(),
+                  ProfileScreen(),
                 ],
               ),
+              bottomNavigationBar: !Responsive.isDesktop(context)
+                  ? Container(
+                      padding: const EdgeInsets.only(bottom: 12.0),
+                      color: Colors.white,
+                      child: CustomTabBar(
+                        icons: _icons,
+                        selectedIndex: _selectedIndex,
+                        onTap: (index) => setState(() {
+                          _selectedIndex = index;
+                          if (index == 2) {
+                            isInReceipt = true;
+                          } else {
+                            isInReceipt = false;
+                          }
+                        }),
+                      ),
+                    )
+                  : const SizedBox.shrink(),
+            )
+          : Stack(
+              children: <Widget>[
+                tabBody,
+                bottomBar(),
+              ],
+            ),
     );
   }
 
-  // Future<bool> getData() async {
-  //   await Future<dynamic>.delayed(const Duration(milliseconds: 200));
-  //   return true;
-  // }
-
   Widget tabBody = Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-            colors: <Color>[
-              CustomTheme.loginGradientStart,
-              CustomTheme.loginGradientEnd
-            ],
-            begin: FractionalOffset(0.0, 0.0),
-            end: FractionalOffset(1.0, 1.0),
-            stops: <double>[0.0, 1.0],
-            tileMode: TileMode.clamp),
-      ),
-    );
+    decoration: const BoxDecoration(
+      gradient: LinearGradient(
+          colors: <Color>[
+            CustomTheme.loginGradientStart,
+            CustomTheme.loginGradientEnd
+          ],
+          begin: FractionalOffset(0.0, 0.0),
+          end: FractionalOffset(1.0, 1.0),
+          stops: <double>[0.0, 1.0],
+          tileMode: TileMode.clamp),
+    ),
+  );
 
   Widget bottomBar() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-        // const Expanded(
-        //   child: SizedBox(),
-        // ),
         BottomBarView(
           tabIconsList: tabIconsList,
           addClick: () {
-
-            if(isInReceipt){
-
-              Navigator.push(
-                  context,
+            if (isInReceipt) {
+              Navigator.push(context,
                   MaterialPageRoute(builder: (context) => AddReceipt()));
-
-            }  else {
-              Navigator.push(
-                  context,
+            } else {
+              Navigator.push(context,
                   MaterialPageRoute(builder: (context) => AddGrocery()));
             }
-
           },
           changeIndex: (int index) {
-
             switch (index) {
               case 0:
-
                 animationController!.reverse().then<dynamic>((data) {
                   if (!mounted) {
                     return;
@@ -209,8 +191,8 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
                   }
                   setState(() {
                     isInReceipt = false;
-                    tabBody =
-                        CalenderScreen(animationController: animationController);
+                    tabBody = CalenderScreen(
+                        animationController: animationController);
                   });
                 });
                 break;
@@ -221,8 +203,7 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
                   }
                   setState(() {
                     isInReceipt = true;
-                    tabBody =
-                        ReceiptScreen();
+                    tabBody = ReceiptScreen();
                   });
                 });
                 break;
@@ -233,8 +214,7 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
                   }
                   setState(() {
                     isInReceipt = false;
-                    tabBody =
-                        ProfileScreen();
+                    tabBody = ProfileScreen();
                   });
                 });
                 break;
@@ -245,6 +225,3 @@ class _NavScreenState extends State<NavScreen> with TickerProviderStateMixin  {
     );
   }
 }
-
-
-
