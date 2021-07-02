@@ -249,7 +249,7 @@ class _ScannedDateDetailsScreenState extends State<ScannedDateDetailsScreen> {
                             height: 60,
                             child: SingleChildScrollView(
                               child: Text(
-                                "mfdString  "+ Globaldata.mfdString!,
+                                "Manufactured Date : "+ Globaldata.mfdString!,
                               ),
                             ),
                           ),
@@ -257,7 +257,7 @@ class _ScannedDateDetailsScreenState extends State<ScannedDateDetailsScreen> {
                             height: 60,
                             child: SingleChildScrollView(
                               child: Text(
-                                "expString "+Globaldata.expString!,
+                                "Expiration Date : "+Globaldata.expString!,
                               ),
                             ),
                           ),
