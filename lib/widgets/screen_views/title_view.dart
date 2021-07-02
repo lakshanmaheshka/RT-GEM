@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../../utils/app_theme.dart';
 
-class TitleView extends StatelessWidget {
+class TitleView extends StatefulWidget {
   final String titleTxt;
   final String subTxt;
   final AnimationController? animationController;
   final Animation? animation;
   final bool isButtonEnabled;
+  final Function? onClick;
 
   const TitleView(
       {Key? key,
@@ -15,19 +16,24 @@ class TitleView extends StatelessWidget {
       this.subTxt: "",
       this.animationController,
       this.animation,
-      required this.isButtonEnabled})
+      required this.isButtonEnabled, this.onClick})
       : super(key: key);
 
   @override
+  _TitleViewState createState() => _TitleViewState();
+}
+
+class _TitleViewState extends State<TitleView> {
+  @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: animationController!,
+      animation: widget.animationController!,
       builder: (BuildContext context, Widget? child) {
         return FadeTransition(
-          opacity: animation as Animation<double>,
+          opacity: widget.animation as Animation<double>,
           child: new Transform(
             transform: new Matrix4.translationValues(
-                0.0, 30 * (1.0 - animation!.value), 0.0),
+                0.0, 30 * (1.0 - widget.animation!.value), 0.0),
             child: Container(
               child: Padding(
                 padding: const EdgeInsets.only(left: 24, right: 24),
@@ -35,7 +41,7 @@ class TitleView extends StatelessWidget {
                   children: <Widget>[
                     Expanded(
                       child: Text(
-                        titleTxt,
+                        widget.titleTxt,
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           fontFamily: AppTheme.fontName,
@@ -46,16 +52,18 @@ class TitleView extends StatelessWidget {
                         ),
                       ),
                     ),
-                    isButtonEnabled ? InkWell(
+                    widget.isButtonEnabled ? InkWell(
                       highlightColor: Colors.transparent,
                       borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                      onTap: () {},
+                      onTap: () {
+                        widget.onClick!();
+                      },
                       child: Padding(
                         padding: const EdgeInsets.only(left: 8),
                         child: Row(
                           children: <Widget>[
                             Text(
-                              subTxt,
+                              widget.subTxt,
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 fontFamily: AppTheme.fontName,

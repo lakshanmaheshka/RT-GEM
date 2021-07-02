@@ -1,9 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:rt_gem/provider/email_sign_in.dart';
 import 'package:rt_gem/theme.dart';
 import 'package:rt_gem/utils/bubble_indicator_painter.dart';
+import 'package:rt_gem/utils/responsive.dart';
 import 'package:rt_gem/widgets/login_widgets/sign_up.dart';
 import 'package:rt_gem/widgets/login_widgets/sign_in.dart';
 
@@ -42,13 +44,14 @@ class _LoginPageState extends State<LoginPage>
     final provider = Provider.of<EmailSignInProvider>(context);
     return Scaffold(
         body: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
           child: GestureDetector(
             onTap: () {
               FocusScope.of(context).requestFocus(FocusNode());
             },
             child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
+              width: kIsWeb ? 1600 : MediaQuery.of(context).size.width,
+              height: kIsWeb ? 752 : MediaQuery.of(context).size.height,
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                     colors: <Color>[

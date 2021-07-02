@@ -276,4 +276,88 @@ class Database {
         .catchError((e) => print(e));
   }
 
+
+  // static Future deleteUser({
+  //   required String? userUid,
+  //   }
+  // ) async {
+  //   DocumentReference documentReferencer =
+  //   _mainCollection.doc(userUid);
+  //
+  //   await documentReferencer
+  //       .delete()
+  //       .whenComplete(() => print('User deleted from the database'))
+  //       .catchError((e) => print(e));
+  // }
+
+  // static Stream<QuerySnapshot> readGroceriesByDay() {
+  //   DateTime date = DateTime.now();
+  //
+  //
+  //   CollectionReference rtGemGroceriesCollection =
+  //   _mainCollection.doc(userUid).collection('groceries');
+  //
+  //   final Query byWeek = rtGemGroceriesCollection
+  //       .where("isConsumed", isEqualTo: false)
+  //       .where("expiryDate", isLessThanOrEqualTo: DateTime(date.year, date.month, date.day))
+  //       .where("expiryDate", isGreaterThanOrEqualTo: DateTime(date.year, date.month, date.day));
+  //
+  //
+  //   return byWeek.snapshots();
+  // }
+  //
+  // void deleteNestedSubcollections(String id) {
+  //
+  //   CollectionReference rtGemGroceriesCollection =
+  //   _mainCollection.doc(userUid).collection('groceries');
+  //
+  //   final Query byWeek = rtGemGroceriesCollection.get(doc);
+  //
+  //   Future<QuerySnapshot> books =
+  //   libraryCollection.document(id).collection("groceries").getDocuments();
+  //   books.then((value) {
+  //     value.documents.forEach((element) {
+  //       libraryCollection
+  //           .document(id)
+  //           .collection("Books")
+  //           .document(element.documentID)
+  //           .delete()
+  //           .then((value) => print("success"));
+  //     });
+  //   });
+  // }
+
+
+  static Future<void> deleteUser() async {
+    CollectionReference _collectionGroceryRef =
+    _mainCollection.doc(userUid).collection('groceries');
+
+    CollectionReference _collectionReceiptRef =
+    _mainCollection.doc(userUid).collection('receipts');
+
+    QuerySnapshot queryGrocerySnapshot = await _collectionGroceryRef.get();
+    QuerySnapshot queryReceiptSnapshot = await _collectionReceiptRef.get();
+
+
+
+    for (int i = 0; i < queryGrocerySnapshot.docs.length; i++) {
+      var a = queryGrocerySnapshot.docs[i];
+      print(a.id);
+      _mainCollection.doc(userUid).collection('groceries').doc(a.id).delete();
+    }
+
+    for (int i = 0; i < queryReceiptSnapshot.docs.length; i++) {
+      var a = queryReceiptSnapshot.docs[i];
+      print(a.id);
+      _mainCollection.doc(userUid).collection('receipts').doc(a.id).delete();
+    }
+
+    print("all deleted");
+  }
+
+  // static Future<void> deleteUser() async {
+  //    _mainCollection.doc(userUid).delete();
+  // }
+
+
 }

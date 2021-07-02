@@ -70,10 +70,10 @@ class EmailSignInProvider extends ChangeNotifier {
   Future<bool> login() async {
     try {
       isLoading = true;
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: userEmail!,
-          password: userPassword!,
-        );
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: userEmail!,
+        password: userPassword!,
+      );
 
 
       isLoading = false;
@@ -89,10 +89,10 @@ class EmailSignInProvider extends ChangeNotifier {
     try {
       isLoading = true;
 
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: newUserEmail!,
-          password: newUserPassword!,
-        );
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: newUserEmail!,
+        password: newUserPassword!,
+      );
 
 
       isLoading = false;
@@ -102,6 +102,9 @@ class EmailSignInProvider extends ChangeNotifier {
       isLoading = false;
       return false;
     }
-  }
+
+
+}
+
 
 }

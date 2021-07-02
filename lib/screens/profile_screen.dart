@@ -2,6 +2,8 @@ import 'package:rt_gem/provider/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rt_gem/utils/database.dart';
+import 'package:rt_gem/widgets/snackbar.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override
@@ -52,6 +54,26 @@ class ProfileScreen extends StatelessWidget {
               provider.logout();
             },
             child: Text('Logout'),
+          ),
+          SizedBox(height: 8),
+          ElevatedButton(
+            onPressed: () async {
+              await Database.deleteUser();
+
+              try{
+                user.delete();
+              }on FirebaseAuthException catch (e) {
+                CustomSnackBar(
+                    context, const Text('Exception!'),Colors.red);
+                print(e);
+              }
+              catch(error){
+                CustomSnackBar(context, const Text('Error'),Colors.red);
+
+                print(error);
+              }
+            },
+            child: Text('Delete Account'),
           ),
         ],
       ),

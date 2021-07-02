@@ -100,6 +100,9 @@ class _GroceryListViewState extends State<GroceryListView>
                             String expiryDate = dateFormatS.format(groceries['expiryDate'].toDate());
                             String quantity = groceries['quantity'].toString();
 
+                            int daysLeft = daysBetween(DateTime.now(), groceries['expiryDate'].toDate());
+
+
                             return ItemsView(
                                 animation: animation,
                                 animationController: animationController,
@@ -109,7 +112,8 @@ class _GroceryListViewState extends State<GroceryListView>
                                 currentCategory: category,
                                 currentItemMfg: manufactureDate,
                                 currentItemExp: expiryDate,
-                                currentQuantity: quantity
+                                currentQuantity: quantity,
+                                daysLeft: daysLeft
                             );
                           },
                         );
@@ -143,167 +147,12 @@ class _GroceryListViewState extends State<GroceryListView>
 }
 
 
-Widget getCategoryImage(String currentCategory) {
-  switch(currentCategory){
-    case "Beverages":
-      return SizedBox(
-          width: 60,
-          height: 60,
-          child: Image.asset("assets/images/Beverages.png"));
 
-      break;
-
-    case "Bread/Bakery": {
-      return SizedBox(
-          width: 60,
-          height: 60,
-          child: Image.asset("assets/images/BreadBakery.png"));
-    }
-    break;
-
-    case "Dairy Products": {
-      return SizedBox(
-          width: 60,
-          height: 60,
-          child: Image.asset("assets/images/DairyProducts.png"));
-    }
-    break;
-
-    case "Cereals": {
-      return SizedBox(
-          width: 60,
-          height: 60,
-          child: Image.asset("assets/images/cereals.png"));
-    }
-    break;
-
-    case "Canned Foods": {
-      return SizedBox(
-          width: 60,
-          height: 60,
-          child: Image.asset("assets/images/CannedFoods.png"));
-    }
-    break;
-
-    case "Frozen Foods": {
-      return SizedBox(
-          width: 60,
-          height: 60,
-          child: Image.asset("assets/images/FrozenFoods.png"));
-    }
-    break;
-
-    case 'Snack Foods':
-    //statements;
-      return SizedBox(
-          width: 60,
-          height: 60,
-          child: Image.asset("assets/images/SnackFoods.png"));
-
-      break;
-
-    case "Others": {
-      return SizedBox(
-          width: 65,
-          height: 65,
-          child: Image.asset("assets/images/others.png"));
-    }
-    break;
-
-
-    default: {
-      return SizedBox(
-          width: 65,
-          height: 65,
-          child: Image.asset("assets/images/others.png"));
-    }
-
-  }
-}
-
-
-List<HexColor> getCategoryColor(String currentCategory) {
-  switch(currentCategory){
-    case "Beverages":
-      return <HexColor>[
-        HexColor('#FA7D82'),
-        HexColor('#FFB295'),
-      ];
-
-      break;
-
-    case "Bread/Bakery": {
-      return  <HexColor>[
-        HexColor('#fc4a1a'),
-        HexColor('#f7b733'),
-      ];
-    }
-    break;
-
-    case "Dairy Products": {
-      return  <HexColor>[
-        HexColor('#f7ff00'),
-        HexColor('#db36a4'),
-      ];
-    }
-    break;
-
-    case "Cereals": {
-      return  <HexColor>[
-        HexColor('#d53369'),
-        HexColor('#cbad6d'),
-      ];
-    }
-    break;
-
-    case "Canned Foods": {
-      return  <HexColor>[
-        HexColor('#f857a6'),
-        HexColor('#ff5858'),
-      ];
-    }
-    break;
-
-    case "Frozen Foods": {
-      return  <HexColor>[
-        HexColor('#2193b0'),
-        HexColor('#6dd5ed'),
-      ];
-    }
-    break;
-
-    case 'Snack Foods':
-    //statements;
-      return  <HexColor>[
-        HexColor('#FC5C7D'),
-        HexColor('#6A82FB'),
-      ];
-
-      break;
-
-    case "Others": {
-      return  <HexColor>[
-        HexColor('#11998e'),
-        HexColor('#38ef7d'),
-      ];
-    }
-    break;
-
-
-    default: {
-      return  <HexColor>[
-        HexColor('#11998e'),
-        HexColor('#38ef7d'),
-      ];
-    }
-
-  }
-}
 
 
 class ItemsView extends StatelessWidget {
   const ItemsView(
-      {Key? key,required this.productName,required this.docID, this.animationController, this.animation, required this.currentCategory, required this.currentItemMfg, required this.currentItemExp, required this.currentQuantity})
+      {Key? key,required this.productName,required this.docID, this.animationController, this.animation, required this.currentCategory, required this.currentItemMfg, required this.currentItemExp, required this.currentQuantity, required this.daysLeft})
       : super(key: key);
 
   // final MealsListData? mealsListData;
@@ -313,6 +162,7 @@ class ItemsView extends StatelessWidget {
   final String currentItemExp;
   final String currentQuantity;
   final String docID;
+  final int daysLeft;
   final AnimationController? animationController;
   final Animation<dynamic>? animation;
 
@@ -416,7 +266,7 @@ class ItemsView extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
-                                        <String>[currentCategory, currentItemMfg, currentItemExp, currentQuantity].join('\n'),
+                                        <String>[currentCategory, "MFG :"+currentItemMfg, "EXP  :"+currentItemExp, "QTY :"+currentQuantity].join('\n'),
                                         style: TextStyle(
                                           fontFamily: AppTheme.fontName,
                                           fontWeight: FontWeight.w500,
@@ -429,6 +279,26 @@ class ItemsView extends StatelessWidget {
                                   ),
                                 ),
                               ),
+
+                             Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.6),
+                                    borderRadius: BorderRadius.all(Radius.circular(8))
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Text(
+                                      daysLeft <= 7  && daysLeft >= 2 ? "Expires Soon !!" :  daysLeft <= 1  && daysLeft >= 0 ? "Expires Today !!" :  daysLeft < 0 ? "Expired !! " : "Days Left : "+daysLeft.toString(),
+                                      style: TextStyle(
+                                        fontFamily: AppTheme.fontName,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 11,
+                                        letterSpacing: 0.2,
+                                        color: daysLeft < 0 ? Colors.red : Colors.blueAccent,
+                                      )
+                                  ),
+                                ),
+                              )
                             ],
                           ),
                         ),

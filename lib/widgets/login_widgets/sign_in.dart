@@ -1,9 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:rt_gem/provider/email_sign_in.dart';
 import 'package:rt_gem/provider/google_sign_in.dart';
 import 'package:rt_gem/theme.dart';
+import 'package:rt_gem/utils/responsive.dart';
 import 'package:rt_gem/widgets/snackbar.dart';
 
 
@@ -106,9 +108,6 @@ class _SignInState extends State<SignIn> {
                     ),
                     onPressed: () {
                       submit();
-                      //
-                      // CustomSnackBar(
-                      //     context, const Text('Login button pressed'),Colors.green);
                       }
                   ),
                 )
@@ -209,7 +208,7 @@ class _SignInState extends State<SignIn> {
 
     return Padding(
       padding: const EdgeInsets.only(
-          top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+          top: kIsWeb ? 20.0 : 0.0, bottom: 20.0, left: 25.0, right: 25.0),
       child: TextFormField(
         autovalidateMode: AutovalidateMode.onUserInteraction, key: ValueKey('email'),
         focusNode: focusNodeEmail,

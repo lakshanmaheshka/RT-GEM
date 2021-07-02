@@ -1,8 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:rt_gem/provider/email_sign_in.dart';
 import 'package:rt_gem/theme.dart';
+import 'package:rt_gem/utils/responsive.dart';
 import 'package:rt_gem/widgets/snackbar.dart';
 
 class SignUp extends StatefulWidget {
@@ -147,7 +149,7 @@ class _SignUpState extends State<SignUp> {
 
     return Padding(
       padding: const EdgeInsets.only(
-          top: 15.0, bottom: 15.0, left: 25.0, right: 25.0),
+          top: kIsWeb ? 20.0 : 0.0, bottom: 15.0, left: 25.0, right: 25.0),
       child: TextFormField(
         key: ValueKey('username'),
         focusNode: focusNodeName,
