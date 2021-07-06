@@ -284,17 +284,6 @@ class _NumberInputWithIncrementDecrementState
           });
         }
       }
-
-      // _message = 'Pressed the "Q" key!';
-      // } else {
-      //   if (kReleaseMode) {
-      //     _message =
-      //     'Not a Q: Pressed 0x${event.logicalKey.keyId.toRadixString(16)}';
-      //   } else {
-      //     // The debugName will only print useful information in debug mode.
-      //     _message = 'Not a Q: Pressed ${event.logicalKey.debugName}';
-      //   }
-      // }
     });
   }
 
@@ -343,13 +332,6 @@ class _NumberInputWithIncrementDecrementState
                               fontSize: 12,
                             ),
                           ),
-                          //suffixText: widget.suffixText,
-
-                          /*IconButton(
-                              icon: Icon(Icons.access_time),
-                              onPressed:  () {
-                                FocusScope.of(context).requestFocus(_focusNode);
-                              }),*/
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
                           ),

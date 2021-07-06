@@ -4,17 +4,14 @@ import 'package:jiffy/jiffy.dart';
 import 'package:rt_gem/utils/custom_colors.dart';
 
 List<String> receiptCategories = [
-  'Food',
-  'Social Life',
-  'Self-development',
-  'Transportation',
-  'Culture',
-  'Household',
-  'Apparel',
-  'Beauty',
+  'Grocery',
   'Health',
-  'Education',
+  'Electronic Goods',
+  'Mobile',
+  'Apparel',
   'Gift',
+  'Education',
+  'Entertainment',
   'Other',
 ];
 
@@ -39,7 +36,7 @@ Widget getCategoryImage(String currentCategory) {
           height: 60,
           child: Image.asset("assets/images/Beverages.png"));
 
-      break;
+
 
     case "Bread/Bakery": {
       return SizedBox(
@@ -47,7 +44,7 @@ Widget getCategoryImage(String currentCategory) {
           height: 60,
           child: Image.asset("assets/images/BreadBakery.png"));
     }
-    break;
+
 
     case "Dairy Products": {
       return SizedBox(
@@ -55,7 +52,7 @@ Widget getCategoryImage(String currentCategory) {
           height: 60,
           child: Image.asset("assets/images/DairyProducts.png"));
     }
-    break;
+
 
     case "Cereals": {
       return SizedBox(
@@ -63,7 +60,7 @@ Widget getCategoryImage(String currentCategory) {
           height: 60,
           child: Image.asset("assets/images/cereals.png"));
     }
-    break;
+
 
     case "Canned Foods": {
       return SizedBox(
@@ -71,7 +68,7 @@ Widget getCategoryImage(String currentCategory) {
           height: 60,
           child: Image.asset("assets/images/CannedFoods.png"));
     }
-    break;
+
 
     case "Frozen Foods": {
       return SizedBox(
@@ -79,16 +76,15 @@ Widget getCategoryImage(String currentCategory) {
           height: 60,
           child: Image.asset("assets/images/FrozenFoods.png"));
     }
-    break;
+
 
     case 'Snack Foods':
-    //statements;
       return SizedBox(
           width: 60,
           height: 60,
           child: Image.asset("assets/images/SnackFoods.png"));
 
-      break;
+
 
     case "Others": {
       return SizedBox(
@@ -96,7 +92,7 @@ Widget getCategoryImage(String currentCategory) {
           height: 65,
           child: Image.asset("assets/images/others.png"));
     }
-    break;
+
 
 
     default: {
@@ -118,7 +114,7 @@ List<HexColor> getCategoryColor(String currentCategory) {
         HexColor('#FFB295'),
       ];
 
-      break;
+
 
     case "Bread/Bakery": {
       return  <HexColor>[
@@ -126,7 +122,7 @@ List<HexColor> getCategoryColor(String currentCategory) {
         HexColor('#f7b733'),
       ];
     }
-    break;
+
 
     case "Dairy Products": {
       return  <HexColor>[
@@ -134,7 +130,7 @@ List<HexColor> getCategoryColor(String currentCategory) {
         HexColor('#db36a4'),
       ];
     }
-    break;
+
 
     case "Cereals": {
       return  <HexColor>[
@@ -142,7 +138,7 @@ List<HexColor> getCategoryColor(String currentCategory) {
         HexColor('#cbad6d'),
       ];
     }
-    break;
+
 
     case "Canned Foods": {
       return  <HexColor>[
@@ -150,7 +146,7 @@ List<HexColor> getCategoryColor(String currentCategory) {
         HexColor('#ff5858'),
       ];
     }
-    break;
+
 
     case "Frozen Foods": {
       return  <HexColor>[
@@ -158,7 +154,7 @@ List<HexColor> getCategoryColor(String currentCategory) {
         HexColor('#6dd5ed'),
       ];
     }
-    break;
+
 
     case 'Snack Foods':
     //statements;
@@ -167,7 +163,7 @@ List<HexColor> getCategoryColor(String currentCategory) {
         HexColor('#6A82FB'),
       ];
 
-      break;
+
 
     case "Others": {
       return  <HexColor>[
@@ -175,7 +171,7 @@ List<HexColor> getCategoryColor(String currentCategory) {
         HexColor('#38ef7d'),
       ];
     }
-    break;
+
 
 
     default: {
@@ -243,6 +239,15 @@ int daysBetween(DateTime from, DateTime to) {
   from = DateTime(from.year, from.month, from.day);
   to = DateTime(to.year, to.month, to.day);
   return (to.difference(from).inHours / 24).round();
+}
+
+DateTime? convertToDate(String input) {
+  try {
+    var d = dateFormatS.parseStrict(input);
+    return d;
+  } catch (e) {
+    return null;
+  }
 }
 
 

@@ -6,6 +6,7 @@ import 'package:rt_gem/utils/commons.dart';
 import 'package:rt_gem/utils/custom_colors.dart';
 import 'package:rt_gem/utils/database.dart';
 import 'package:rt_gem/utils/receipt_models/global_data.dart';
+import 'package:rt_gem/utils/responsive.dart';
 import 'package:rt_gem/widgets/custom_dialog/edit_dialog/edit_dialog.dart';
 import 'package:rt_gem/widgets/isApp/views/edit_grocery.dart';
 import '../../utils/app_theme.dart';
@@ -61,16 +62,17 @@ class _GroceryListViewState extends State<GroceryListView>
                   height: 216,
                   width: double.infinity,
                   child: StreamBuilder<QuerySnapshot>(
-                    stream: Globaldata.filter.value == 0 ?
-                    Database.readGroceries() :
-                    Globaldata.filter.value == 1 ?
+                    stream:
+                    Globaldata.filter.value == 0 ?
                     Database.readGroceriesByDay() :
-                    Globaldata.filter.value == 2 ?
+                    Globaldata.filter.value == 1 ?
                     Database.readGroceriesByNextDay() :
-                    Globaldata.filter.value == 3 ?
+                    Globaldata.filter.value == 2 ?
                     Database.readGroceriesByWeek() :
+                    Globaldata.filter.value == 3 ?
+                    Database.readGroceriesByMonth() :
                     Globaldata.filter.value == 4 ?
-                    Database.readGroceriesByMonth() :  Database.readGroceries(),
+                    Database.readGroceries() :  Database.readGroceriesByDay(),
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
                         print(snapshot.error);
@@ -128,16 +130,8 @@ class _GroceryListViewState extends State<GroceryListView>
                       );
                     },
                   ),
-
-
-
-
-
                 );
-
-
               },
-
             ),
           ),
         );
@@ -147,15 +141,11 @@ class _GroceryListViewState extends State<GroceryListView>
 }
 
 
-
-
-
 class ItemsView extends StatelessWidget {
   const ItemsView(
       {Key? key,required this.productName,required this.docID, this.animationController, this.animation, required this.currentCategory, required this.currentItemMfg, required this.currentItemExp, required this.currentQuantity, required this.daysLeft})
       : super(key: key);
 
-  // final MealsListData? mealsListData;
   final String productName;
   final String currentCategory;
   final String currentItemMfg;
@@ -192,7 +182,7 @@ class ItemsView extends StatelessWidget {
                       ),
                       onTap: () {
 
-                        kIsWeb ?
+                        kIsWeb && Responsive.isDesktop(context) ?
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -203,7 +193,6 @@ class ItemsView extends StatelessWidget {
                                 currentItemExp: currentItemExp,
                                 currentQuantity: currentQuantity,
                                 documentId: docID,
-
                               );
                             }) :
                         Navigator.push(
@@ -288,11 +277,11 @@ class ItemsView extends StatelessWidget {
                                 child: Padding(
                                   padding: const EdgeInsets.all(5.0),
                                   child: Text(
-                                      daysLeft <= 7  && daysLeft >= 2 ? "Expires Soon !!" :  daysLeft <= 1  && daysLeft >= 0 ? "Expires Today !!" :  daysLeft < 0 ? "Expired !! " : "Days Left : "+daysLeft.toString(),
+                                      daysLeft <= 7  && daysLeft >= 2 ? "Expires Soon!" :  daysLeft <= 1  && daysLeft >= 0 ? "Expires Today!" :  daysLeft < 0 ? "Expired! " : "Days Left : "+daysLeft.toString(),
                                       style: TextStyle(
                                         fontFamily: AppTheme.fontName,
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 11,
+                                        fontSize: 10,
                                         letterSpacing: 0.2,
                                         color: daysLeft < 0 ? Colors.red : Colors.blueAccent,
                                       )

@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:rt_gem/utils/receipt_models/global_data.dart';
-import 'package:rt_gem/widgets/screen_views/recipe_tile.dart';
 import 'package:rt_gem/widgets/screen_views/recipe_view.dart';
 
 import 'package:rt_gem/widgets/screen_views/summary_view.dart';
@@ -95,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen>
         isButtonEnabled: true,
         onClick:  () {
           setState(() {
-            Globaldata.filter.value = 0;
+            Globaldata.filter.value = 4;
           });
         },
       ),

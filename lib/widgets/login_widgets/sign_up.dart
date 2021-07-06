@@ -4,7 +4,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:rt_gem/provider/email_sign_in.dart';
 import 'package:rt_gem/theme.dart';
-import 'package:rt_gem/utils/responsive.dart';
 import 'package:rt_gem/widgets/snackbar.dart';
 
 class SignUp extends StatefulWidget {
@@ -41,7 +40,6 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<EmailSignInProvider>(context);
 
     return Container(
       padding: const EdgeInsets.only(top: 23.0),
@@ -162,8 +160,8 @@ class _SignUpState extends State<SignUp> {
             fontSize: 16.0,
             color: Colors.black),
         validator: (value) {
-          if (value!.isEmpty || value.length < 4 || value.contains(' ')) {
-            return 'Please enter at least 4 characters without space';
+          if (value!.isEmpty || value.length < 3 || value.contains(' ')) {
+            return 'Please enter at least 3 characters without space';
           } else {
             return null;
           }

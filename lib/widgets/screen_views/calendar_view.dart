@@ -13,7 +13,6 @@ import 'package:table_calendar/table_calendar.dart';
 import 'dart:math' as math;
 
 import '../../utils/app_theme.dart';
-import 'grocery_list_view.dart';
 
 class CalendarView extends StatefulWidget {
   final AnimationController? animationController;
@@ -34,23 +33,11 @@ class _CalendarViewState extends State<CalendarView> {
   late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
-      .toggledOff; // Can be toggled on/off by longpressing a date
+      .toggledOff;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
-
-  // var _kEventSource = {
-  //   DateTime.now(): [Event("1","Others",false,"1")],
-  //   DateTime.now(): [Event("2","Others",true,"1")],
-  // };
-
-  // final kEvents = LinkedHashMap<DateTime, List<Event>>(
-  //   equals: isSameDay,
-  //   hashCode: getHashCode,
-  // )..addAll(_kEventSource);
-
-
 
 
   @override
@@ -255,9 +242,14 @@ class _CalendarViewState extends State<CalendarView> {
                                   child: ValueListenableBuilder<List<Event>>(
                                     valueListenable: _selectedEvents,
                                     builder: (context, value, _) {
+
+
                                       return ListView.builder(
                                         itemCount: value.length,
                                         itemBuilder: (context, index) {
+
+                                          int daysLeft = daysBetween(DateTime.now(), convertToDate(value[index].expriationDate)! );
+
                                           return Container(
                                             child:  Stack(
                                               children: <Widget>[
@@ -331,6 +323,29 @@ class _CalendarViewState extends State<CalendarView> {
                                                                     color: AppTheme.white,
                                                                   ),
                                                                 ),
+
+                                                                Padding(
+                                                                  padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
+                                                                  child: Container(
+                                                                    decoration: BoxDecoration(
+                                                                        color: Colors.white.withOpacity(0.6),
+                                                                        borderRadius: BorderRadius.all(Radius.circular(8))
+                                                                    ),
+                                                                    child: Padding(
+                                                                      padding: const EdgeInsets.all(5.0),
+                                                                      child: Text(
+                                                                          daysLeft <= 7  && daysLeft >= 2 ? "Expires Soon !!" :  daysLeft <= 1  && daysLeft >= 0 ? "Expires Today !!" :  daysLeft < 0 ? "Expired !! " : "Days Left : "+daysLeft.toString(),
+                                                                          style: TextStyle(
+                                                                            fontFamily: AppTheme.fontName,
+                                                                            fontWeight: FontWeight.w500,
+                                                                            fontSize: 18,
+                                                                            letterSpacing: 0.2,
+                                                                            color: daysLeft < 0 ? Colors.red : Colors.blueAccent,
+                                                                          )
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                )
                                                               ],
                                                             ),
                                                           ],
@@ -469,7 +484,7 @@ class CurvePainter extends CustomPainter {
     );
     final paint = new Paint()
       ..shader = gradient.createShader(rect)
-      ..strokeCap = StrokeCap.round // StrokeCap.round is not recommended.
+      ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke
       ..strokeWidth = 14;
     final center = new Offset(size.width / 2, size.height / 2);

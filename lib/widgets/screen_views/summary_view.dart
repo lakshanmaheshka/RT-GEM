@@ -1,5 +1,4 @@
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rt_gem/utils/commons.dart';
@@ -77,170 +76,8 @@ class _SummaryViewState extends State<SummaryView> {
         .toList();
 
     switch (Globaldata.filter.value) {
+
       case 0:
-
-        if (this.mounted) {
-          setState(() {
-            expires = "All";
-          });
-        }
-
-        List<Grocery> _filteredGroceries = [];
-
-        _groceries.forEach((element) {
-            _filteredGroceries.add(element);
-        });
-
-        if (this.mounted) {
-          setState(() {
-            itemsAdded = _filteredGroceries.length;
-          });
-        }
-
-        _filteredGroceries = [];
-
-        _groceries.forEach((element) {
-          if(element.isConsumed != null && element.isConsumed == true ){
-            _filteredGroceries.add(element);
-          }
-        });
-
-        if (this.mounted) {
-        setState(() {
-          itemsUsed = _filteredGroceries.length;
-        });
-        }
-
-        _filteredGroceries = [];
-
-        _groceries.forEach((element) {
-          if(element.isConsumed != null && element.isConsumed == true ){
-            _filteredGroceries.add(element);
-          }
-        });
-        if (this.mounted) {
-        setState(() {
-          itemsUsed = _filteredGroceries.length;
-        });
-        }
-
-        _filteredGroceries = [];
-
-
-        _groceries.forEach((element) {
-            switch (element.category) {
-              case "Beverages":
-                _filteredBeverages.add(element);
-              break;
-              case "Bread/Bakery":
-                _filteredBread.add(element);
-                break;
-              case "Dairy Products":
-                _filteredDairy.add(element);
-                break;
-              case "Cereals":
-                _filteredCereals.add(element);
-                break;
-              case "Canned Foods":
-                _filteredCanned.add(element);
-                break;
-              case "Frozen Foods":
-                _filteredFrozen.add(element);
-                break;
-              case "Snack Foods":
-                _filteredSnack.add(element);
-                break;
-              case "Others":
-                _filteredOthers.add(element);
-                break;
-
-              default :
-                _filteredOthers.add(element);
-            }
-        });
-        if (this.mounted) {
-        setState(() {
-          itemsTotalBeverages = _filteredBeverages.length.toDouble() == 0.0 ? 0.1 : _filteredBeverages.length.toDouble();
-          itemsTotalBread = _filteredBread.length.toDouble() == 0.0 ? 0.1 : _filteredBread.length.toDouble();
-          itemsTotalDairy = _filteredDairy.length.toDouble() == 0.0 ? 0.1 : _filteredDairy.length.toDouble();
-          itemsTotalCereals = _filteredCereals.length.toDouble() == 0.0 ? 0.1 : _filteredCereals.length.toDouble();
-          itemsTotalCanned = _filteredCanned.length.toDouble() == 0.0 ? 0.1 : _filteredCanned.length.toDouble();
-          itemsTotalFrozen = _filteredFrozen.length.toDouble() == 0.0 ? 0.1 : _filteredFrozen.length.toDouble();
-          itemsTotalSnack = _filteredSnack.length.toDouble() == 0.0 ? 0.1 : _filteredSnack.length.toDouble();
-          itemsTotalOthers = _filteredOthers.length.toDouble() == 0.0 ? 0.1 : _filteredOthers.length.toDouble();
-        });
-        }
-
-        _filteredBeverages = [];
-        _filteredBread = [];
-        _filteredDairy = [];
-        _filteredCereals = [];
-        _filteredCanned = [];
-        _filteredFrozen = [];
-        _filteredSnack = [];
-        _filteredOthers = [];
-
-
-        _groceries.forEach((element) {
-
-          if(element.isConsumed != null && element.isConsumed == false){
-
-            switch (element.category) {
-              case "Beverages":
-                _filteredBeverages.add(element);
-                break;
-              case "Bread/Bakery":
-                _filteredBread.add(element);
-                break;
-              case "Dairy Products":
-                _filteredDairy.add(element);
-                break;
-              case "Cereals":
-                _filteredCereals.add(element);
-                break;
-              case "Canned Foods":
-                _filteredCanned.add(element);
-                break;
-              case "Frozen Foods":
-                _filteredFrozen.add(element);
-                break;
-              case "Snack Foods":
-                _filteredSnack.add(element);
-                break;
-              case "Others":
-                _filteredOthers.add(element);
-                break;
-              default :
-                _filteredOthers.add(element);
-
-            }
-
-          }
-        });
-        if (this.mounted) {
-          setState(() {
-            itemsLeftBeverages = _filteredBeverages.length.toDouble();
-            itemsLeftBread = _filteredBread.length.toDouble();
-            itemsLeftDairy = _filteredDairy.length.toDouble();
-            itemsLeftCereals = _filteredCereals.length.toDouble();
-            itemsLeftCanned = _filteredCanned.length.toDouble();
-            itemsLeftFrozen = _filteredFrozen.length.toDouble();
-            itemsLeftSnack = _filteredSnack.length.toDouble();
-            itemsLeftOthers = _filteredOthers.length.toDouble();
-          });
-        }
-
-        _filteredBeverages = [];
-        _filteredBread = [];
-        _filteredDairy = [];
-        _filteredCereals = [];
-        _filteredCanned = [];
-        _filteredFrozen = [];
-        _filteredSnack = [];
-        _filteredOthers = [];
-
-        break;
-      case 1:
         if (this.mounted) {
         setState(() {
           expires = "This Day";
@@ -384,7 +221,7 @@ class _SummaryViewState extends State<SummaryView> {
 
 
         break;
-      case 2:
+      case 1:
         if (this.mounted) {
         setState(() {
           expires = "Tomorrow";
@@ -537,7 +374,7 @@ class _SummaryViewState extends State<SummaryView> {
 
         break;
 
-      case 3:
+      case 2:
         if (this.mounted) {
         setState(() {
           expires = "This Week";
@@ -695,7 +532,7 @@ class _SummaryViewState extends State<SummaryView> {
 
 
         break;
-      case 4:
+      case 3:
         if (this.mounted) {
         setState(() {
           expires = "This Month";
@@ -854,8 +691,173 @@ class _SummaryViewState extends State<SummaryView> {
 
 
         break;
+
+      case 4:
+
+        if (this.mounted) {
+          setState(() {
+            expires = "All";
+          });
+        }
+
+        List<Grocery> _filteredGroceries = [];
+
+        _groceries.forEach((element) {
+          _filteredGroceries.add(element);
+        });
+
+        if (this.mounted) {
+          setState(() {
+            itemsAdded = _filteredGroceries.length;
+          });
+        }
+
+        _filteredGroceries = [];
+
+        _groceries.forEach((element) {
+          if(element.isConsumed != null && element.isConsumed == true ){
+            _filteredGroceries.add(element);
+          }
+        });
+
+        if (this.mounted) {
+          setState(() {
+            itemsUsed = _filteredGroceries.length;
+          });
+        }
+
+        _filteredGroceries = [];
+
+        _groceries.forEach((element) {
+          if(element.isConsumed != null && element.isConsumed == true ){
+            _filteredGroceries.add(element);
+          }
+        });
+        if (this.mounted) {
+          setState(() {
+            itemsUsed = _filteredGroceries.length;
+          });
+        }
+
+        _filteredGroceries = [];
+
+
+        _groceries.forEach((element) {
+          switch (element.category) {
+            case "Beverages":
+              _filteredBeverages.add(element);
+              break;
+            case "Bread/Bakery":
+              _filteredBread.add(element);
+              break;
+            case "Dairy Products":
+              _filteredDairy.add(element);
+              break;
+            case "Cereals":
+              _filteredCereals.add(element);
+              break;
+            case "Canned Foods":
+              _filteredCanned.add(element);
+              break;
+            case "Frozen Foods":
+              _filteredFrozen.add(element);
+              break;
+            case "Snack Foods":
+              _filteredSnack.add(element);
+              break;
+            case "Others":
+              _filteredOthers.add(element);
+              break;
+
+            default :
+              _filteredOthers.add(element);
+          }
+        });
+        if (this.mounted) {
+          setState(() {
+            itemsTotalBeverages = _filteredBeverages.length.toDouble() == 0.0 ? 0.1 : _filteredBeverages.length.toDouble();
+            itemsTotalBread = _filteredBread.length.toDouble() == 0.0 ? 0.1 : _filteredBread.length.toDouble();
+            itemsTotalDairy = _filteredDairy.length.toDouble() == 0.0 ? 0.1 : _filteredDairy.length.toDouble();
+            itemsTotalCereals = _filteredCereals.length.toDouble() == 0.0 ? 0.1 : _filteredCereals.length.toDouble();
+            itemsTotalCanned = _filteredCanned.length.toDouble() == 0.0 ? 0.1 : _filteredCanned.length.toDouble();
+            itemsTotalFrozen = _filteredFrozen.length.toDouble() == 0.0 ? 0.1 : _filteredFrozen.length.toDouble();
+            itemsTotalSnack = _filteredSnack.length.toDouble() == 0.0 ? 0.1 : _filteredSnack.length.toDouble();
+            itemsTotalOthers = _filteredOthers.length.toDouble() == 0.0 ? 0.1 : _filteredOthers.length.toDouble();
+          });
+        }
+
+        _filteredBeverages = [];
+        _filteredBread = [];
+        _filteredDairy = [];
+        _filteredCereals = [];
+        _filteredCanned = [];
+        _filteredFrozen = [];
+        _filteredSnack = [];
+        _filteredOthers = [];
+
+
+        _groceries.forEach((element) {
+
+          if(element.isConsumed != null && element.isConsumed == false){
+
+            switch (element.category) {
+              case "Beverages":
+                _filteredBeverages.add(element);
+                break;
+              case "Bread/Bakery":
+                _filteredBread.add(element);
+                break;
+              case "Dairy Products":
+                _filteredDairy.add(element);
+                break;
+              case "Cereals":
+                _filteredCereals.add(element);
+                break;
+              case "Canned Foods":
+                _filteredCanned.add(element);
+                break;
+              case "Frozen Foods":
+                _filteredFrozen.add(element);
+                break;
+              case "Snack Foods":
+                _filteredSnack.add(element);
+                break;
+              case "Others":
+                _filteredOthers.add(element);
+                break;
+              default :
+                _filteredOthers.add(element);
+
+            }
+
+          }
+        });
+        if (this.mounted) {
+          setState(() {
+            itemsLeftBeverages = _filteredBeverages.length.toDouble();
+            itemsLeftBread = _filteredBread.length.toDouble();
+            itemsLeftDairy = _filteredDairy.length.toDouble();
+            itemsLeftCereals = _filteredCereals.length.toDouble();
+            itemsLeftCanned = _filteredCanned.length.toDouble();
+            itemsLeftFrozen = _filteredFrozen.length.toDouble();
+            itemsLeftSnack = _filteredSnack.length.toDouble();
+            itemsLeftOthers = _filteredOthers.length.toDouble();
+          });
+        }
+
+        _filteredBeverages = [];
+        _filteredBread = [];
+        _filteredDairy = [];
+        _filteredCereals = [];
+        _filteredCanned = [];
+        _filteredFrozen = [];
+        _filteredSnack = [];
+        _filteredOthers = [];
+
+        break;
+
       default:
-        expires = "All";
+        expires = "This day";
     }
   }
 

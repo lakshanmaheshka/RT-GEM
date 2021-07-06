@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rt_gem/widgets/screen_views/form_views/add_grocery_formb.dart';
+import 'package:rt_gem/widgets/screen_views/form_views/add_grocery_form.dart';
 import 'package:rt_gem/utils/responsive.dart';
 
 class CustomDialog extends StatefulWidget {
@@ -13,11 +13,9 @@ class CustomDialog extends StatefulWidget {
 }
 
 class _CustomDialogState extends State<CustomDialog> with SingleTickerProviderStateMixin {
-  TabController? _tabController;
 
   @override
   void initState() {
-    _tabController = new TabController(length: 2, vsync: this);
     super.initState();
   }
 
@@ -25,7 +23,6 @@ class _CustomDialogState extends State<CustomDialog> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     return Dialog(
-
       shape: RoundedRectangleBorder(
           borderRadius:
           BorderRadius.circular(10.0)), //this right here

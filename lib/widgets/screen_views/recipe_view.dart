@@ -3,13 +3,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rt_gem/utils/receipe_models/recipe_model.dart';
+import 'package:rt_gem/utils/responsive.dart';
 import 'package:rt_gem/widgets/screen_views/recipe_tile.dart';
 import 'package:rt_gem/utils/custom_colors.dart';
-import 'package:rt_gem/utils/database.dart';
 import 'dart:math' as math;
 
 import '../../utils/app_theme.dart';
@@ -205,7 +204,7 @@ class _RecipeViewState extends State<RecipeView> {
                                       ),
                                     ),
                                   ) : Container(
-                                    child: kIsWeb ? GridView(
+                                    child: kIsWeb && Responsive.isDesktop(context) ? GridView(
                                         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                                             mainAxisSpacing: 10.0, maxCrossAxisExtent: 200.0),
                                         shrinkWrap: true,

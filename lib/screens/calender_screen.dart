@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:rt_gem/widgets/screen_views/calendar_view.dart';
 import 'package:rt_gem/widgets/screen_views/title_view.dart';
 import '../utils/app_theme.dart';
-import '../widgets/screen_views/grocery_list_view.dart';
 
 class CalenderScreen extends StatefulWidget {
   const CalenderScreen({Key? key, this.animationController}) : super(key: key);

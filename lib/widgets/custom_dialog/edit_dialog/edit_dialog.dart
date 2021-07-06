@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:rt_gem/widgets/screen_views/form_views/add_grocery_formb.dart';
 import 'package:rt_gem/utils/responsive.dart';
 
-import '../../screen_views/form_views/update_grocery_tab.dart';
+import '../../screen_views/form_views/update_grocery_form.dart';
 
 class EditDialog extends StatefulWidget {
   final String currentProductName;
@@ -29,11 +28,9 @@ class EditDialog extends StatefulWidget {
 }
 
 class _EditDialogState extends State<EditDialog> with SingleTickerProviderStateMixin {
-  TabController? _tabController;
 
   @override
   void initState() {
-    _tabController = new TabController(length: 2, vsync: this);
     super.initState();
   }
 

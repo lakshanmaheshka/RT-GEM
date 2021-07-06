@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 class ScanProvider extends ChangeNotifier {
 
-  //define your private data field(s). I'm using int here.
   String? _mydata;
 
   ScanProvider(){

@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:rt_gem/widgets/widgets.dart';
 
 class UserCard extends StatelessWidget {
-  //final User user;
 
   const UserCard({
     Key? key,
-   // @required this.user,
   }) : super(key: key);
 
   @override

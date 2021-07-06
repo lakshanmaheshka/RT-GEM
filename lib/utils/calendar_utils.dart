@@ -1,9 +1,3 @@
-// Copyright 2019 Aleksander Woźniak
-// SPDX-License-Identifier: Apache-2.0
-
-import 'dart:collection';
-
-import 'package:table_calendar/table_calendar.dart';
 
 /// Event class.
 class Event {
@@ -17,7 +11,7 @@ class Event {
 
   final String expriationDate;
 
-  const Event(this.itemName, this.category, this.isUsed, this.expriationDate, this.manufactureDate);
+  const Event(this.itemName, this.category, this.isUsed,  this.manufactureDate, this.expriationDate,);
 
 }
 

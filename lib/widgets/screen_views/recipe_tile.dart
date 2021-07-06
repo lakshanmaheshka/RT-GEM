@@ -1,9 +1,5 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:rt_gem/utils/receipe_models/recipe_model.dart';
 import 'package:rt_gem/screens/recipe_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 

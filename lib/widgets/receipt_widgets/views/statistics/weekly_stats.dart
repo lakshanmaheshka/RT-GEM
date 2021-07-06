@@ -19,7 +19,6 @@ class WeaklyStats extends StatefulWidget {
 }
 
 class _WeaklyStatsState extends State<WeaklyStats> {
-  // final List<double> weeklyData = [5.0, 6.5, 5.0, 7.5, 9.0, 11.5, 6.5];
 
   int? touchedIndex;
 
@@ -37,8 +36,6 @@ class _WeaklyStatsState extends State<WeaklyStats> {
         }
       }
 
-      /*print(DateFormat.E().format(weekDay));
-      print(totalSum);*/
 
       return {
         'date': DateFormat.d().format(weekDay), //.substring(0, 1),

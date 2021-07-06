@@ -51,7 +51,7 @@ class _LoginPageState extends State<LoginPage>
             },
             child: Container(
               width: kIsWeb ? 1600 : MediaQuery.of(context).size.width,
-              height: kIsWeb ? 752 : MediaQuery.of(context).size.height,
+              height: kIsWeb &&  Responsive.isDesktop(context) ? 752 : kIsWeb &&  Responsive.isTabletH(context) ? 2200  : kIsWeb &&  Responsive.isMobileH(context) ? 750  : MediaQuery.of(context).size.height,
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                     colors: <Color>[
@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage>
                         height:
                             MediaQuery.of(context).size.height > 800 ? 191.0 : 150,
                         fit: BoxFit.fill,
-                        image: const AssetImage('assets/images/staticlogo.png')),
+                        image: const AssetImage('assets/images/transparent7.7s.gif')),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 20.0),

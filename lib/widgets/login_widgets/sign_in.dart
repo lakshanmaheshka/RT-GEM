@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:rt_gem/provider/email_sign_in.dart';
 import 'package:rt_gem/provider/google_sign_in.dart';
 import 'package:rt_gem/theme.dart';
-import 'package:rt_gem/utils/responsive.dart';
 import 'package:rt_gem/widgets/snackbar.dart';
 
 

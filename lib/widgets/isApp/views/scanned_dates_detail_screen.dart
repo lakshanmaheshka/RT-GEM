@@ -21,14 +21,8 @@ class _ScannedDateDetailsScreenState extends State<ScannedDateDetailsScreen> {
   Size? _imageSize;
   List<TextElement> _elements = [];
 
-  //List<String>? listEmailStrings;
 
   String recognizedText = "Loading ...";
-
-  //static String expString = "Loading ...";
-
- // static String mfdString = "Loading ...";
-
 
   // Fetching the image size from the image file
   Future<void> _getImageSize(File imageFile) async {
@@ -50,8 +44,8 @@ class _ScannedDateDetailsScreenState extends State<ScannedDateDetailsScreen> {
     });
   }
 
-  // To detect the email addresses present in an image
-  void _recognizeEmails() async {
+  // To detect dates present in an image
+  void _recognizeDates() async {
     _getImageSize(File(_imagePath));
 
     // Creating an InputImage object using the image path
@@ -59,36 +53,19 @@ class _ScannedDateDetailsScreenState extends State<ScannedDateDetailsScreen> {
     // Retrieving the RecognisedText from the InputImage
     final text = await _textDetector.processImage(inputImage);
 
-    // Pattern of RegExp for matching a general email address
-   /* String pattern =
-        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$";
-*/
+    // Pattern of RegExp for matching a general date formats
+
     String pattern =
         r"^[\d]{2}([\W])[\d]{2}([\W])[\d]{4}|^[\d]{4}([\W])[\d]{2}([\W])[\d]{2}";
 
     RegExp regEx = RegExp(pattern);
 
-    List<String> emailStrings = [];
 
-    // String mailAddress = "";
-    // // Finding and storing the text String(s) and the TextElement(s)
-    // for (TextBlock block in text.textBlocks) {
-    //   for (TextLine line in block.textLines) {
-    //     print('text: ${line.lineText}');
-    //     if (regEx.hasMatch(line.lineText)) {
-    //       emailStrings.add(line.lineText);
-    //       for (TextElement element in line.textElements) {
-    //         _elements.add(element);
-    //       }
-    //     }
-    //   }
-    // }
-
-    String mailAddress = "";
+    String dates = "";
     for (TextBlock block in text.textBlocks) {
       for (TextLine line in block.textLines) {
         if (regEx.hasMatch(line.lineText)) {
-          mailAddress += line.lineText + '\n';
+          dates += line.lineText + '\n';
           for (TextElement element in line.textElements) {
             _elements.add(element);
           }
@@ -98,15 +75,15 @@ class _ScannedDateDetailsScreenState extends State<ScannedDateDetailsScreen> {
 
     if (this.mounted) {
       setState(() {
-        recognizedText = mailAddress;
+        recognizedText = dates;
       });
     }
 
 
     //split string
 
-    String newrecognizedText = recognizedText.replaceAll(RegExp(r'\n$'), '');
-    var arr = newrecognizedText.split('\n');
+    String newRecognizedText = recognizedText.replaceAll(RegExp(r'\n$'), '');
+    var arr = newRecognizedText.split('\n');
 
    // print(arr);
     List formatdate = [];
@@ -127,7 +104,6 @@ class _ScannedDateDetailsScreenState extends State<ScannedDateDetailsScreen> {
         yyyyformatdate.add(newdate);
       }
       formatdate.add(newdate);
-      //print(formatdate);
     }
 
     final  DateFormat format = new DateFormat("dd-MM-yyyy");
@@ -136,7 +112,6 @@ class _ScannedDateDetailsScreenState extends State<ScannedDateDetailsScreen> {
       var dateString = date;
       DateFormat format = new DateFormat("dd-MM-yyyy");
       var foDate = format.parse(dateString);
-      //print(foDate);
       dateformat.add(foDate);
     }
 
@@ -180,7 +155,7 @@ class _ScannedDateDetailsScreenState extends State<ScannedDateDetailsScreen> {
     _imagePath = widget.imagePath;
     // Initializing the text detector
     _textDetector = GoogleMlKit.vision.textDetector();
-    _recognizeEmails();
+    _recognizeDates();
     super.initState();
   }
 
@@ -289,7 +264,7 @@ class _ScannedDateDetailsScreenState extends State<ScannedDateDetailsScreen> {
 }
 
 // Helps in painting the bounding boxes around the recognized
-// email addresses in the picture
+// dates in the picture
 class TextDetectorPainter extends CustomPainter {
   TextDetectorPainter(this.absoluteImageSize, this.elements);
 

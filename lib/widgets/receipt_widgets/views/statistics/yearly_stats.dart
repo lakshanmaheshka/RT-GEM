@@ -17,7 +17,6 @@ class YearlyStats extends StatefulWidget {
 }
 
 class _YearlyStatsState extends State<YearlyStats> {
-  // final List<double> weeklyData = [5.0, 6.5, 5.0, 7.5, 9.0, 11.5, 6.5];
 
   int? touchedIndex;
 

@@ -24,7 +24,6 @@ class _MyPieChartState extends State<MyPieChart> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidht = MediaQuery.of(context).size.width;
     return kIsWeb ? Responsive.isDesktop(context) ? Row(
       children: <Widget>[
         Expanded(

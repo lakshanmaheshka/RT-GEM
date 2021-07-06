@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:rt_gem/widgets/widgets.dart';
 
 class CustomAppBar extends StatelessWidget {
-  // final User currentUser;
   final List<IconData> icons;
   final int selectedIndex;
   final Function(int) onTap;
 
   const CustomAppBar({
     Key? key,
-    // required this.currentUser,
     required this.icons,
     required this.selectedIndex,
     required this.onTap,
@@ -34,14 +32,25 @@ class CustomAppBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
-            child: Text(
-              'RT GEM',
-              style: const TextStyle(
-                //color: Palette.facebookBlue,
-                fontSize: 32.0,
-                fontWeight: FontWeight.bold,
-                letterSpacing: -1.2,
-              ),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Image(
+
+                      fit: BoxFit.fill,
+                      image: const AssetImage('assets/images/transparent7.7s.gif')),
+                ),
+                Text(
+                  'RT GEM',
+                  style: const TextStyle(
+                    //color: Palette.facebookBlue,
+                    fontSize: 32.0,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: -1.2,
+                  ),
+                ),
+              ],
             ),
           ),
           Container(
@@ -58,18 +67,7 @@ class CustomAppBar extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                //UserCard(user: currentUser),
                 const SizedBox(width: 12.0),
-                // CircleButton(
-                //   icon: Icons.search,
-                //   iconSize: 30.0,
-                //   onPressed: () => print('Search'),
-                // ),
-                // CircleButton(
-                //   icon: MdiIcons.facebookMessenger,
-                //   iconSize: 30.0,
-                //   onPressed: () => print('Messenger'),
-                // ),
               ],
             ),
           ),

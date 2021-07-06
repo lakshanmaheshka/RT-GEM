@@ -9,7 +9,6 @@ import 'package:rt_gem/utils/receipt_models/global_data.dart';
 import 'package:rt_gem/widgets/number_input.dart';
 import 'package:rt_gem/utils/responsive.dart';
 import 'dart:async';
-import 'package:intl/intl.dart';
 import 'package:rt_gem/widgets/snackbar.dart';
 
 class UpdateGroceryForm extends StatefulWidget {
@@ -36,7 +35,6 @@ class UpdateGroceryForm extends StatefulWidget {
 
 class _UpdateGroceryFormState extends State<UpdateGroceryForm>
     with TickerProviderStateMixin {
-  //final _formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   var dropdownValue;
   var newContact;
@@ -50,7 +48,6 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm>
   late AnimationController _arrowAnimationController;
   late AnimationController _animationController;
   late Animation _animation;
-  final TextEditingController _controller = new TextEditingController();
   bool isExpirationTypeBestBefore = false;
   TextEditingController _controllerone = TextEditingController();
   late TextEditingController _titleController = TextEditingController();
@@ -108,39 +105,10 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm>
     return d != null && d.isBefore(new DateTime.now());
   }
 
-  DateTime? convertToDate(String input) {
-    try {
-      var d = dateFormatS.parseStrict(input);
-      return d;
-    } catch (e) {
-      return null;
-    }
-  }
+
 
   void showMessage(String message, [MaterialColor color = Colors.red]) {
     CustomSnackBar(context, Text(message),Colors.green);
-  }
-
-  void _submitForm() {
-    final FormState? form = _formKey.currentState;
-
-    if (form!.validate()) {
-      showMessage('Form is not valid!  Please review and correct.');
-    } else {
-      form.save(); //This invokes each onSaved event
-
-      // print('Form save called, newContact is now up to date...');
-      // print('Name: ${newContact.name}');
-      // print('Dob: ${newContact.dob}');
-      // print('Phone: ${newContact.phone}');
-      // print('Email: ${newContact.email}');
-      // print('Favorite Color: ${newContact.favoriteColor}');
-      // print('========================================');
-      // print('Submitting to back end...');
-      // var contactService = new ContactService();
-      // contactService.createContact(newContact).then((value) =>
-      //     showMessage('New contact created for ${value.name}!', Colors.blue));
-    }
   }
 
   @override
@@ -164,12 +132,6 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm>
     _controllerExpiration = TextEditingController(
       text: widget.currentItemExp,
     );
-    // _controllerQuantity = TextEditingController(
-    //   text: widget.currentQuantity,
-    // );
-
-    //_controllerQuantity.text = "50";
-
     dropdownValue = widget.currentCategory;
   }
 
@@ -237,7 +199,7 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm>
                               enabledBorder: new OutlineInputBorder(
                                 //borderRadius: new BorderRadius.circular(25.0),
                                 borderSide:
-                                    BorderSide(color: Colors.pinkAccent),
+                                    BorderSide(color: Colors.grey),
                               ),
                               focusedBorder: new OutlineInputBorder(
                                 //borderRadius: new BorderRadius.circular(25.0),
@@ -394,43 +356,46 @@ class _UpdateGroceryFormState extends State<UpdateGroceryForm>
                         padding: const EdgeInsets.fromLTRB(15, 7.5, 2, 0),
                         child: InkWell(
                           onTap: () async {
-
-                            try {
-                              DateTime convertDate;
-                              if(isExpirationTypeBestBefore == true){
-                                convertDate = convertToDate(_controllerManufacture.text)!;
-                                int i = int.parse(_controllerBestBefore.text);
-                                DateTime d = Jiffy(convertDate).add(months: i).dateTime;
-                                String bestBeforeDate = dateFormatS.format(d);
-                                Database.updateGroceries(
-                                    docId: widget.documentId,
-                                    productName: _titleController.text,
-                                    quantity: int.parse(_controllerQuantity.text),
-                                    category: dropdownValue,
-                                    manufacturedDate: convertToDate(_controllerManufacture.text)!,
-                                    expiryDate: convertToDate(bestBeforeDate)!
-                                  //description: _descriptionController.text,
-                                );
-                              } else {
-                                Database.updateGroceries(
-                                    docId: widget.documentId,
-                                    productName: _titleController.text,
-                                    quantity: int.parse(_controllerQuantity.text),
-                                    category: dropdownValue,
-                                    manufacturedDate: convertToDate(_controllerManufacture.text)!,
-                                    expiryDate: convertToDate(_controllerExpiration.text)!
-                                  //description: _descriptionController.text,
-                                );
+                            if(_titleController.text.isNotEmpty){
+                              try {
+                                DateTime convertDate;
+                                if(isExpirationTypeBestBefore == true){
+                                  convertDate = convertToDate(_controllerManufacture.text)!;
+                                  int i = int.parse(_controllerBestBefore.text);
+                                  DateTime d = Jiffy(convertDate).add(months: i).dateTime;
+                                  String bestBeforeDate = dateFormatS.format(d);
+                                  Database.updateGroceries(
+                                      docId: widget.documentId,
+                                      productName: _titleController.text,
+                                      quantity: int.parse(_controllerQuantity.text),
+                                      category: dropdownValue,
+                                      manufacturedDate: convertToDate(_controllerManufacture.text)!,
+                                      expiryDate: convertToDate(bestBeforeDate)!
+                                  );
+                                } else {
+                                  Database.updateGroceries(
+                                      docId: widget.documentId,
+                                      productName: _titleController.text,
+                                      quantity: int.parse(_controllerQuantity.text),
+                                      category: dropdownValue,
+                                      manufacturedDate: convertToDate(_controllerManufacture.text)!,
+                                      expiryDate: convertToDate(_controllerExpiration.text)!
+                                  );
+                                }
+                                CustomSnackBar(
+                                    context, const Text('Item Updated Successfully!'),Colors.green);
+                              } on Exception catch (exception) {
+                                print("Exception while updating grocery : $exception");
+                                CustomSnackBar(
+                                    context, const Text('Exception!'),Colors.red);
+                              } catch (error) {
+                                CustomSnackBar(
+                                    context, const Text('Error!'),Colors.red);
                               }
-                              CustomSnackBar(
-                                  context, const Text('Item Updated Successfully!'),Colors.green);
-                            } on Exception catch (exception) {
-                              CustomSnackBar(
-                                  context, const Text('Exception!'),Colors.red);
-                            } catch (error) {
-                            CustomSnackBar(
-                            context, const Text('Error!'),Colors.red);
+                            }else{
+                              CustomSnackBar(context, const Text('Title is Empty !'),Colors.red);
                             }
+
 
 
 

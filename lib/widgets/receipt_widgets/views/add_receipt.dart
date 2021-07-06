@@ -1,7 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rt_gem/utils/commons.dart';
 import 'package:rt_gem/utils/receipt_models/transaction.dart';
@@ -16,29 +14,16 @@ class AddReceipt extends StatefulWidget {
 class _AddReceiptState extends State<AddReceipt> {
 
   final GlobalKey<FormState> _addReceiptFormKey = new GlobalKey<FormState>();
-  late final GlobalKey<FormFieldState> _key;
   var dropdownValue;
   var newContact;
   var month;
   final TextEditingController _controllerDate = new TextEditingController();
-  final TextEditingController _controllerExpiration  = new TextEditingController();
   final TextEditingController _amountController  = new TextEditingController();
-  final TextEditingController _controllerQuantity  = new TextEditingController();
   final TextEditingController _titleController = TextEditingController();
   late TransactionsProvider transactions;
 
-  DateTime _selectedDate = DateTime.now();
-
-
-  late Animation _arrowAnimation;
-  late AnimationController _arrowAnimationController;
-  late AnimationController _animationController;
-  late Animation _animation;
-  // final TextEditingController _controller = new TextEditingController();
   bool expirationType = false;
-  // TextEditingController _controllerone = TextEditingController();
   final FocusNode _titleFocusNode = FocusNode();
-  final FocusNode _descriptionFocusNode = FocusNode();
 
   Future<Null> _chooseDate(
       BuildContext context, String initialDateString) async {
@@ -52,7 +37,7 @@ class _AddReceiptState extends State<AddReceipt> {
         context: context,
         initialDate: initialDate,
         firstDate: new DateTime(1900),
-        lastDate: new DateTime.now());
+        lastDate: new DateTime(2100));
 
     if (result == null) return;
 
@@ -61,41 +46,6 @@ class _AddReceiptState extends State<AddReceipt> {
     });
   }
 
-  Future<Null> _chooseDateExpiration(
-      BuildContext context, String initialDateString) async {
-    var now = new DateTime.now();
-    var initialDate = convertToDate(initialDateString) ?? now;
-    initialDate = (initialDate.year >= 1900 && initialDate.isBefore(now)
-        ? initialDate
-        : now);
-
-    var result = await showDatePicker(
-        context: context,
-        initialDate: initialDate,
-        firstDate: new DateTime.now(),
-        lastDate: new DateTime(2100));
-
-    if (result == null) return;
-
-    setState(() {
-      _controllerExpiration.text = dateFormatS.format(result);
-    });
-  }
-
-  bool isValidDob(String dob) {
-    if (dob.isEmpty) return true;
-    var d = convertToDate(dob);
-    return d != null && d.isBefore(new DateTime.now());
-  }
-
-  DateTime? convertToDate(String input) {
-    try {
-      var d = dateFormatS.parseStrict(input);
-      return d;
-    } catch (e) {
-      return null;
-    }
-  }
 
   void showMessage(String message, [MaterialColor color = Colors.red]) {
     CustomSnackBar(context, Text(message),Colors.green);
@@ -116,24 +66,9 @@ class _AddReceiptState extends State<AddReceipt> {
     super.initState();
     transactions = Provider.of<TransactionsProvider>(context, listen: false);
     _controllerDate.text = dateFormatS.format(DateTime.now());
-    //_controllerone.text = "0";
   }
 
-  void chooseDate() {
-    showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
-    ).then((value) {
-      if (value == null) {
-        return;
-      }
-      setState(() {
-        _selectedDate = value;
-      });
-    });
-  }
+
 
 
   @override
@@ -159,7 +94,6 @@ class _AddReceiptState extends State<AddReceipt> {
                         border: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.blue),
                         ),
-                        //icon: const Icon(Icons.person),
                         hintText: 'Enter Receipt Name',
                         labelText: 'Receipt Name',
                       ),
@@ -177,7 +111,6 @@ class _AddReceiptState extends State<AddReceipt> {
                         border: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.blue),
                         ),
-                        //icon: const Icon(Icons.person),
                         hintText: 'Enter Amount',
                         labelText: 'Amount',
                       ),
@@ -186,24 +119,20 @@ class _AddReceiptState extends State<AddReceipt> {
                       val!.isEmpty ? 'Amount is required' : null,
                       controller: _amountController,
                       keyboardType: TextInputType.number,
-                      //focusNode: _titleFocusNode,
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(15, 7.5, 15, 7.5),
                     child: DropdownButtonFormField<String>(
-                      //key: _formKey,
                       value: dropdownValue,
                       decoration: InputDecoration(
                           filled: false,
                           labelText: 'Category',
                           labelStyle: new TextStyle(color: Colors.green),
                           enabledBorder: new OutlineInputBorder(
-                            //borderRadius: new BorderRadius.circular(25.0),
                             borderSide: BorderSide(color: Colors.grey),
                           ),
                           focusedBorder: new OutlineInputBorder(
-                            //borderRadius: new BorderRadius.circular(25.0),
                             borderSide: BorderSide(color: Colors.cyan),
                           ),
                           border: OutlineInputBorder(
@@ -215,7 +144,6 @@ class _AddReceiptState extends State<AddReceipt> {
                           child: Text(value),
                         );
                       }).toList(),
-                      // items: _countries.map((country) => DropdownMenuItem<String>(value: country.countryCode, child: Text(country.name))).toList(),
                       onChanged: (String? newValue) {
                         setState(() {
                           dropdownValue = newValue;
@@ -237,7 +165,6 @@ class _AddReceiptState extends State<AddReceipt> {
                           border: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.blue),
                           ),
-                          //icon: const Icon(Icons.calendar_today),
                           hintText: 'Select Date',
                           labelText: 'Date',
                           suffixIcon: Icon(Icons.calendar_today_outlined)),
@@ -245,26 +172,14 @@ class _AddReceiptState extends State<AddReceipt> {
                       keyboardType: TextInputType.datetime,
                       validator: (val) =>
                       val!.isEmpty ? 'Date is required' : null,
-                      //validator: (val) =>
-                      //isValidDob(val!) ? null : 'Not a valid date',
-                      //onSaved: (val) => newContact.dob = convertToDate(val!),
+
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(8.0,30,8,8),
                     child: InkWell(
                       onTap: () async {
-                        ///ToDo: add form validations
                         _submitForm();
-                        // Database.addReceipt(
-                        //   id: DateTime.now().toString(),
-                        //   receiptName: _titleController.text,
-                        //   amount: int.parse(_amountController.text),
-                        //   category: dropdownValue,
-                        //   addedDate: _controllerDate.text,
-                        // );
-
-                        DateFormat dateForm = DateFormat("dd/MM/yyyy");
                         convertToDate(_controllerDate.text);
 
                         try {
@@ -280,7 +195,7 @@ class _AddReceiptState extends State<AddReceipt> {
 
                           _addReceiptFormKey.currentState!.reset();
                           _titleController.clear();
-                          _controllerDate.clear();
+                          _amountController.clear();
 
                           setState(() {
                             dropdownValue = null;
@@ -288,14 +203,12 @@ class _AddReceiptState extends State<AddReceipt> {
 
                           CustomSnackBar(context, const Text('Receipt Added'),Colors.green);
                         } on Exception catch (exception) {
+                          print("Exception while adding receipt : $exception");
                           CustomSnackBar(context, const Text('Exception'),Colors.red);
                         } catch (error) {
                           CustomSnackBar(context, const Text('Error'),Colors.red);
-
                         }
 
-
-                        //
 
                       },
                       child: Container(
@@ -338,17 +251,6 @@ class _AddReceiptState extends State<AddReceipt> {
           ),
         ),
       ),
-
-
-
-      /*Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text('Go back!'),
-        ),
-      ),*/
     );
   }
 }

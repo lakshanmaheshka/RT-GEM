@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:math';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +13,6 @@ import 'package:rt_gem/widgets/isApp/views/scan_date_camera_screen.dart';
 import 'package:rt_gem/widgets/number_input.dart';
 import 'package:rt_gem/utils/responsive.dart';
 import 'dart:async';
-import 'package:intl/intl.dart';
 import 'package:rt_gem/widgets/snackbar.dart';
 
 class AddGroceryForm extends StatefulWidget {
@@ -29,7 +27,6 @@ class AddGroceryForm extends StatefulWidget {
 class _AddGroceryFormState extends State<AddGroceryForm>
     with TickerProviderStateMixin {
   final GlobalKey<FormState> _addGroceryFormKey = new GlobalKey<FormState>();
-  late final GlobalKey<FormFieldState> _key;
   var dropdownValue;
   var newContact;
   var month;
@@ -45,9 +42,7 @@ class _AddGroceryFormState extends State<AddGroceryForm>
   late AnimationController _arrowAnimationController;
   late AnimationController _animationController;
   late Animation _animation;
-  // final TextEditingController _controller = new TextEditingController();
   bool isExpirationTypeBestBefore = false;
-  // TextEditingController _controllerone = TextEditingController();
   final FocusNode _titleFocusNode = FocusNode();
   final FocusNode _descriptionFocusNode = FocusNode();
 
@@ -102,38 +97,14 @@ class _AddGroceryFormState extends State<AddGroceryForm>
     return d != null && d.isBefore(new DateTime.now());
   }
 
-  DateTime? convertToDate(String input) {
-    try {
-      var d = dateFormatS.parseStrict(input);
-      return d;
-    } catch (e) {
-      return null;
-    }
-  }
+
 
   void showMessage(String message, [MaterialColor color = Colors.red]) {
     CustomSnackBar(context, Text(message),Colors.green);
   }
 
-  void _submitForm() {
-    final FormState? form = _addGroceryFormKey.currentState;
-
-    if (form!.validate()) {
-      showMessage('Form is not valid!  Please review and correct.');
-    } else {
-      form.save(); //This invokes each onSaved event
-    }
-  }
-
   @override
   void initState() {
-
-    // if(Globaldata.expString != null && Globaldata.mfdString!= null){
-    //   _controllerExpiration.text = Globaldata.expString!;
-    //   _controllerManufacture.text = Globaldata.mfdString!;
-    // }
-
-
 
     super.initState();
     _animationController =
@@ -144,7 +115,6 @@ class _AddGroceryFormState extends State<AddGroceryForm>
         AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     _arrowAnimation =
         Tween(begin: 0.0, end: pi).animate(_arrowAnimationController);
-    //_controllerone.text = "0";
   }
 
   @override
@@ -175,7 +145,6 @@ class _AddGroceryFormState extends State<AddGroceryForm>
                       border: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue),
                       ),
-                      //icon: const Icon(Icons.person),
                       hintText: 'Enter Product Name',
                       labelText: 'Product Name',
                     ),
@@ -206,18 +175,15 @@ class _AddGroceryFormState extends State<AddGroceryForm>
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(0, 7.5, 15, 7.5),
                         child: DropdownButtonFormField<String>(
-                          //key: _formKey,
                           value: dropdownValue,
                           decoration: InputDecoration(
                               filled: false,
                               labelText: 'Category',
                               labelStyle: new TextStyle(color: Colors.green),
                               enabledBorder: new OutlineInputBorder(
-                                //borderRadius: new BorderRadius.circular(25.0),
-                                borderSide: BorderSide(color: Colors.pinkAccent),
+                                borderSide: BorderSide(color: Colors.grey),
                               ),
                               focusedBorder: new OutlineInputBorder(
-                                //borderRadius: new BorderRadius.circular(25.0),
                                 borderSide: BorderSide(color: Colors.cyan),
                               ),
                               border: OutlineInputBorder(
@@ -229,7 +195,6 @@ class _AddGroceryFormState extends State<AddGroceryForm>
                               child: Text(value),
                             );
                           }).toList(),
-                          // items: _countries.map((country) => DropdownMenuItem<String>(value: country.countryCode, child: Text(country.name))).toList(),
                           onChanged: (String? newValue) {
                             setState(() {
                               dropdownValue = newValue;
@@ -323,13 +288,11 @@ class _AddGroceryFormState extends State<AddGroceryForm>
                   FocusScope.of(context).requestFocus(new FocusNode());
                   _chooseDateManufacture(
                       context, _controllerManufacture.text);
-                  // Show Date Picker Here
                     },
                     decoration: new InputDecoration(
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.blue),
                     ),
-                    //icon: const Icon(Icons.calendar_today),
                     hintText: 'Select Manufactured Date',
                     labelText: 'Manufactured Date',
                     suffixIcon: Icon(Icons.calendar_today_outlined)),
@@ -337,9 +300,6 @@ class _AddGroceryFormState extends State<AddGroceryForm>
                     keyboardType: TextInputType.datetime,
                     validator: (val) =>
                     val!.isEmpty ? 'Manufactured Date is required' : null,
-                    //validator: (val) =>
-                    //isValidDob(val!) ? null : 'Not a valid date',
-                    //onSaved: (val) => newContact.dob = convertToDate(val!),
                   ),
                 ),
                 Row(
@@ -356,13 +316,11 @@ class _AddGroceryFormState extends State<AddGroceryForm>
                                   .requestFocus(new FocusNode());
                               _chooseDateExpiration(
                                   context, _controllerExpiration.text);
-                              // Show Date Picker Here
                             },
                             decoration: new InputDecoration(
                               border: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.blue),
                               ),
-                              //icon: const Icon(Icons.calendar_today),
                               hintText: 'Select Expiration Date',
                               labelText: 'Expiration Date',
                               suffixIcon: Icon(Icons.calendar_today),
@@ -372,9 +330,6 @@ class _AddGroceryFormState extends State<AddGroceryForm>
                             validator: (val) => val!.isEmpty
                                 ? 'Expiration Date is required'
                                 : null,
-                            //validator: (val) =>
-                            //isValidDob(val!) ? null : 'Not a valid date',
-                            //onSaved: (val) => newContact.dob = convertToDate(val!),
                           ),
                         )),
                     Container(
@@ -400,11 +355,9 @@ class _AddGroceryFormState extends State<AddGroceryForm>
                               },
                               icon: Icon(
                                 Icons.arrow_left_sharp,
-                                //size: 50.0,
                                 color: Colors.black,
                               )),
                         ),
-                        //  child:
                       ),
                     ),
                     Expanded(
@@ -426,47 +379,45 @@ class _AddGroceryFormState extends State<AddGroceryForm>
                   padding: const EdgeInsets.fromLTRB(15,45,15,8),
                   child: InkWell(
                     onTap: ()  {
-                      ///ToDo: add form validations
-                      //_submitForm();
-
                       setState(() {
                         Globaldata.stateChanged.value =  !Globaldata.stateChanged.value;
                       });
 
-                      try {
-                        DateTime convertDate;
-                        if(isExpirationTypeBestBefore == true){
-                          convertDate = convertToDate(_controllerManufacture.text)!;
-                          int i = int.parse(_controllerBestBefore.text);
-                          DateTime d = Jiffy(convertDate).add(months: i).dateTime;
-                          String bestBeforeDate = dateFormatS.format(d);
+                      if(_titleController.text.isNotEmpty){
+                        try {
+                          DateTime convertDate;
+                          if(isExpirationTypeBestBefore == true){
+                            convertDate = convertToDate(_controllerManufacture.text)!;
+                            int i = int.parse(_controllerBestBefore.text);
+                            DateTime d = Jiffy(convertDate).add(months: i).dateTime;
+                            String bestBeforeDate = dateFormatS.format(d);
 
-                          Database.addGrocery(
-                              productName: _titleController.text,
-                              quantity: int.parse(_controllerQuantity.text),
-                              category: dropdownValue,
-                              manufacturedDate: convertToDate(_controllerManufacture.text)!,
-                              expiryDate: convertToDate(bestBeforeDate)! );
+                            Database.addGrocery(
+                                productName: _titleController.text,
+                                quantity: int.parse(_controllerQuantity.text),
+                                category: dropdownValue,
+                                manufacturedDate: convertToDate(_controllerManufacture.text)!,
+                                expiryDate: convertToDate(bestBeforeDate)! );
 
-                        } else {
-                          Database.addGrocery(
-                              productName: _titleController.text,
-                              quantity: int.parse(_controllerQuantity.text),
-                              category: dropdownValue,
-                              manufacturedDate: convertToDate(_controllerManufacture.text)!,
-                              expiryDate: convertToDate(_controllerExpiration.text)! );
+                          } else {
+                            Database.addGrocery(
+                                productName: _titleController.text,
+                                quantity: int.parse(_controllerQuantity.text),
+                                category: dropdownValue,
+                                manufacturedDate: convertToDate(_controllerManufacture.text)!,
+                                expiryDate: convertToDate(_controllerExpiration.text)! );
+                          }
+                          CustomSnackBar(context, const Text('Grocery Added'),Colors.green);
+
+                        } on Exception catch (exception) {
+                          print("Exception while adding grocery : $exception");
+                          CustomSnackBar(context, const Text('There is an exception !'),Colors.red);
+                        } catch (error) {
+                          CustomSnackBar(context, const Text('Error !'),Colors.red);
                         }
-                        CustomSnackBar(context, const Text('Grocery Added'),Colors.green);
-
-                      } on Exception catch (exception) {
-                        CustomSnackBar(context, const Text('Theres an exception'),Colors.red);
-                      } catch (error) {
-                        CustomSnackBar(context, const Text('Error'),Colors.red);
+                      }else{
+                        CustomSnackBar(context, const Text('Title is Empty !'),Colors.red);
                       }
-
-
-
-
 
                       _addGroceryFormKey.currentState!.reset();
                       _titleController.clear();

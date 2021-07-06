@@ -1,17 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-import 'package:rt_gem/utils/commons.dart';
-import 'package:rt_gem/utils/receipt_models/transaction.dart';
-import 'package:rt_gem/widgets/screen_views/form_views/add_grocery_formb.dart';
-import 'package:rt_gem/widgets/screen_views/form_views/update_grocery_tab.dart';
-import 'package:rt_gem/utils/responsive.dart';
-import 'package:rt_gem/widgets/snackbar.dart';
-
+import 'package:rt_gem/widgets/screen_views/form_views/update_grocery_form.dart';
 
 class EditGrocery extends StatefulWidget {
-  @override
 
   final String currentProductName;
   final String currentCategory;

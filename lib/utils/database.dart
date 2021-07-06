@@ -58,18 +58,11 @@ class Database {
         .catchError((e) => print(e));
   }
 
-  // static Stream<QuerySnapshot> readGrocery() {
-  //   CollectionReference rtGemGroceriesCollection =
-  //       _mainCollection.doc(userUid).collection('groceries');
-  //
-  //   return rtGemGroceriesCollection.snapshots();
-  // }
-
   static Stream<QuerySnapshot> readGroceries() {
-    CollectionReference rtGemGroceriesCollection =
+    CollectionReference collectionReference =
     _mainCollection.doc(userUid).collection('groceries');
 
-    final Query readAll = rtGemGroceriesCollection
+    final Query readAll = collectionReference
         .where("isConsumed", isEqualTo: false)
         .orderBy("expiryDate");
 
@@ -80,10 +73,10 @@ class Database {
     DateTime date = DateTime.now();
 
 
-    CollectionReference rtGemGroceriesCollection =
+    CollectionReference collectionReference =
     _mainCollection.doc(userUid).collection('groceries');
 
-    final Query byWeek = rtGemGroceriesCollection
+    final Query byWeek = collectionReference
         .where("isConsumed", isEqualTo: false)
         .where("expiryDate", isLessThanOrEqualTo: DateTime(date.year, date.month, date.day))
         .where("expiryDate", isGreaterThanOrEqualTo: DateTime(date.year, date.month, date.day));
@@ -96,10 +89,10 @@ class Database {
     DateTime date = DateTime.now();
 
 
-    CollectionReference rtGemGroceriesCollection =
+    CollectionReference collectionReference =
     _mainCollection.doc(userUid).collection('groceries');
 
-    final Query byWeek = rtGemGroceriesCollection
+    final Query byWeek = collectionReference
         .where("isConsumed", isEqualTo: false)
         .where("expiryDate", isLessThanOrEqualTo: DateTime(date.year, date.month, date.day+1))
         .where("expiryDate", isGreaterThanOrEqualTo: DateTime(date.year, date.month, date.day+1));
@@ -112,10 +105,10 @@ class Database {
     DateTime date = DateTime.now();
 
 
-    CollectionReference rtGemGroceriesCollection =
+    CollectionReference collectionReference =
     _mainCollection.doc(userUid).collection('groceries');
 
-    final Query byWeek = rtGemGroceriesCollection
+    final Query byWeek = collectionReference
     .where("isConsumed", isEqualTo: false)
     .where("expiryDate", isLessThanOrEqualTo: findLastDateOfTheWeek(date))
     .where("expiryDate", isGreaterThanOrEqualTo: findFirstDateOfTheWeek(date));
@@ -128,10 +121,10 @@ class Database {
     DateTime date = DateTime.now();
 
 
-    CollectionReference rtGemGroceriesCollection =
+    CollectionReference collectionReference =
     _mainCollection.doc(userUid).collection('groceries');
 
-    final Query byWeek = rtGemGroceriesCollection
+    final Query byWeek = collectionReference
         .where("isConsumed", isEqualTo: false)
         .where("expiryDate", isLessThanOrEqualTo: findLastDateOfTheMonth(date))
         .where("expiryDate", isGreaterThanOrEqualTo: findFirstDateOfTheMonth(date));
@@ -142,35 +135,30 @@ class Database {
 
 
   static Stream<QuerySnapshot> readReceipts() {
-    CollectionReference rtGemGroceriesCollection =
+    CollectionReference collectionReference =
     _mainCollection.doc(userUid).collection('receipts');
 
-    return rtGemGroceriesCollection.snapshots();
+    return collectionReference.snapshots();
   }
 
-  //
-  // CollectionReference _collectionRef =
-  // FirebaseFirestore.instance.collection('collection');
 
   static Future<List> getReceiptData() async {
-    CollectionReference rtGemGroceriesCollection =
+    CollectionReference collectionReference =
     _mainCollection.doc(userUid).collection('receipts');
     // Get docs from collection reference
-    QuerySnapshot querySnapshot = await rtGemGroceriesCollection.get();
+    QuerySnapshot querySnapshot = await collectionReference.get();
 
     // Get data from docs and convert map to List
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-
-    //print(allData);
 
     return allData;
   }
 
   static Future<List> getGroceryData() async {
-    CollectionReference rtGemGroceriesCollection =
+    CollectionReference collectionReference =
     _mainCollection.doc(userUid).collection('groceries');
     // Get docs from collection reference
-    QuerySnapshot querySnapshot = await rtGemGroceriesCollection.get();
+    QuerySnapshot querySnapshot = await collectionReference.get();
 
     // Get data from docs and convert map to List
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
@@ -277,57 +265,6 @@ class Database {
   }
 
 
-  // static Future deleteUser({
-  //   required String? userUid,
-  //   }
-  // ) async {
-  //   DocumentReference documentReferencer =
-  //   _mainCollection.doc(userUid);
-  //
-  //   await documentReferencer
-  //       .delete()
-  //       .whenComplete(() => print('User deleted from the database'))
-  //       .catchError((e) => print(e));
-  // }
-
-  // static Stream<QuerySnapshot> readGroceriesByDay() {
-  //   DateTime date = DateTime.now();
-  //
-  //
-  //   CollectionReference rtGemGroceriesCollection =
-  //   _mainCollection.doc(userUid).collection('groceries');
-  //
-  //   final Query byWeek = rtGemGroceriesCollection
-  //       .where("isConsumed", isEqualTo: false)
-  //       .where("expiryDate", isLessThanOrEqualTo: DateTime(date.year, date.month, date.day))
-  //       .where("expiryDate", isGreaterThanOrEqualTo: DateTime(date.year, date.month, date.day));
-  //
-  //
-  //   return byWeek.snapshots();
-  // }
-  //
-  // void deleteNestedSubcollections(String id) {
-  //
-  //   CollectionReference rtGemGroceriesCollection =
-  //   _mainCollection.doc(userUid).collection('groceries');
-  //
-  //   final Query byWeek = rtGemGroceriesCollection.get(doc);
-  //
-  //   Future<QuerySnapshot> books =
-  //   libraryCollection.document(id).collection("groceries").getDocuments();
-  //   books.then((value) {
-  //     value.documents.forEach((element) {
-  //       libraryCollection
-  //           .document(id)
-  //           .collection("Books")
-  //           .document(element.documentID)
-  //           .delete()
-  //           .then((value) => print("success"));
-  //     });
-  //   });
-  // }
-
-
   static Future<void> deleteUser() async {
     CollectionReference _collectionGroceryRef =
     _mainCollection.doc(userUid).collection('groceries');
@@ -354,10 +291,5 @@ class Database {
 
     print("all deleted");
   }
-
-  // static Future<void> deleteUser() async {
-  //    _mainCollection.doc(userUid).delete();
-  // }
-
 
 }
