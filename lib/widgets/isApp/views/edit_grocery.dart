@@ -30,7 +30,8 @@ class _EditGroceryState extends State<EditGrocery> {
     return Scaffold( appBar: AppBar(
       title: Text("Grocery Details"),
     ),
-        body:  Center(
+        body:  Align(
+          alignment: Alignment.topCenter,
           child: Container( width: 800 , child: UpdateGroceryForm(
             currentProductName: widget.currentProductName,
             currentCategory: widget.currentCategory,
