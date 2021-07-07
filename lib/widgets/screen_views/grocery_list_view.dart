@@ -277,7 +277,7 @@ class ItemsView extends StatelessWidget {
                                 child: Padding(
                                   padding: const EdgeInsets.all(5.0),
                                   child: Text(
-                                      daysLeft <= 7  && daysLeft >= 2 ? "Expires Soon!" :  daysLeft <= 1  && daysLeft >= 0 ? "Expires Today!" :  daysLeft < 0 ? "Expired! " : "Days Left : "+daysLeft.toString(),
+                                      daysLeft <= 7  && daysLeft >= 2 ? "Expires Soon!" :  daysLeft == 1  ? "Expires Tomorrow!" :daysLeft == 0 ? "Expires Today!" :  daysLeft < 0 ? "Expired! " : "Days Left : "+daysLeft.toString(),
                                       style: TextStyle(
                                         fontFamily: AppTheme.fontName,
                                         fontWeight: FontWeight.w500,

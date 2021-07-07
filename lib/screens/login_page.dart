@@ -63,8 +63,8 @@ class _LoginPageState extends State<LoginPage>
               FocusScope.of(context).requestFocus(FocusNode());
             },
             child: Container(
-              width: kIsWeb ? 1600 : MediaQuery.of(context).size.width,
-              height: kIsWeb &&  Responsive.isDesktop(context) ? 752 : kIsWeb &&  Responsive.isTabletH(context) ? 1400  : kIsWeb &&  Responsive.isMobileH(context) ? 750  : MediaQuery.of(context).size.height,
+              width:  MediaQuery.of(context).size.width,
+              height:  Responsive.isMobileH(context) ? 800 : MediaQuery.of(context).size.height,
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                     colors: <Color>[

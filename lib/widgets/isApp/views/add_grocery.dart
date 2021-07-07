@@ -16,7 +16,7 @@ class AddGrocery extends StatelessWidget {
       child: Scaffold( appBar: AppBar(
         title: Text("Add Items"),
       ),
-          body:  Container( child: AddGroceryForm(),)),
+          body:  Center(child: Container( width: 800 ,child: AddGroceryForm(),))),
     );
   }
 }

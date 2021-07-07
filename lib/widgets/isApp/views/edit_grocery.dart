@@ -30,13 +30,15 @@ class _EditGroceryState extends State<EditGrocery> {
     return Scaffold( appBar: AppBar(
       title: Text("Grocery Details"),
     ),
-        body:  Container( child: UpdateGroceryForm(
-          currentProductName: widget.currentProductName,
-          currentCategory: widget.currentCategory,
-          currentItemMfg: widget.currentItemMfg,
-          currentItemExp: widget.currentItemExp,
-          currentQuantity: widget.currentQuantity,
-          documentId: widget.documentId,
-        ),));
+        body:  Center(
+          child: Container( width: 800 , child: UpdateGroceryForm(
+            currentProductName: widget.currentProductName,
+            currentCategory: widget.currentCategory,
+            currentItemMfg: widget.currentItemMfg,
+            currentItemExp: widget.currentItemExp,
+            currentQuantity: widget.currentQuantity,
+            documentId: widget.documentId,
+          ),),
+        ));
   }
 }
