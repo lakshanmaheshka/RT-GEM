@@ -1,16 +1,12 @@
 # rt_gem
 
-Multiplatform application to track receipts and get reminders on expiration dates on groceries. RT GEM (Receipt Tracker & Grocery Expiration Manager) 
+RT GEM (Receipt Tracker & Grocery Expiration Manager) 
+Multiplatform application to keep track of receipts, manage groceries to use before expiration and can also search recipes. 
+
+On android application has functionality to scan dates by using OCR(Optical Character Recognition) to identify scanned dates for easy input.
+Web application is made to be mobile responsive as well.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This project is a Flutter application. 
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
